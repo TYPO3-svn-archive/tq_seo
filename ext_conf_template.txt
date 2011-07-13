@@ -1,0 +1,20 @@
+   # cat=Sitemap; type=string; label=Priority default value (DEPRECATED, use TEMPLATE->CONSTANT): Default is 1 (empty)
+sitemap_pagePriorityDefaultValue =
+
+   # cat=Sitemap; type=string; label=Priority depth multiplier (DEPRECATED, use TEMPLATE->CONSTANT): Default is 1 (empty)
+sitemap_pagePriorityDepthMultiplier =
+
+   # cat=Sitemap; type=string; label=Priority depth modificator (DEPRECATED, use TEMPLATE->CONSTANT): Default is 1 (empty)
+sitemap_pagePriorityDepthModificator =
+
+   # cat=Sitemap; type=int+; label=Page item limit (DEPRECATED, use TEMPLATE->CONSTANT): How many pages should be exported via XML sitemap (0 = default is 10.000)
+sitemap_pageSitemapItemLimit =
+
+   # cat=Sitemap; type=int+; label=Clear cache possibility: Clear cache possibility on index (0 = default is 1000)
+sitemap_clearCachePossibility =
+
+   # cat=Sitemap; type=int+; label=Sitemap entry expire: Days we should keep pages or urls at least (0 = default is 60)
+sitemap_pageSitemapExpireDays =
+
+   # cat=Sitemap; type=boolean; label=Language (DEPRECATED, use TEMPLATE->CONSTANT): Obey Language when generating sitemap (default is false, eg. for language-domain setups)
+sitemap_ObeySysLanguage = 0

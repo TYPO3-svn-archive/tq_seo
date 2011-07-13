@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'tq_seo'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pages.tx_tqseo_pagetitle">&lt;title&gt;-TAG (absolute, overwrites prefix/suffix)</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle">&lt;title&gt;-TAG</label>
+			<label index="pages.tx_tqseo_is_exclude">Exclude page from SearchEngines</label>
+			<label index="pages.tx_tqseo_pagetitle_prefix">Prefix (inheritable)</label>
+			<label index="pages.tx_tqseo_pagetitle_suffix">Suffix (inheritable)</label>
+			<label index="pages.tx_tqseo_inheritance">Inheritance mode</label>
+			<label index="pages.tx_tqseo_canonicalurl">Canonical URL (if your content is a copy from another webpage, link here to it)</label>
+
+			<label index="pages.tx_tqseo_inheritance.I.0">Normal</label>
+			<label index="pages.tx_tqseo_inheritance.I.1">Skip (don't herit from this page)</label>
+
+			<label index="pages.tx_tqseo_priority">Priority (0-100)</label>
+			<label index="pages.tx_tqseo_change_frequency">Page change frequency</label>
+
+			<label index="pages.tx_tqseo_change_frequency.I.0">Default (see constants)</label>
+			<label index="pages.tx_tqseo_change_frequency.I.1">Always</label>
+			<label index="pages.tx_tqseo_change_frequency.I.2">Hourly</label>
+			<label index="pages.tx_tqseo_change_frequency.I.3">Daily</label>
+			<label index="pages.tx_tqseo_change_frequency.I.4">Weekly</label>
+			<label index="pages.tx_tqseo_change_frequency.I.5">Monthly</label>
+			<label index="pages.tx_tqseo_change_frequency.I.6">Yearly</label>
+			<label index="pages.tx_tqseo_change_frequency.I.7">Never (archive)</label>
+
+			<label index="tx_tqseo_settings">SEO Settings</label>
+			<label index="tx_tqseo_settings.robotstxt">Robots.txt</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pages.tx_tqseo_pagetitle">&lt;title&gt;-TAG (absolut, überschreibt Prefix/Suffix)</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle">&lt;title&gt;-TAG</label>
+			<label index="pages.tx_tqseo_is_exclude">Seite von Suchmaschinen ausschließen</label>
+			<label index="pages.tx_tqseo_priority">Priorität (0-100)</label>
+			<label index="pages.tx_tqseo_pagetitle_prefix">Präfix (vererbbar)</label>
+			<label index="pages.tx_tqseo_pagetitle_suffix">Suffix (vererbbar)</label>
+			<label index="pages.tx_tqseo_inheritance">Vererbungsmodus</label>
+			<label index="pages.tx_tqseo_canonicalurl">Canonical URL (Wenn der Inhalt der Webseite von einer Anderen übernommen worden ist, hier die URL dieser Seite eintragen)</label>
+
+			<label index="pages.tx_tqseo_inheritance.I.0">Normal</label>
+			<label index="pages.tx_tqseo_inheritance.I.1">Überspringen (von dieser Seite nicht vererben)</label>
+
+			<label index="pages.tx_tqseo_priority">Priorität (0-100)</label>
+			<label index="pages.tx_tqseo_change_frequency">Änderungshäufigkeit der Seite</label>
+
+			<label index="pages.tx_tqseo_change_frequency.I.0">Standard (siehe Konstanten)</label>
+			<label index="pages.tx_tqseo_change_frequency.I.1">Immer</label>
+			<label index="pages.tx_tqseo_change_frequency.I.2">Stündlich</label>
+			<label index="pages.tx_tqseo_change_frequency.I.3">Täglich</label>
+			<label index="pages.tx_tqseo_change_frequency.I.4">Wöchentlich</label>
+			<label index="pages.tx_tqseo_change_frequency.I.5">Monatlich</label>
+			<label index="pages.tx_tqseo_change_frequency.I.6">Jährlich</label>
+			<label index="pages.tx_tqseo_change_frequency.I.7">Nie (Archivseite)</label>
+
+			<label index="tx_tqseo_settings">SEO Einstellungen</label>
+			<label index="tx_tqseo_settings.robotstxt">Robots.txt</label>
+		</languageKey>
+	</data>
+</T3locallang>

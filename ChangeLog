@@ -1,0 +1,135 @@
+2011-07-01 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed sitemap index page output (wrong page number) in very big TYPO3 installations
+
+2011-06-29 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.5.2
+	* Fixed missing definition of tx_tqseo_sitemap in ext_tables.sql (Bug #27658, thanks to Dmitri Pisarev)
+
+2011-06-21 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.5.1
+	* Fixed again the length of some fields (Thanks to Stéphane Perrenoud)
+
+2011-05-10 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Implemented basic settings table (disabled by now)
+	* Improved documentation (added suggested extensions, fixed style - again)
+
+2011-05-05 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed xclass support
+
+2011-05-04 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.5.0
+	* Moved sitemap configuration from the ext-conf to constants, ext-conf now flaged as deprecated
+	* Updated documentation
+
+2011-04-26 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed canonical tag 50 chars limit bug  (#18095 in bugs.typo3.org)
+
+2011-04-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Updated documentation
+
+2011-04-06 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.4.2
+	* Disabled sourceopt (if installed) in sitemap pages (Thanks to Robert Wunsch)
+	* Fixed db-issue with integers (Thanks to Robert Wunsch, again)
+
+2011-02-11 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Disabled by default services (google analytics/piwik) output if config.disableAllHeaderCode is active to prevent double hit-logging (eg. for ajax-calls, can be renabled by constants/typoscript)
+
+2011-02-11 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.4.1
+	* Fixed MySQL 5.0 "max-key-length"-issue (please update to MySQL 5.1 anyway...)
+	* Renamed tx_tqseo_sitemap_pages to tx_tqseo_sitemap to make sure, that sitemap is cleaned up and table is up-2-date
+	* Changed tx_tqseo_sitemap.page_hash to page_chash and implemented page_hash (md5) of url
+
+2011-02-08 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.4.0
+	* If you have problemes with updating tx_tqseo_sitemap_pages, remove table and recreate it with the extension manager, sorry...
+	* Fixed empty link-url (Thanks to De Contardi Riccardo)
+	* Cleanup (renamed tq_seo_cache to tx_tqseo_cache, feel free to remove tq_seo_cache)
+	* Fixed possible duplicate urls in sitemap
+	* Added support for page:lastUpdate (TYPO3 4.5, fallback to SYS_LASTCHANGED if empty)
+	* Fixed SEO-tab position, cleanup and hopefully more userfriendly :)
+
+2010-12-23 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.3.0
+	* XMAS-Release :)
+	* Added some TypoScript inline comments
+	* XML-Sitemap sub-sitemaps points now fixed to rootpid instead of current pid
+	* Added stdWrap-support for pagetitle (Thanks to Manfred Egger)
+	* Added stdWrap-support for metatags
+	* Improved default setup (disables most TYPO3 features in sitemap generators, we don't need admpanel and other stuff)
+	* Fixed and improved piwik-Support (Thanks to Filippo Peverelli)
+
+2010-12-17 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added enable/disable of dublin core (DC.) metatags (Thanks to Manfred Egger)
+	* Disabled cooluri in sitemap output (Thanks to Bastian Dünhofen)
+	* Added fix for missing interface in BE (Thanks to Philipp Gampe, send an email and don't post it to a TYPO3 mailinglist)
+
+2010-12-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added possibility to disable sitemap (output and indexing)
+
+2010-12-06 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added error if tx_tqseo_sitemap_pages-table doesn't exists
+	* Added canonical-tag strict-mode
+	* Some code cleanup
+
+2010-12-02 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Improved canonical url (full extensions support, eg. tt_news)
+
+2010-11-29 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* +++ VERSION 2.0.0 +++
+	* Merged tq_seo_sitemap into tq_seo
+	* Added XML and TXT-Sitemap with full extensions support (eg. tt_news)
+	* Added anonymized IP in Google Analytics
+	* Added Piwik support (BETA)
+	* Added customization of google analystics and piwik (via customizationCode)
+	* Added download tracking (BETA)
+	* Added ext_autoload
+	* Maintained dependencies and conflicts
+
+2010-09-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed use of deprecated methods (Thanks to Ralf Büchner, halbach-media.de)
+
+2010-07-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed performance issue with optional HTTP-headers
+	* Added HTML-comment if Google Analytics is disabled because of logged in BE-User
+
+2010-02-24 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Disabled Google Analytics if BE-User is logged in (Thanks to Mario Näther)
+	    Configurable via plugin.tq_seo.services.googleAnalytics.showIfBeLogin
+
+2010-02-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added WebOfTrust (WOT) Verification support
+	* Moved Verification-Constants from Crawler to Services
+	* Added Previous/Next Metatag-Links
+
+2010-02-12 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added P3P-Support (Beta)
+	* Added automatic canonical-url detection (inside TYPO3)
+
+2010-01-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added YahooDirectory-Crawler Order (Thanks to Daniel Huf)
+
+2010-01-14 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed dokumentation issues
+	* Changed email address
+
+2009-12-16 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added IE-Compatibility-Mode
+	* Added ODP/Snipped control in crawler
+	* Added Google expire date
+
+2009-12-03 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added sitetitle Glue options (see constants)
+	* Added sitetitle position (see constants)
+	* Changed default-value of plugin.tq_seo.pageTitle.applySitetitleToPagetitle (1 => 0)
+	* Added canonical url to page and pageTranslation
+
+2009-10-15 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added new google site verification tag
+
+2009-07-23 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Cleanup und bugfixes
+
+2009-04-08 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Initial revision
