@@ -48,12 +48,6 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 		
 		$pageLimit		= 10000;
 		
-		// Page limit on sitemap (DEPRECATED)
-		$tmp = $this->getExtConf('sitemap_pageSitemapItemLimit', false);
-		if( $tmp !== false ) {
-			$pageLimit = (int)$tmp;
-		}
-		
 		if( isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '' ) {
 			$pageLimit = (int)$this->tsSetup['pageLimit'];
 		}
@@ -105,6 +99,9 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 		}
 
 		$ret .= '</sitemapindex>';
+		
+		// Call hook
+		tx_tqseo_tools::callHook('sitemap-xml-index-output', $this, $ret);
 
 		return $ret;
 	}
@@ -121,25 +118,6 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 		$pagePriorityDefaultValue		= 1;
 		$pagePriorityDepthMultiplier	= 1;
 		$pagePriorityDepthModificator	= 1;
-
-		#####################
-		# Ext conf (DEPRECATED)
-		#####################
-		
-		$tmp = $this->getExtConf('sitemap_pagePriorityDefaultValue', false);
-		if( $tmp !== false ) {
-			$pagePriorityDefaultValue = floatval($tmp);
-		}
-		
-		$tmp = $this->getExtConf('sitemap_pagePriorityDepthMultiplier', false);
-		if( $tmp !== false ) {
-			$pagePriorityDepthMultiplier = floatval($tmp);
-		}
-		
-		$tmp = $this->getExtConf('sitemap_pagePriorityDepthModificator', false);
-		if( $tmp !== false ) {
-			$pagePriorityDepthModificator = floatval($tmp);
-		}
 		
 		#####################
 		# SetupTS conf
@@ -237,6 +215,9 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 
 
 		$ret .= '</urlset>';
+		
+		// Call hook
+		tx_tqseo_tools::callHook('sitemap-xml-page-output', $this, $ret);
 
 		return $ret;
 	}

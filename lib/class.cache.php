@@ -35,10 +35,10 @@ class tx_tqseo_cache {
 	/**
 	 * Get cache entry
 	 *
-	 * @param integer	$pageId		Page UID
-	 * @param string	$section	Cache section
-	 * @param string	$identifier	Cache identifier
-	 * @return string
+	 * @param	integer		$pageId		Page UID
+	 * @param	string		$section	Cache section
+	 * @param	string		$identifier	Cache identifier
+	 * @return	string
 	 */
 	static public function get($pageId, $section, $identifier) {
 		global $TYPO3_DB;
@@ -60,10 +60,11 @@ class tx_tqseo_cache {
 	/**
 	 * Set cache entry
 	 *
-	 * @param integer	$pageId		Page UID
-	 * @param string	$section	Cache section
-	 * @param string	$identifier	Cache identifier
-	 * @param string	$value		Cache content
+	 * @param	integer		$pageId		Page UID
+	 * @param	string		$section	Cache section
+	 * @param	string		$identifier	Cache identifier
+	 * @param	string		$value		Cache content
+	 * @return	boolean					Success
 	 */
 	static public function set($pageId, $section, $identifier, $value) {
 		global $TYPO3_DB;
@@ -87,8 +88,8 @@ class tx_tqseo_cache {
 	/**
 	 * Get cache list
 	 *
-	 * @param string	$section	Cache section
-	 * @param string	$identifier	Cache identifier
+	 * @param	string		$section		Cache section
+	 * @param	string		$identifier		Cache identifier
 	 * @return	array
 	 */
 	static public function getList($section, $identifier) {
@@ -110,9 +111,10 @@ class tx_tqseo_cache {
 	/**
 	 * Clear cache entry
 	 *
-	 * @param integer	$pageId		Page UID
-	 * @param string	$section	Cache section
-	 * @param string	$identifier	Cache identifier
+	 * @param	integer		$pageId		Page UID
+	 * @param	string		$section	Cache section
+	 * @param	string		$identifier	Cache identifier
+	 * @return	boolean					Success
 	 */
 	static public function remove($pageId, $section, $identifier) {
 		global $TYPO3_DB;
@@ -137,7 +139,8 @@ class tx_tqseo_cache {
 	/**
 	 * Clear cache by page
 	 *
-	 * @param integer	$pageId	Page UID
+	 * @param	integer		$pageId		Page UID
+	 * @return	boolean				Success
 	 */
 	static public function clearByPage($pageId) {
 		global $TYPO3_DB;
@@ -156,7 +159,8 @@ class tx_tqseo_cache {
 	/**
 	 * Clear cache by section
 	 *
-	 * @param string	$section Cache section
+	 * @param	string		$section	Cache section
+	 * @return	boolean					Success
 	 */
 	static public function clearBySection($section) {
 		global $TYPO3_DB;
@@ -174,6 +178,8 @@ class tx_tqseo_cache {
 
 	/**
 	 * Clear all cache
+	 * 
+	 * @return	boolean		Success
 	 */
 	static public function clearAll() {
 		global $TYPO3_DB;

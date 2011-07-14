@@ -42,8 +42,7 @@ class tx_tqseo_sitemap_cache_controller_hook implements backend_cacheActionsHook
 					'id'    => 'clearRTECache',
 					'title' => $title,
 					'href'  => $GLOBALS['BACK_PATH'] . 'ajax.php?ajaxID=tx_tqseo_sitemap::clearSeoSitemap',
-					'icon'  => '<img'.t3lib_iconWorks::skinImg($GLOBALS['BACK_PATH'], 'sysext/rtehtmlarea/hooks/clearrtecache/clearrtecache.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
-					//'icon'  => '<img src="' . t3lib_extMgm::extRelPath('rtehtmlarea') . 'hooks/clearrtecache/clearrtecache.png" width="16" height="16" title="'.htmlspecialchars($title).'" alt="" />'
+					'icon'  => '<img'.t3lib_iconWorks::skinImg($this->doc->backPath,t3lib_extMgm::extRelPath('tq_seo').'res/images/clear-sitemap.png', 'width="16" height="16"').' title="'.$title.'" alt="'.$title.'" />'
 			);
 			$optionValues[] = 'clearSeoSitemap';
 		}

@@ -1,4 +1,15 @@
+2011-07-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added hooks
+	* Fixed metatag-urls (full url now)
+	* Added typolink sitemap-parser
+	* Updated some code-documentation
+	* Reduced sql statements
+	* Removed deprecated stuff
+	* Clear cache possibility is now disabled by default, you should use the scheduler task instead
+	* Fixed some other minor issues, bugs, stuff ...
+
 2011-07-01 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Version 2.5.3
 	* Fixed sitemap index page output (wrong page number) in very big TYPO3 installations
 
 2011-06-29 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>

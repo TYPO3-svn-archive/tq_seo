@@ -23,46 +23,27 @@
 ***************************************************************/
 
 /**
- * Sitemap TXT
+ * Scheduler Task Cleanup
  *
  * @author		Blaschke, Markus <blaschke@teqneers.de>
  * @package 	tq_seo
  * @subpackage	lib
  * @version		$Id$
  */
-class tx_tqseo_sitemap_txt extends tx_tqseo_sitemap_base {
-
-	###########################################################################
-	# Methods
-	###########################################################################
+class tx_tqseo_scheduler_task_cleanup extends tx_scheduler_task {
 
 	/**
-	 * Create Sitemap
-	 *
-	 * @return string 		Text Sitemap
+	 * Execute task
 	 */
-	protected function createSitemap() {
-		$ret = array();
-
-		foreach($this->sitemapPages as $sitemapPage) {
-			if(empty($this->pages[ $sitemapPage['page_uid'] ])) {
-				// invalid page
-				continue;
-			}
-
-			$page = $this->pages[ $sitemapPage['page_uid'] ];
-
-			$ret[] = t3lib_div::locationHeaderUrl( $sitemapPage['page_url'] );
-		}
-		
-		// Call hook
-		tx_tqseo_tools::callHook('sitemap-text-output', $this, $ret);
-
-		return implode("\n", $ret);
+	public function execute() {
+		tx_tqseo_sitemap::expire();
+		return true;
 	}
+	
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_txt.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_txt.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/scheduler/class.cleanup.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/scheduler/class.cleanup.php']);
 }
+
 ?>

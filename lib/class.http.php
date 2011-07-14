@@ -112,6 +112,9 @@ class user_tqseo_http {
 				}
 			}
 		}
+		
+		// Call hook
+		tx_tqseo_tools::callHook('httpheader-output', $this, $headers);
 
 		#####################################
 		# Sender headers

@@ -36,89 +36,9 @@ class user_tqseo_sitemap_indexer {
 	# Attributes
 	###########################################################################
 
-	/**
-	 * Extension configuration
-	 * @var array
-	 */
-	protected $extConf = array();
-
 	###########################################################################
 	# Methods
 	###########################################################################
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		global $TYPO3_DB, $TSFE, $TYPO3_CONF_VARS;
-
-		// Load ext conf
-		$this->extConf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tq_seo']);
-		if(!is_array($this->extConf)) {
-			$this->extConf = array();
-		}
-	}
-
-	/**
-	 * Get extension configuration (by name)
-	 *
-	 * @param	string	$name			Configuration settings name
-	 * @param	mixed	$defaultValue	Default value (if configuration doesn't exists)
-	 * @return	mixed
-	 */
-	protected function getExtConf($name, $defaultValue = NULL) {
-		$ret = $defaultValue;
-		if(!empty($this->extConf[$name])) {
-			$ret = $this->extConf[$name];
-		}
-
-		return $ret;
-	}
-
-	/**
-	 * Clear outdated and invalid pages from sitemap table
-	 */
-	public function clearExpiredSitemapPages() {
-		global $TYPO3_DB, $TSFE, $TYPO3_CONF_VARS;
-
-		#####################
-		# Expired pages
-		#####################
-		$expireDays = (int)$this->getExtConf('sitemap_pageSitemapExpireDays', 60);
-
-		$tsstamp = time() - $expireDays*24*60*60;
-
-		$query = 'DELETE FROM tx_tqseo_sitemap WHERE tsstamp <= '.(int)$tsstamp;
-		$res = $TYPO3_DB->sql_query($query);
-
-		#####################
-		# Deleted or
-		# excluded pages
-		#####################
-		$deletedSitemapPages = array();
-
-		$query = 'SELECT
-						ts.uid
-					FROM
-						tx_tqseo_sitemap ts
-						LEFT JOIN pages p
-							ON		p.uid = ts.page_uid
-								AND	p.deleted = 0
-								AND p.hidden = 0
-					WHERE
-						p.uid IS NULL';
-		$res = $TYPO3_DB->sql_query($query);
-
-		while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-			$deletedSitemapPages[ $row['uid'] ] = $row['uid'];
-		}
-
-		// delete pages
-		if(!empty($deletedSitemapPages)) {
-			$query = 'DELETE FROM tx_tqseo_sitemap WHERE uid IN ('.implode(',', $deletedSitemapPages).')';
-			$TYPO3_DB->sql_query($query);
-		}
-	}
 
 	/**
 	 * Add Page to sitemap table
@@ -132,7 +52,8 @@ class user_tqseo_sitemap_indexer {
 		}
 
 		// Skip non-seo-pages
-		if( $_SERVER['REQUEST_METHOD'] !== 'GET' || !empty($TSFE->page['tx_tqseo_is_exclude']) || !empty($TSFE->fe_user->user['uid']) ) {
+		if( 	$_SERVER['REQUEST_METHOD'] !== 'GET'
+			|| !empty($TSFE->fe_user->user['uid']) )  {
 			return true;
 		}
 
@@ -159,7 +80,7 @@ class user_tqseo_sitemap_indexer {
 		}
 
 		// Fetch page changeFrequency
-		$pageChangeFrequency = NULL;
+		$pageChangeFrequency = 0;
 		if( !empty($TSFE->page['tx_tqseo_change_frequency']) ) {
 			$pageChangeFrequency = (int)$TSFE->page['tx_tqseo_change_frequency'];
 		} elseif(!empty($TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
@@ -179,13 +100,10 @@ class user_tqseo_sitemap_indexer {
 			);
 
 			$pageUrl = $TSFE->cObj->typoLink_URL($linkConf);
-
-			if(!empty($TSFE->tmpl->setup['config.']['absRefPrefix']) && strpos($pageUrl, $TSFE->tmpl->setup['config.']['absRefPrefix']) === 0) {
-				$pageUrl = substr($pageUrl, strlen($TSFE->tmpl->setup['config.']['absRefPrefix']));
-			}
+			$pageUrl = self::_processLinkUrl($pageUrl);
 		}
 
-		$tstamp = time();
+		$tstamp = $_SERVER['REQUEST_TIME'];
 
 		$pageData = array(
 			'tstamp'				=> $tstamp,
@@ -195,77 +113,213 @@ class user_tqseo_sitemap_indexer {
 			'page_language'			=> $pageLanguage,
 			'page_url'				=> $pageUrl,
 			'page_hash'				=> md5($pageUrl),
-			'page_chash'			=> $pageHash,
 			'page_depth'			=> count($TSFE->rootLine),
 			'page_change_frequency'	=> $pageChangeFrequency,
 		);
 
-		// Escape/Quote data
-		unset($pageDataValue);
-		foreach($pageData as &$pageDataValue) {
-			if($pageDataValue === NULL) {
-				$pageDataValue = 'NULL';
-			} elseif( is_int($pageDataValue) || is_numeric($pageDataValue) ) {
-				// Don't quote numeric/integers
-				$pageDataValue = (int)$pageDataValue;
-			} else {
-				// String
-				$pageDataValue = $TYPO3_DB->fullQuoteStr($pageDataValue, 'tx_tqseo_sitemap');
-			}
-		}
-		unset($pageDataValue);
+		// Call hook
+		tx_tqseo_tools::callHook('sitemap-index-page', null, $pageData);
 
-		$query = 'SELECT
-						uid
-					FROM
-						tx_tqseo_sitemap
-					WHERE
-							page_uid = '.$pageData['page_uid'].'
-						AND	page_language = '.$pageData['page_language'].'
-						AND page_hash = '.$pageData['page_hash'];
-		$res = $TYPO3_DB->sql_query($query);
-
-		if( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-			$query = 'UPDATE
-							tx_tqseo_sitemap
-						SET
-							tstamp					= '.$pageData['tstamp'].',
-							page_rootpid			= '.$pageData['page_rootpid'].',
-							page_language			= '.$pageData['page_language'].',
-							page_url				= '.$pageData['page_url'].',
-							page_depth				= '.$pageData['page_depth'].',
-							page_change_frequency	= '.$pageData['page_change_frequency'].'
-						WHERE
-							uid = '.$row['uid'];
-			$TYPO3_DB->sql_query($query);
-		} else {
-			#####################################
-			# INSERT
-			#####################################
-			$TYPO3_DB->exec_INSERTquery(
-				'tx_tqseo_sitemap',
-				$pageData,
-				array_keys($pageData)
-			);
+		if( !empty($pageData) ) {
+			tx_tqseo_sitemap::index($pageData, 'page');
 		}
 
 		return true;
 	}
 
+	/**
+	 * Insert page into sitemap
+	 * 
+	 * @param	array	$pageData	Page informations
+	 */
+	protected static function _processLinkUrl($linkUrl) {
+		global $TSFE;
+		static $absRefPrefix		= null;
+		static $absRefPrefixLength	= 0;
+		$ret = $linkUrl;
+		
+		// Fetch abs ref prefix if available/set
+		if( $absRefPrefix === null ) {
+			if( !empty($TSFE->tmpl->setup['config.']['absRefPrefix']) ) {
+				$absRefPrefix		= $TSFE->tmpl->setup['config.']['absRefPrefix'];
+				$absRefPrefixLength	= strlen($absRefPrefix);
+			} else {
+				$absRefPrefix = false;
+			}
+		}
+
+		// remove abs ref prefix
+		if( $absRefPrefix !== false && strpos($ret, $absRefPrefix) === 0) {
+			$ret = substr($ret, $absRefPrefixLength);
+		}
+		
+		return $ret;
+	}
 
 	###########################################################################
 	# HOOKS
 	###########################################################################
 
+	/**
+	 * Hook: Index Page Content
+	 * 
+	 * @param	object	$pObj	Object
+	 */
 	public function hook_indexContent(&$pObj) {
 		$this->addPageToSitemapIndex();
 
-		$possibility = (int)$this->getExtConf('sitemap_clearCachePossibility', 1000);
+		$possibility = (int)tx_tqseo_tools::getExtConf('sitemap_clearCachePossibility', 0);
 
-		$clearCacheChance = ceil(mt_rand(0, $possibility));
-		if( $clearCacheChance == 1 ) {
-			$this->clearExpiredSitemapPages();
+		if( $possibility > 0 ) {
+			
+			$clearCacheChance = ceil(mt_rand(0, $possibility));
+			if( $clearCacheChance == 1 ) {
+				tx_tqseo_sitemap::expire();
+			}
 		}
+	}
+	
+	
+	/**
+	 * Hook: Link Parser
+	 * 
+	 * @param	object	$pObj	Object
+	 */
+	public static function hook_linkParse(&$pObj) {
+		global $TSFE;
+		
+		// BETA
+		if( !tx_tqseo_tools::getExtConf('enableBeta', false) ) {
+			return;
+		}
+		
+		// skip POST-calls and feuser login
+		if( 	$_SERVER['REQUEST_METHOD'] !== 'GET'
+			|| !empty($TSFE->fe_user->user['uid']) )  {
+			return;
+		}
+		
+		// dont parse if page is not cacheable
+		if(!$TSFE->isStaticCacheble()) {
+			return;
+		}
+		
+		// Check 
+		if(    empty($pObj['finalTagParts']) 
+			|| empty($pObj['conf'])
+			|| empty($pObj['finalTagParts']['url']) ) {
+			// no valid link
+			return;
+		}
+		
+		// Init link informations
+		$linkConf	= $pObj['conf'];
+		$linkUrl	= $pObj['finalTagParts']['url'];
+		$linkUrl	= self::_processLinkUrl($linkUrl);
+
+		if( !is_numeric($linkConf['parameter']) ) {
+			// not valid internal link
+			return;
+		}
+
+		#####################################
+		# Init
+		#####################################
+		$uid = $linkConf['parameter'];
+		
+		$addParameters = array();
+		if( !empty($linkConf['additionalParams']) ) {
+			parse_str($linkConf['additionalParams'], $addParameters);
+		}
+		
+		#####################################
+		# Check if link is cacheable
+		#####################################
+		$isValid = false;
+
+		// check if conf is valid
+		if( !empty($linkConf['useCacheHash']) ) {
+			$isValid = true;
+		}
+		
+		// check for typical typo3 params
+		$addParamsCache = $addParameters;
+		unset($addParamsCache['L']);
+		unset($addParamsCache['type']);
+		
+		if( empty($addParamsCache) ) {
+			$isValid = true;
+		}
+
+		if(!$isValid) {
+			// page is not cacheable, skip it
+			return;
+		}
+
+		#####################################
+		# Rootline
+		#####################################
+		$rootline = tx_tqseo_tools::getRootLine($uid);
+		
+		if( empty($rootline) ) {
+			return;
+		}
+		
+		$page = reset($rootline);
+
+		#####################################
+		# Build relative url
+		#####################################
+		$linkParts = parse_url($linkUrl);
+		$pageUrl = ltrim($linkParts['path'], '/');
+		if( !empty($linkParts['query']) ) {
+			$pageUrl .= '?'.$linkParts['query'];
+		}
+
+		#####################################
+		# Page settings
+		#####################################
+		// Fetch page changeFrequency
+		$pageChangeFrequency = 0;
+		if( !empty($page['tx_tqseo_change_frequency']) ) {
+			$pageChangeFrequency = (int)$page['tx_tqseo_change_frequency'];
+		} elseif(!empty($TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
+			$pageChangeFrequency = (int)$TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'];
+		}
+			
+		// Fetch sysLanguage
+		$pageLanguage = 0;
+		if(isset($addParameters['L'])) {
+			$pageLanguage = (int)$addParameters['L'];
+		} elseif(!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
+			$pageLanguage = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
+		}
+		
+		#####################################
+		# Indexing
+		#####################################
+		$tstamp = $_SERVER['REQUEST_TIME'];
+
+		$pageData = array(
+			'tstamp'				=> $tstamp,
+			'crdate'				=> $tstamp,
+			'page_rootpid'			=> $rootline[0]['uid'],
+			'page_uid'				=> $linkConf['parameter'],
+			'page_language'			=> $pageLanguage,
+			'page_url'				=> $pageUrl,
+			'page_hash'				=> md5($pageUrl),
+			'page_depth'			=> count($rootline),
+			'page_change_frequency'	=> $pageChangeFrequency,
+		);
+
+		// Call hook
+		tx_tqseo_tools::callHook('sitemap-index-link', null, $pageData);
+
+		if( !empty($pageData) ) {
+			tx_tqseo_sitemap::index($pageData, 'link');
+		}
+		
+		return true;
 	}
 }
 

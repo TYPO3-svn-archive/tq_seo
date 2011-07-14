@@ -49,8 +49,7 @@ CREATE TABLE tx_tqseo_sitemap (
   page_language int(11) DEFAULT '0' NOT NULL,
   page_url varchar(500) DEFAULT '' NOT NULL,
   page_hash varchar(32) DEFAULT '' NOT NULL,
-  page_chash varchar(32) DEFAULT '',
-  page_depth int(11) DEFAULT '0' NOT NULL,
+  page_depth int(4) DEFAULT '0' NOT NULL,
   page_change_frequency int(4) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
 

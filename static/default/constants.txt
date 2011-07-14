@@ -90,7 +90,7 @@ plugin.tq_seo {
   metaTags.robotsYdir = 1
 
 
-    # cat=plugin.tq_seo.userAgent/ie/1; type=options[,Highest Version=edge,8.x=8,7.x=7,6.x=6,5.x=5]; label= IE Compatibility Mode: Compatibility mode for Microsoft Internet Explorer.
+    # cat=plugin.tq_seo.userAgent/ie/1; type=options[,Highest Version=edge,10.x=10,9.x=9,8.x=8,7.x=7,6.x=6,5.x=5]; label= IE Compatibility Mode: Compatibility mode for Microsoft Internet Explorer.
   userAgent.ieCompatibilityMode =
 
 

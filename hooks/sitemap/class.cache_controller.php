@@ -33,9 +33,16 @@
 class tx_tqseo_sitemap_cache_controller {
 	public function clearSeoSitemap() {
 		global $TYPO3_DB;
+		
+		$ret = true;
 
+		// Call hook
+		tx_tqseo_tools::callHook('sitemap-clear', $this, $ret);
+		
 		$query = 'TRUNCATE tx_tqseo_sitemap';
 		$TYPO3_DB->sql_query($query);
+		
+		return $ret;
 	}
 }
 
