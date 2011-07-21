@@ -140,7 +140,7 @@ class user_tqseo_metatags {
 			foreach($stdWrapItemList as $key) {
 				$tsSetupSeo[$key] = $this->_applyStdWrap($key, $tsSetupSeo[$key]);
 			}
-			
+
 			// Call hook
 			tx_tqseo_tools::callHook('metatag-setup', $this, $tsSetupSeo);
 
@@ -415,11 +415,11 @@ class user_tqseo_metatags {
 			// TODO
 		}
 
-		$separator = "\n	";
-		
+		$separator = "\n";
+
 		$this->_processMetaTags($ret);
 
-		return $separator.'<!-- MetaTags :: begin -->'.$separator.implode($separator, $ret).$separator.'<!-- MetaTags :: end -->'.$separator;
+		return $separator.implode($separator, $ret).$separator;
 	}
 
 	/**
@@ -441,7 +441,7 @@ class user_tqseo_metatags {
 		$ret = $TSFE->cObj->typoLink_URL($conf);
 		// maybe baseUrlWrap is better? but breaks with realurl currently?
 		$ret = t3lib_div::locationHeaderUrl($ret);
-		
+
 		return $ret;
 	}
 
@@ -486,19 +486,19 @@ class user_tqseo_metatags {
 
 		return $ret;
 	}
-	
+
 	/**
 	 * Process meta tags
 	 */
 	protected function _processMetaTags(&$tags) {
 		// Call hook
 		tx_tqseo_tools::callHook('metatag-output', $this, $tags);
-		
+
 		// Add marker
 		$markerList = array(
 			'%YEAR%'	=> date('Y'),
 		);
-		
+
 		$keyList = array(
 			'meta.title',
 			'meta.description',
@@ -507,8 +507,9 @@ class user_tqseo_metatags {
 			'meta.keywords.dc',
 			'meta.copyright',
 			'meta.copyright.dc',
+			'meta.publisher.dc',
 		);
-		
+
 		foreach($keyList as $key) {
 			if( !empty($tags[$key]) ) {
 				foreach($markerList as $marker => $value) {
