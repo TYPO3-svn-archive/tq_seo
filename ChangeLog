@@ -1,3 +1,6 @@
+2011-07-21 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Splitted sitemap building process: builder and output
+
 2011-07-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added hooks
 	* Fixed metatag-urls (full url now)
