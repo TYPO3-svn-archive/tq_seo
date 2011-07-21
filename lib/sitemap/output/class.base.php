@@ -23,91 +23,40 @@
 ***************************************************************/
 
 /**
- * Sitemap Base
+ * Sitemap Output Base
  *
  * @author		Blaschke, Markus <blaschke@teqneers.de>
  * @package 	tq_seo
  * @subpackage	lib
  * @version		$Id$
  */
-abstract class tx_tqseo_sitemap_base {
-	###########################################################################
-	# Attributes
-	###########################################################################
-
-	/**
-	 * Current root pid
-	 * 
-	 * @var integer
-	 */
-	protected $rootPid		= NULL;
-
-	/**
-	 * Sitemap pages
-	 * 
-	 * @var array
-	 */
-	public $sitemapPages	= array();
-
-	/**
-	 * Page lookups
-	 * 
-	 * @var array
-	 */
-	public $pages		= array();
-
-	/**
-	 * Extension configuration
-	 * 
-	 * @var array
-	 */
-	protected $extConf		= array();
-	
-	/**
-	 * Extension setup configuration
-	 * 
-	 * @var array
-	 */
-	protected $tsSetup		= array();
-
-	/**
-	 * Page change frequency definition list
-	 * 
-	 * @var array
-	 */
-	protected $pageChangeFrequency = array(
-		1 => 'always',
-		2 => 'hourly',
-		3 => 'daily',
-		4 => 'weekly',
-		5 => 'monthly',
-		6 => 'yearly',
-		7 => 'never',
-	);
+abstract class tx_tqseo_sitemap_output_base {
 
 	###########################################################################
 	# Methods
 	###########################################################################
 
 	/**
-	 * Fetch sitemap information and generate sitemap
+	 * Output sitemap
+	 *
+	 * @return	string
 	 */
 	public function main() {
 		global $TSFE, $TYPO3_DB, $TYPO3_CONF_VARS;
-		
+
 		// INIT
 		$this->rootPid		= tx_tqseo_tools::getRootPid();
 		$sysLanguageId		= null;
 
 		$this->tsSetup		= $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
-		
+
 		// check if sitemap is enabled
 		if( empty($this->tsSetup['enable']) ) {
 			$this->showError();
 		}
 
 		$typo3Pids = array();
-		
+
 		// Language limit via setupTS
 		if( !empty($this->tsSetup['limitToCurrentLanguage']) ) {
 			$sysLanguageId = 0;
@@ -115,21 +64,18 @@ abstract class tx_tqseo_sitemap_base {
 				$sysLanguageId = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
 			}
 		}
-		
+
 		// Fetch sitemap list/pages
 		$list = tx_tqseo_sitemap::getList($this->rootPid, $sysLanguageId);
-		
+
 		if( $list === false ) {
 			return $this->showError();
 		}
-		
+
 		$this->sitemapPages	= $list['tx_tqseo_sitemap'];
 		$this->pages		= $list['pages'];
 
-		// Call hook
-		tx_tqseo_tools::callHook('sitemap-setup', $this, $ret);
-
-		$ret .= $this->createSitemap();
+		$ret .= $this->_build();
 
 		return $ret;
 	}
@@ -147,17 +93,23 @@ abstract class tx_tqseo_sitemap_base {
 		}
 
 		header('HTTP/1.0 503 Service Unavailable');
-		echo $msg;
+		$TSFE->pageErrorHandler( true, NULL, $msg );
 		exit;
 	}
 
-	/**
-	 * Create sitemap
+	###########################################################################
+	# Abstract methods
+	###########################################################################
+	/*
+	 * Build
+	 *
+	 * @return string
 	 */
-	abstract protected function createSitemap();
+	abstract protected function _build();
+
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_base.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_base.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/output/class.base.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/output/class.base.php']);
 }
 ?>

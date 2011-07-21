@@ -11,8 +11,8 @@ includeLibs.tx_tqseo_metatags = EXT:tq_seo/lib/class.metatags.php
 includeLibs.tx_tqseo_pagefooter = EXT:tq_seo/lib/class.pagefooter.php
 includeLibs.tx_tqseo_http = EXT:tq_seo/lib/class.http.php
 
-includeLibs.tx_tqseo_sitemap_txt = EXT:tq_seo_sitemap/lib/class.sitemap_txt.php
-includeLibs.tx_tqseo_sitemap_xml = EXT:tq_seo_sitemap/lib/class.sitemap_xml.php
+includeLibs.tx_tqseo_sitemap_output_txt = EXT:tq_seo_sitemap/lib/sitemap/output/class.txt.php
+includeLibs.tx_tqseo_sitemap_output_xml = EXT:tq_seo_sitemap/lib/sitemap/output/class.xml.php
 
 
 ## title tag changer
@@ -280,7 +280,7 @@ tqSeoSitemapTxt {
 
 	10 = USER
 	10 {
-		userFunc = tx_tqseo_sitemap_txt->main
+		userFunc = tx_tqseo_sitemap_output_txt->main
 	}
 
 	config {
@@ -315,7 +315,7 @@ tqSeoSitemapXml {
 
 	10 = USER
 	10 {
-		userFunc = tx_tqseo_sitemap_xml->main
+		userFunc = tx_tqseo_sitemap_output_xml->main
 	}
 
 	config {

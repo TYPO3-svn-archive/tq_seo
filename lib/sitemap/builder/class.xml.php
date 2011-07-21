@@ -30,54 +30,29 @@
  * @subpackage	lib
  * @version		$Id$
  */
-class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
+class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 
 	###########################################################################
 	# Methods
 	###########################################################################
 
 	/**
-	 * Create Sitemap
-	 * (either Index or page)
+	 * Create sitemap index
 	 *
-	 * @return string 		XML Sitemap
+	 * @return	string
 	 */
-	protected function createSitemap() {
-		$ret = '';
-		$page = t3lib_div::_GP('page');
-		
+	public function sitemapIndex() {
+		global $TSFE;
+
 		$pageLimit		= 10000;
-		
+
 		if( isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '' ) {
 			$pageLimit = (int)$this->tsSetup['pageLimit'];
 		}
 
+		$sitemaps		= array();
 		$pageItems		= count($this->sitemapPages);
-		$pageItemBegin	= $pageLimit * ($page-1);
 		$pageCount		= ceil($pageItems/$pageLimit);
-
-
-		if(empty($page) || $page == 'index') {
-			$ret = $this->createSitemapIndex($pageCount);
-		} elseif(is_numeric($page)) {
-			if( $pageItemBegin <= $pageItems) {
-				$this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
-				$ret = $this->createSitemapPage( $page );
-			}
-		}
-
-		return $ret;
-	}
-
-	/**
-	 * Create Sitemap Index
-	 *
-	 * @return string 		XML Sitemap
-	 */
-	protected function createSitemapIndex($pageCount) {
-		global $TSFE;
-
-		$sitemaps = array();
 
 		// TODO: pages?
 		$linkConf = array(
@@ -99,13 +74,40 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 		}
 
 		$ret .= '</sitemapindex>';
-		
+
 		// Call hook
 		tx_tqseo_tools::callHook('sitemap-xml-index-output', $this, $ret);
 
 		return $ret;
 	}
 
+	/**
+	 * Create sitemap (for page)
+	 *
+	 * @param	integer	$page	Page
+	 * @return	string
+	 */
+	public function sitemap($page = null) {
+		$ret = '';
+
+		$pageLimit		= 10000;
+
+		if( isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '' ) {
+			$pageLimit = (int)$this->tsSetup['pageLimit'];
+		}
+
+		$pageItems		= count($this->sitemapPages);
+		$pageItemBegin	= $pageLimit * ($page-1);
+		$pageCount		= ceil($pageItems/$pageLimit);
+
+
+		if( $pageItemBegin <= $pageItems) {
+			$this->sitemapPages = array_slice($this->sitemapPages, $pageItemBegin, $pageLimit);
+			$ret = $this->createSitemapPage( $page );
+		}
+
+		return $ret;
+	}
 
 	/**
 	 * Create Sitemap Page
@@ -118,22 +120,22 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 		$pagePriorityDefaultValue		= 1;
 		$pagePriorityDepthMultiplier	= 1;
 		$pagePriorityDepthModificator	= 1;
-		
+
 		#####################
 		# SetupTS conf
 		#####################
 		if( isset($this->tsSetup['pagePriority']) && $this->tsSetup['pagePriority'] != '' ) {
 			$pagePriorityDefaultValue = floatval($this->tsSetup['pagePriority']);
 		}
-		
+
 		if( isset($this->tsSetup['pagePriorityDepthMultiplier']) && $this->tsSetup['pagePriorityDepthMultiplier'] != '' ) {
 			$pagePriorityDepthMultiplier = floatval($this->tsSetup['pagePriorityDepthMultiplier']);
 		}
-		
+
 		if( isset($this->tsSetup['pagePriorityDepthModificator']) && $this->tsSetup['pagePriorityDepthModificator'] != '' ) {
 			$pagePriorityDepthModificator = floatval($this->tsSetup['pagePriorityDepthModificator']);
 		}
-		
+
 		foreach($this->sitemapPages as $sitemapPage) {
 			if(empty($this->pages[ $sitemapPage['page_uid'] ])) {
 				// invalid page
@@ -215,7 +217,7 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 
 
 		$ret .= '</urlset>';
-		
+
 		// Call hook
 		tx_tqseo_tools::callHook('sitemap-xml-page-output', $this, $ret);
 
@@ -224,7 +226,7 @@ class tx_tqseo_sitemap_xml extends tx_tqseo_sitemap_base {
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_xml.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/class.sitemap_xml.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/builder/class.xml.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/sitemap/builder/class.xml.php']);
 }
 ?>

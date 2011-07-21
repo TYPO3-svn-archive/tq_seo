@@ -35,17 +35,17 @@ class tx_tqseo_sitemap {
 	###########################################################################
 	# Public methods
 	###########################################################################
-	
+
 	/**
 	 * Insert into sitemap
-	 * 
+	 *
 	 * @param	array	$pageData	Page informations
 	 * @param	string	$type		Parser type (page/link)
 	 */
 	public static function index($pageData, $type) {
 		global $TYPO3_DB;
 		static $cache = array();
-		
+
 		$pageHash = $pageData['page_hash'];
 
 		// Escape/Quote data
@@ -62,10 +62,10 @@ class tx_tqseo_sitemap {
 			}
 		}
 		unset($pageDataValue);
-		
+
 		// only process each page once to keep sql-statements at a normal level
 		if( empty($cache[$pageHash]) ) {
-			
+
 			// $pageData is already quoted
 
 			$query = 'SELECT
@@ -101,11 +101,11 @@ class tx_tqseo_sitemap {
 					array_keys($pageData)
 				);
 			}
-			
+
 			$cache[$pageHash] = 1;
 		}
 	}
-	
+
 	/**
 	 * Clear outdated and invalid pages from sitemap table
 	 */
@@ -150,23 +150,24 @@ class tx_tqseo_sitemap {
 			$TYPO3_DB->sql_query($query);
 		}
 	}
-	
+
+
 	/**
 	 * Return list of sitemap pages
-	 * 
+	 *
 	 * @param	integer			$rootPid		Root page id of tree
 	 * @param	integer			$languageId		Limit to language id
 	 * @return	boolean|array					Array with table list
 	 */
 	public static function getList($rootPid, $languageId = null) {
 		global $TYPO3_DB;
-		
+
 		$sitemapList	= array();
 		$pageList		= array();
-		
+
 		$typo3Pids		= array();
 		$sitemapPageId	= array();
-		
+
 		$query = 'SELECT ts.*
 					FROM tx_tqseo_sitemap ts
 							INNER JOIN pages p
@@ -185,7 +186,7 @@ class tx_tqseo_sitemap {
 						p.sorting ASC';
 
 		$res = $TYPO3_DB->sql_query($query);
-		
+
 		if( !$res ) {
 			return false;
 		}
@@ -211,13 +212,13 @@ class tx_tqseo_sitemap {
 				$pageList[ $row['uid'] ] = $row;
 			}
 		}
-		
-		
+
+
 		$ret = array(
 			'tx_tqseo_sitemap'	=> $sitemapList,
 			'pages'				=> $pageList
 		);
-		
+
 		return $ret;
 	}
 }
