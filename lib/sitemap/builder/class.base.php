@@ -85,6 +85,15 @@ abstract class tx_tqseo_sitemap_builder_base {
 		7 => 'never',
 	);
 
+	/**
+	 * Link template for sitemap index
+	 *
+	 * Replacemennt marker ###PAGE### for page-uid
+	 *
+	 * @var string|boolean
+	 */
+	public $indexPathTemplate = false;
+
 	###########################################################################
 	# Methods
 	###########################################################################
@@ -109,6 +118,22 @@ abstract class tx_tqseo_sitemap_builder_base {
 
 		// Call hook
 		tx_tqseo_tools::callHook('sitemap-setup', $this, $foo);
+	}
+
+	/**
+	 * Return page count
+	 *
+	 * @return	integer
+	 */
+	public function pageCount() {
+		if( isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '' ) {
+			$pageLimit = (int)$this->tsSetup['pageLimit'];
+		}
+
+		$pageItems		= count($this->sitemapPages);
+		$pageCount		= ceil($pageItems/$pageLimit);
+
+		return $pageCount;
 	}
 
 	###########################################################################

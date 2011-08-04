@@ -107,6 +107,8 @@ pageTracker._trackPageview();
 					$ret['ga.trackdownload'] = '<script type="text/javascript" src="'.htmlspecialchars($jsfile).'"></script>';
 				}
 			} elseif($gaEnabled && $beLoggedIn) {
+				// Backend login detected, disable cache because this page is viewed by BE-users
+				$TSFE->set_no_cache('tq_seo: Backend login disables google analytics');
 				$ret['ga.disabled'] = '<!-- Google Analytics disabled - Backend-Login detected -->';
 			}
 		}
@@ -147,6 +149,8 @@ piwikTracker.enableLinkTracking();
 
 				$ret['piwik'] = $tmp;
 			} elseif($piwikEnabled && $beLoggedIn) {
+				// Backend login detected, disable cache because this page is viewed by BE-users
+				$TSFE->set_no_cache('tq_seo: Backend login disables piwik');
 				$ret['piwik.disabled'] = '<!-- Piwik disabled - Backend-Login detected -->';
 			}
 		}

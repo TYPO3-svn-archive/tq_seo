@@ -30,13 +30,35 @@
  * @subpackage	lib
  * @version		$Id$
  */
-class tx_tqseo_scheduler_task_sitemap_txt extends tx_scheduler_task {
+class tx_tqseo_scheduler_task_sitemap_txt extends tx_tqseo_scheduler_task_sitemap_base {
+
+	###########################################################################
+	# Attributes
+	###########################################################################
 
 	/**
-	 * Execute task
+	 * Sitemap base directory
+	 *
+	 * @var string
 	 */
-	public function execute() {
-		// build static txt file
+	protected $_sitemapDir = 'uploads/tx_tqseo/sitemap-txt';
+
+	###########################################################################
+	# Methods
+	###########################################################################
+
+	/**
+	 * Build sitemap
+	 *
+	 * @param	integer	$rootPageId	Root page id
+	 */
+	protected function _buildSitemap($rootPageId) {
+
+		$builder = new tx_tqseo_sitemap_builder_txt();
+		$content = $builder->sitemap();
+
+		file_put_contents(PATH_site.'/'.$this->_sitemapDir.'/root-'.(int)$rootPageId.'.txt', $content);
+
 		return true;
 	}
 

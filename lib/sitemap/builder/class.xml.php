@@ -62,8 +62,13 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 		);
 
 		for($i=0; $i < $pageCount; $i++) {
-			$linkConf['additionalParams'] = '&type='.$TSFE->type.'&page='.($i+1);
-			$sitemaps[] = t3lib_div::locationHeaderUrl($TSFE->cObj->typoLink_URL($linkConf));
+			if( $this->indexPathTemplate ) {
+				$link = str_replace('###PAGE###', $i, $this->indexPathTemplate);
+				$sitemaps[] = $link;
+			} else {
+				$linkConf['additionalParams'] = '&type='.$TSFE->type.'&page='.($i+1);
+				$sitemaps[] = t3lib_div::locationHeaderUrl($TSFE->cObj->typoLink_URL($linkConf));
+			}
 		}
 
 		$ret = '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';

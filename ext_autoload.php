@@ -16,6 +16,7 @@ return array(
 	'tx_tqseo_sitemap_output_xml'			=> $extensionPath.'lib/sitemap/output/class.xml.php',
 
 	'tx_tqseo_scheduler_task_cleanup'		=> $extensionPath.'lib/scheduler/class.cleanup.php',
+	'tx_tqseo_scheduler_task_sitemap_base'	=> $extensionPath.'lib/scheduler/class.sitemap_base.php',
 	'tx_tqseo_scheduler_task_sitemap_txt'	=> $extensionPath.'lib/scheduler/class.sitemap_txt.php',
 	'tx_tqseo_scheduler_task_sitemap_xml'	=> $extensionPath.'lib/scheduler/class.sitemap_xml.php',
 );

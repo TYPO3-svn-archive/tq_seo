@@ -42,4 +42,16 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_schedu
     'description'      => 'Cleanup old sitemap entries'
 );
 
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_scheduler_task_sitemap_xml'] = array(
+    'extension'        => $_EXTKEY,
+    'title'            => 'TQ SEO sitemap.xml builder (BETA!)',
+    'description'      => 'Build sitemap xml as static file (in uploads/tx_tqseo/sitemap-xml/)'
+);
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_scheduler_task_sitemap_txt'] = array(
+    'extension'        => $_EXTKEY,
+    'title'            => 'TQ SEO sitemap.txt builder (BETA!)',
+    'description'      => 'Build sitemap txt as static file (in uploads/tx_tqseo/sitemap-txt/)'
+);
+
 ?>

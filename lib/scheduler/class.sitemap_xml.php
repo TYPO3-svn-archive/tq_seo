@@ -30,13 +30,53 @@
  * @subpackage	lib
  * @version		$Id$
  */
-class tx_tqseo_scheduler_task_sitemap_xml extends tx_scheduler_task {
+class tx_tqseo_scheduler_task_sitemap_xml extends tx_tqseo_scheduler_task_sitemap_base {
+
+	###########################################################################
+	# Attributes
+	###########################################################################
 
 	/**
-	 * Execute task
+	 * Sitemap base directory
+	 *
+	 * @var string
 	 */
-	public function execute() {
-		// build static xml file
+	protected $_sitemapDir = 'uploads/tx_tqseo/sitemap-xml';
+
+	###########################################################################
+	# Methods
+	###########################################################################
+
+	/**
+	 * Build sitemap
+	 *
+	 * @param	integer	$rootPageId	Root page id
+	 */
+	protected function _buildSitemap($rootPageId) {
+		global $TSFE;
+
+		$builder = new tx_tqseo_sitemap_builder_xml();
+
+		// Set link template for index file
+		$linkConf = array(
+			'parameter'			=> $this->_sitemapDir.'/root-'.(int)$rootPageId.'-###PAGE###.xml',
+		);
+		$builder->indexPathTemplate = $TSFE->baseUrlWrap( $TSFE->cObj->typoLink_URL($linkConf) );
+
+		// Get list of pages
+		$pageCount	= $builder->pageCount();
+
+
+		// Index
+		$content = $builder->sitemapIndex();
+		file_put_contents(PATH_site.'/'.$this->_sitemapDir.'/root-'.(int)$rootPageId.'-index.xml', $content);
+
+		// Page
+		for($i=0; $i<$pageCount; $i++) {
+			$content = $builder->sitemap($i);
+			file_put_contents(PATH_site.'/'.$this->_sitemapDir.'/root-'.(int)$rootPageId.'-'.(int)$i.'.xml', $content);
+		}
+
 		return true;
 	}
 
