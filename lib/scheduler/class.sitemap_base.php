@@ -179,8 +179,14 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 		}
 
 		$fp = gzopen($file, 'w');
-		gzwrite($fp,$content);
-		gzclose($fp);
+
+		if( $fp ) {
+			gzwrite($fp,$content);
+			gzclose($fp);
+		} else {
+			throw new Exception('Could not open '.$file.' for writing');
+		}
+
 	}
 
 	###########################################################################
