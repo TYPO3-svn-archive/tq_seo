@@ -95,14 +95,28 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 	 * @param	integer	$rootPageId	$rootPageId
 	 */
 	protected function _initRootPage($rootPageId) {
-		$GLOBALS['TT'] = new t3lib_timeTrackNull;
-		$GLOBALS['TSFE'] = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $rootPageId, 0);
-		$GLOBALS['TSFE']->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
-		$GLOBALS['TSFE']->sys_page->init(TRUE);
-		$GLOBALS['TSFE']->initTemplate();
-		$GLOBALS['TSFE']->rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($rootPageId, '');
-		$GLOBALS['TSFE']->getConfigArray();
-		$GLOBALS['TSFE']->cObj = new tslib_cObj();
+		global $TT, $TSFE;
+
+		$TT		= null;
+		$TSFE	= null;
+
+		$TT = new t3lib_timeTrackNull;
+		$TSFE = t3lib_div::makeInstance('tslib_fe', $GLOBALS['TYPO3_CONF_VARS'], $rootPageId, 0);
+		$TSFE->sys_page = t3lib_div::makeInstance('t3lib_pageSelect');
+		$TSFE->sys_page->init(TRUE);
+		$TSFE->initTemplate();
+		$TSFE->rootLine = $TSFE->sys_page->getRootLine($rootPageId, '');
+		$TSFE->getConfigArray();
+		$TSFE->cObj = new tslib_cObj();
+
+		// TSFE Init
+		if( !empty($TSFE->config['config']['baseURL']) ) {
+			$TSFE->baseUrl = $TSFE->config['config']['baseURL'];
+		}
+
+		if( !empty($TSFE->config['config']['absRefPrefix']) ) {
+			$TSFE->absRefPrefix = $TSFE->config['config']['absRefPrefix'];
+		}
 	}
 
 	/**
@@ -125,6 +139,32 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 				unlink( $fullPath.'/'.$fileName );
 			}
 		}
+	}
+
+	/**
+	 * Generate sitemap link template
+	 *
+	 * @param	string	$template	File link template
+	 * @return	string
+	 */
+	protected function _generateSitemapLinkTemplate($template) {
+		global $TSFE;
+
+		$ret = null;
+
+		// Set link template for index file
+		$linkConf = array(
+			'parameter'			=> $this->_sitemapDir.'/'.$template,
+		);
+		if( strlen($TSFE->baseUrl) > 1 ) {
+			$ret = $TSFE->baseUrlWrap( $TSFE->cObj->typoLink_URL($linkConf) );
+		} elseif( strlen($TSFE->absRefPrefix) > 1 ) {
+			$ret = $TSFE->absRefPrefix.$TSFE->cObj->typoLink_URL($linkConf);
+		} else {
+			$ret = $TSFE->cObj->typoLink_URL($linkConf);
+		}
+
+		return $ret;
 	}
 
 	/**

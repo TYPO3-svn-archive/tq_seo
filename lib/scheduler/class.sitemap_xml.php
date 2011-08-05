@@ -55,17 +55,12 @@ class tx_tqseo_scheduler_task_sitemap_xml extends tx_tqseo_scheduler_task_sitema
 	protected function _buildSitemap($rootPageId) {
 		global $TSFE;
 
+		// Init builder
 		$builder = new tx_tqseo_sitemap_builder_xml();
-
-		// Set link template for index file
-		$linkConf = array(
-			'parameter'			=> $this->_sitemapDir.'/root-'.(int)$rootPageId.'-###PAGE###.xml',
-		);
-		$builder->indexPathTemplate = $TSFE->baseUrlWrap( $TSFE->cObj->typoLink_URL($linkConf) );
+		$builder->indexPathTemplate = $this->_generateSitemapLinkTemplate('root-'.(int)$rootPageId.'-###PAGE###.xml');
 
 		// Get list of pages
 		$pageCount	= $builder->pageCount();
-
 
 		// Index
 		$content = $builder->sitemapIndex();
