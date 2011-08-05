@@ -127,6 +127,22 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 		}
 	}
 
+	/**
+	 * Write content to file
+	 *
+	 * @param	string	$file		Filename/path
+	 * @param	string	$content	Content
+	 */
+	protected function _writeToFile($file, $content) {
+		if( !function_exists('gzopen') ) {
+			throw new Exception('tq_seo needs zlib support');
+		}
+
+		$fp = gzopen($file, 'w');
+		gzwrite($fp,$content);
+		gzclose($fp);
+	}
+
 	###########################################################################
 	# Abstract Methods
 	###########################################################################

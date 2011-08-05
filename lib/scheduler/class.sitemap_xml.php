@@ -41,7 +41,7 @@ class tx_tqseo_scheduler_task_sitemap_xml extends tx_tqseo_scheduler_task_sitema
 	 *
 	 * @var string
 	 */
-	protected $_sitemapDir = 'uploads/tx_tqseo/sitemap-xml';
+	protected $_sitemapDir = 'uploads/tx_tqseo/sitemap_xml';
 
 	###########################################################################
 	# Methods
@@ -69,12 +69,12 @@ class tx_tqseo_scheduler_task_sitemap_xml extends tx_tqseo_scheduler_task_sitema
 
 		// Index
 		$content = $builder->sitemapIndex();
-		file_put_contents(PATH_site.'/'.$this->_sitemapDir.'/root-'.(int)$rootPageId.'-index.xml', $content);
+		$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/tree-'.(int)$rootPageId.'-index.xml.gz', $content);
 
 		// Page
 		for($i=0; $i<$pageCount; $i++) {
 			$content = $builder->sitemap($i);
-			file_put_contents(PATH_site.'/'.$this->_sitemapDir.'/root-'.(int)$rootPageId.'-'.(int)$i.'.xml', $content);
+			$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/tree-'.(int)$rootPageId.'-'.(int)$i.'.xml.gz', $content);
 		}
 
 		return true;
