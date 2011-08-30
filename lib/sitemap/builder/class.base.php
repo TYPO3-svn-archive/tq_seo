@@ -110,6 +110,14 @@ abstract class tx_tqseo_sitemap_builder_base {
 
 		$this->tsSetup		= $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
+		// Language limit via setupTS
+		if( !empty($this->tsSetup['limitToCurrentLanguage']) ) {
+			$sysLanguageId = 0;
+			if(!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
+				$sysLanguageId = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
+			}
+		}
+
 		// Fetch sitemap list/pages
 		$list = tx_tqseo_sitemap::getList($this->rootPid, $sysLanguageId);
 

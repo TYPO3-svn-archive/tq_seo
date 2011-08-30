@@ -45,35 +45,12 @@ abstract class tx_tqseo_sitemap_output_base {
 		global $TSFE, $TYPO3_DB, $TYPO3_CONF_VARS;
 
 		// INIT
-		$this->rootPid		= tx_tqseo_tools::getRootPid();
-		$sysLanguageId		= null;
-
 		$this->tsSetup		= $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
 		// check if sitemap is enabled
 		if( empty($this->tsSetup['enable']) ) {
 			$this->showError();
 		}
-
-		$typo3Pids = array();
-
-		// Language limit via setupTS
-		if( !empty($this->tsSetup['limitToCurrentLanguage']) ) {
-			$sysLanguageId = 0;
-			if(!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
-				$sysLanguageId = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
-			}
-		}
-
-		// Fetch sitemap list/pages
-		$list = tx_tqseo_sitemap::getList($this->rootPid, $sysLanguageId);
-
-		if( $list === false ) {
-			return $this->showError();
-		}
-
-		$this->sitemapPages	= $list['tx_tqseo_sitemap'];
-		$this->pages		= $list['pages'];
 
 		$ret .= $this->_build();
 
