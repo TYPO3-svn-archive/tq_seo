@@ -1,3 +1,6 @@
+2011-09-01 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added tt_news support (auto-metatags collecting)
+
 2011-08-30 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Fixed #29347
 	* Fixed sitemap output (duplicate sql queries and missing limitToCurrentLanguage)

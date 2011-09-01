@@ -3,6 +3,8 @@ if (!defined ('TYPO3_MODE')) {
  	die ('Access denied.');
 }
 
+$confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tq_seo']);
+
 #################################################
 ## SEO
 #################################################
@@ -32,6 +34,14 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['additionalBackendItems']['cacheAction
 
 // Sitemal controll ajax
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_sitemap::clearSeoSitemap'] = 'EXT:tq_seo/hooks/sitemap/class.cache_controller.php:tx_tqseo_sitemap_cache_controller->clearSeoSitemap';
+
+#################################################
+## TT_NEWS
+#################################################
+if( !empty($confArr['enableIntegrationTTNews']) ) {
+	// Metatag fetch hook
+	$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook']['tqseo'] = 'EXT:tq_seo/hooks/tt_news/class.metatags.php:&tx_tqseo_hook_ttnews_metatags';
+}
 
 #################################################
 ## SCHEDULER
