@@ -6,8 +6,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="pages.tx_tqseo_pagetitle">&lt;title&gt;-TAG (absolute, overwrites prefix/suffix)</label>
-			<label index="pages_language_overlay.tx_tqseo_pagetitle">&lt;title&gt;-TAG</label>
+			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolute, overwrites prefix/suffix)</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle">title-TAG</label>
 			<label index="pages.tx_tqseo_is_exclude">Exclude page from SearchEngines</label>
 			<label index="pages.tx_tqseo_pagetitle_prefix">Prefix (inheritable)</label>
 			<label index="pages.tx_tqseo_pagetitle_suffix">Suffix (inheritable)</label>
@@ -33,8 +33,8 @@
 			<label index="tx_tqseo_settings.robotstxt">Robots.txt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="pages.tx_tqseo_pagetitle">&lt;title&gt;-TAG (absolut, überschreibt Prefix/Suffix)</label>
-			<label index="pages_language_overlay.tx_tqseo_pagetitle">&lt;title&gt;-TAG</label>
+			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolut, überschreibt Prefix/Suffix)</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle">title-TAG</label>
 			<label index="pages.tx_tqseo_is_exclude">Seite von Suchmaschinen ausschließen</label>
 			<label index="pages.tx_tqseo_priority">Priorität (0-100)</label>
 			<label index="pages.tx_tqseo_pagetitle_prefix">Präfix (vererbbar)</label>
