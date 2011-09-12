@@ -56,7 +56,7 @@ class user_tqseo_pagefooter {
 		if( !empty($tsSetup['plugin.']['tq_seo.']['services.']) ) {
 			$tsServices = $tsSetup['plugin.']['tq_seo.']['services.'];
 		}
-		
+
 		// Call hook
 		tx_tqseo_tools::callHook('pagefooter-setup', $this, $tsServices);
 
@@ -108,7 +108,6 @@ pageTracker._trackPageview();
 				}
 			} elseif($gaEnabled && $beLoggedIn) {
 				// Backend login detected, disable cache because this page is viewed by BE-users
-				$TSFE->set_no_cache('tq_seo: Backend login disables google analytics');
 				$ret['ga.disabled'] = '<!-- Google Analytics disabled - Backend-Login detected -->';
 			}
 		}
@@ -150,11 +149,10 @@ piwikTracker.enableLinkTracking();
 				$ret['piwik'] = $tmp;
 			} elseif($piwikEnabled && $beLoggedIn) {
 				// Backend login detected, disable cache because this page is viewed by BE-users
-				$TSFE->set_no_cache('tq_seo: Backend login disables piwik');
 				$ret['piwik.disabled'] = '<!-- Piwik disabled - Backend-Login detected -->';
 			}
 		}
-		
+
 		// Call hook
 		tx_tqseo_tools::callHook('pagefooter-output', $this, $ret);
 
