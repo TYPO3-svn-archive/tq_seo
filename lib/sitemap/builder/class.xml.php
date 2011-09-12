@@ -71,7 +71,9 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 			}
 		}
 
-		$ret = '<?xml version="1.0" encoding="UTF-8"?><sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		$ret = '<?xml version="1.0" encoding="UTF-8"?>';
+		$ret .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+		$ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
 
 		foreach($sitemaps as $sitemapPage) {
@@ -120,7 +122,11 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 	 * @return string 		XML Sitemap
 	 */
 	protected function createSitemapPage() {
-		$ret = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+		$ret = '<?xml version="1.0" encoding="UTF-8"?>';
+		$ret .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"';
+		$ret .= ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+		$ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
+		$ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
 		$pagePriorityDefaultValue		= 1;
 		$pagePriorityDepthMultiplier	= 1;
@@ -211,11 +217,12 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 			$ret .= '<url>';
 			$ret .= '<loc>'.htmlspecialchars($pageUrl).'</loc>';
 			$ret .= '<lastmod>'.$pageModifictionDate.'</lastmod>';
-			$ret .= '<priority>'.$pagePriority.'</priority>';
 
 			if( !empty($pageChangeFrequency) ) {
 				$ret .= '<changefreq>'.htmlspecialchars($pageChangeFrequency).'</changefreq>';
 			}
+
+			$ret .= '<priority>'.$pagePriority.'</priority>';
 
 			$ret .= '</url>';
 		}
