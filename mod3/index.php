@@ -337,7 +337,10 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 				messageDeleteQuestion		: '. json_encode( $LANG->getLL('message_delete_question') ) .',
 				errorDeleteFailedMessage	: '. json_encode( $LANG->getLL('message_delete_failed_body') ) .',
 
-				errorNoSelectedItemsBody	: '. json_encode( $LANG->getLL('message_no_selected_items') ) .'
+				errorNoSelectedItemsBody	: '. json_encode( $LANG->getLL('message_no_selected_items') ) .',
+
+				today						: '. json_encode( $LANG->getLL('today') ) .',
+				yesterday					: '. json_encode( $LANG->getLL('yesterday') ) .'
 			};
 		');
 

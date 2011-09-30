@@ -50,6 +50,9 @@
 			<label index="message_delete_question">Do you really want to delete these sitemap entries?</label>
 
 			<label index="message_no_selected_items">You must select at least one sitemap entry.</label>
+
+			<label index="today">Today</label>
+			<label index="yesterday">Yesterday</label>
 		</languageKey>
 	</data>
 </T3locallang>

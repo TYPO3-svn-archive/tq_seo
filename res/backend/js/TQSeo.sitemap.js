@@ -172,6 +172,16 @@ TQSeo.sitemap.grid = {
 			singleSelect: false
 		});
 
+		var dateToday		= new Date().format("Y-m-d");
+		var dateYesterday	= new Date().add(Date.DAY, -1).format("Y-m-d");
+
+		var rendererDatetime = function(value, metaData, record, rowIndex, colIndex, store) {
+			var ret = value;
+			ret = ret.split(dateToday).join('<strong>'+TQSeo.sitemap.conf.lang.today+'</strong>');
+			ret = ret.split(dateYesterday).join('<strong>'+TQSeo.sitemap.conf.lang.yesterday+'</strong>');
+			return ret;
+		}
+
 		/****************************************************
 		 * grid panel
 		 ****************************************************/
@@ -211,7 +221,7 @@ TQSeo.sitemap.grid = {
 					width    : 15,
 					sortable : true,
 					dataIndex: 'page_language',
-					renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+					renderer : function(value, metaData, record, rowIndex, colIndex, store) {
 						var ret = '';
 						if( TQSeo.sitemap.conf.languageFullList[value] ) {
 							var lang = TQSeo.sitemap.conf.languageFullList[value];
@@ -237,14 +247,16 @@ TQSeo.sitemap.grid = {
 					width    : 25,
 					sortable : true,
 					dataIndex: 'crdate',
-					hidden   : true
+					hidden   : true,
+					renderer : rendererDatetime
 				},{
 					id       : 'tstamp',
 					header   : TQSeo.sitemap.conf.lang.sitemap_tstamp,
 					width    : 25,
 					sortable : true,
 					dataIndex: 'tstamp',
-					hidden   : true
+					hidden   : true,
+					renderer : rendererDatetime
 				}
 			],
 			selModel: sm,
