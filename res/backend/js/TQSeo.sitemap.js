@@ -172,6 +172,10 @@ TQSeo.sitemap.grid = {
 			singleSelect: false
 		});
 
+
+ 		/****************************************************
+		 * Renderer
+		 ****************************************************/
 		var dateToday		= new Date().format("Y-m-d");
 		var dateYesterday	= new Date().add(Date.DAY, -1).format("Y-m-d");
 
@@ -179,6 +183,28 @@ TQSeo.sitemap.grid = {
 			var ret = value;
 			ret = ret.split(dateToday).join('<strong>'+TQSeo.sitemap.conf.lang.today+'</strong>');
 			ret = ret.split(dateYesterday).join('<strong>'+TQSeo.sitemap.conf.lang.yesterday+'</strong>');
+			return ret;
+		}
+
+
+		var rendererLanguage = function(value, metaData, record, rowIndex, colIndex, store) {
+			var ret = '';
+			if( TQSeo.sitemap.conf.languageFullList[value] ) {
+				var lang = TQSeo.sitemap.conf.languageFullList[value];
+
+				// Flag (if available)
+				if( lang.flag ) {
+					ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+lang.flag+' t3-icon-'+lang.flag+'"></span>';
+					ret += '&nbsp;';
+				}
+
+				// Label
+				ret += lang.label;
+
+			} else {
+				ret = value;
+			}
+
 			return ret;
 		}
 
@@ -221,26 +247,7 @@ TQSeo.sitemap.grid = {
 					width    : 15,
 					sortable : true,
 					dataIndex: 'page_language',
-					renderer : function(value, metaData, record, rowIndex, colIndex, store) {
-						var ret = '';
-						if( TQSeo.sitemap.conf.languageFullList[value] ) {
-							var lang = TQSeo.sitemap.conf.languageFullList[value];
-
-							// Flag (if available)
-							if( lang.flag ) {
-								ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+lang.flag+' t3-icon-'+lang.flag+'"></span>';
-								ret += '&nbsp;';
-							}
-
-							// Label
-							ret += lang.label;
-
-						} else {
-							ret = value;
-						}
-
-						return ret;
-					}
+					renderer : rendererLanguage
 				},{
 					id       : 'crdate',
 					header   : TQSeo.sitemap.conf.lang.sitemap_crdate,
