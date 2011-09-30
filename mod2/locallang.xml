@@ -12,9 +12,14 @@
 			<label index="header_domain">Domains</label>
 			<label index="header_sitemap">Sitemap</label>
 			<label index="header_robotstxt">Robots.txt</label>
-
-			<label index="function_main">Settings</label>
-			<label index="function_statistic">Statistic</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="title">SEO Kontrollzentrum</label>
+			<label index="title_content">SEO Kontrollzentrum</label>
+			<label index="header_rootpage">Website</label>
+			<label index="header_domain">Domains</label>
+			<label index="header_sitemap">Sitemap</label>
+			<label index="header_robotstxt">Robots.txt</label>
 		</languageKey>
 	</data>
 </T3locallang>

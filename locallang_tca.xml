@@ -19,6 +19,9 @@
 			<label index="pages.palette.pagetitle">Seitentitel</label>
 			<label index="pages.palette.crawler">Suchmaschinen</label>
 			<label index="pages.palette.sitemap">Sitemap</label>
+
+			<label index="tx_tqseo_setting_root.tab.sitemap">Sitemap</label>
+			<label index="tx_tqseo_setting_root.tab.robotstxt">Robots.txt</label>
 		</languageKey>
 	</data>
 </T3locallang>
