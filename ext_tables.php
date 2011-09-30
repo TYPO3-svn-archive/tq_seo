@@ -291,25 +291,43 @@ t3lib_extMgm::addTCAcolumns('sys_domain',$tempColumns,1);
 */
 
 ###################
-# Settings (Devel)
+# Settings Root
 ###################
-/*
-t3lib_extMgm::addToInsertRecords('tx_tqseo_settings');
-t3lib_extMgm::allowTableOnStandardPages('tx_tqseo_settings');
+//t3lib_extMgm::addToInsertRecords('tx_tqseo_setting_root');
+//t3lib_extMgm::allowTableOnStandardPages('tx_tqseo_setting_root');
 
-$TCA['tx_tqseo_settings'] = array(
+$TCA['tx_tqseo_setting_root'] = array(
 	'ctrl' => array(
-		'title'				=> 'LLL:EXT:tq_seo/locallang_db.xml:tx_tqseo_settings',
+		'title'				=> 'LLL:EXT:tq_seo/locallang_db.xml:tx_tqseo_setting_root',
+		'label'				=> 'uid',
+		'adminOnly'			=> true,
+		'dynamicConfigFile'	=> $extPath.'tca.php',
+		'iconfile'			=> 'page',
+		'hideTable'			=> true,
+		'dividers2tabs'		=> true,
+	),
+	'feInterface' => array (
+	),
+	'interface' => array(
+		'always_description'	=> true,
+	),
+);
+
+t3lib_extMgm::addLLrefForTCAdescr('tx_tqseo_setting_root','EXT:tq_seo/locallang_csh_setting_root.xml');
+
+/*
+$TCA['tx_tqseo_setting_page'] = array(
+	'ctrl' => array(
+		'title'				=> 'LLL:EXT:tq_seo/locallang_db.xml:tx_tqseo_setting_page',
 		'label'				=> 'uid',
 		'adminOnly'			=> 1,
 		'dynamicConfigFile'	=> $extPath.'tca.php',
 		'iconfile'			=> 'page',
+		'hideTable'			=> true,
 	),
 	'feInterface' => array (
-		'fe_admin_fieldList' => 'title',
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'title'
 	),
 );
 */
@@ -317,13 +335,30 @@ $TCA['tx_tqseo_settings'] = array(
 ###############################################################################
 # BACKEND MODULE
 ###############################################################################
-
-/*
 if (TYPO3_MODE == 'BE') {
-    t3lib_extMgm::addModulePath('web_txtqseoM1', $extPath . 'mod_seo/');
-    t3lib_extMgm::addModule('web', 'txtqseoM1', '', $extPath . 'mod_seo/');
+	// add module before 'Help'
+	if (!isset($TBE_MODULES['tqseo']))	{
+		$temp_TBE_MODULES = array();
+		foreach($TBE_MODULES as $key => $val) {
+			if ($key == 'help') {
+				$temp_TBE_MODULES['tqseo'] = '';
+				$temp_TBE_MODULES[$key] = $val;
+			} else {
+				$temp_TBE_MODULES[$key] = $val;
+			}
+		}
+
+		$TBE_MODULES = $temp_TBE_MODULES;
+	}
+
+	t3lib_extMgm::addModule('tqseo', '', '', $extPath.'mod1/');
+	t3lib_extMgm::addModule('tqseo', 'txtqseoM2', 'bottom', $extPath . 'mod2/');
+	t3lib_extMgm::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
+
+	
+//    t3lib_extMgm::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
+//    t3lib_extMgm::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
 }
-*/
 
 ###############################################################################
 # CONFIGURATION

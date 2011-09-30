@@ -111,11 +111,8 @@ abstract class tx_tqseo_sitemap_builder_base {
 		$this->tsSetup		= $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
 		// Language limit via setupTS
-		if( !empty($this->tsSetup['limitToCurrentLanguage']) ) {
-			$sysLanguageId = 0;
-			if(!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
-				$sysLanguageId = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
-			}
+		if( tx_tqseo_tools::getRootSettingValue('is_sitemap_language_lock', false) ) {
+			$sysLanguageId = tx_tqseo_tools::getLanguageId();
 		}
 
 		// Fetch sitemap list/pages
@@ -134,8 +131,10 @@ abstract class tx_tqseo_sitemap_builder_base {
 	 * @return	integer
 	 */
 	public function pageCount() {
-		if( isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '' ) {
-			$pageLimit = (int)$this->tsSetup['pageLimit'];
+		$pageLimit = tx_tqseo_tools::getRootSettingValue('sitemap_page_limit', null);
+
+		if( empty($pageLimit) ) {
+			$pageLimit = 1000;
 		}
 
 		$pageItems		= count($this->sitemapPages);

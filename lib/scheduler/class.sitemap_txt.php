@@ -51,13 +51,22 @@ class tx_tqseo_scheduler_task_sitemap_txt extends tx_tqseo_scheduler_task_sitema
 	 * Build sitemap
 	 *
 	 * @param	integer	$rootPageId	Root page id
+	 * @param	integer	$languageId	Language id
 	 */
-	protected function _buildSitemap($rootPageId) {
+	protected function _buildSitemap($rootPageId, $languageId) {
+
+		if( $languageId !== null ) {
+			// Language lock enabled
+			$sitemapFileName	= 'sitemap-r%s-l%s.txt.gz';
+		} else {
+			$sitemapFileName	= 'sitemap-r%s.txt.gz';
+		}
 
 		$builder = new tx_tqseo_sitemap_builder_txt();
 		$content = $builder->sitemap();
 
-		$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/tree-'.(int)$rootPageId.'.txt.gz', $content);
+		$fileName = sprintf($sitemapFileName, $rootPageId, $languageId);
+		$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/'.$fileName, $content);
 
 		return true;
 	}

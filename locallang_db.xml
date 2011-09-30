@@ -29,8 +29,20 @@
 			<label index="pages.tx_tqseo_change_frequency.I.6">Yearly</label>
 			<label index="pages.tx_tqseo_change_frequency.I.7">Never (archive)</label>
 
-			<label index="tx_tqseo_settings">SEO Settings</label>
-			<label index="tx_tqseo_settings.robotstxt">Robots.txt</label>
+			<label index="tx_tqseo_setting_root">SEO Settings for Root</label>
+			<label index="tx_tqseo_setting_root.is_sitemap">Sitemap active</label>
+			<label index="tx_tqseo_setting_root.is_sitemap_page_indexer">Page indexer</label>
+			<label index="tx_tqseo_setting_root.is_sitemap_page_indexer.description">Page indexer</label>
+			<label index="tx_tqseo_setting_root.is_sitemap_typolink_indexer">TypoLink indexer</label>
+			<label index="tx_tqseo_setting_root.is_sitemap_language_lock">Enable language-domain support (lock output to current language)</label>
+			<label index="tx_tqseo_setting_root.sitemap_page_limit">Sitemap.xml entry page limit (keep empty to use default of 1000)</label>
+			<label index="tx_tqseo_setting_root.sitemap_priorty">Priority (if page have no priority) (default:1)</label>
+			<label index="tx_tqseo_setting_root.sitemap_priorty_depth_multiplier">Priority depth multiplier (default:1)</label>
+			<label index="tx_tqseo_setting_root.sitemap_priorty_depth_modificator">Priority depth modificator (default:1)</label>
+			<label index="tx_tqseo_setting_root.is_robotstxt">Robots.txt active</label>
+			<label index="tx_tqseo_setting_root.is_robotstxt_sitemap_static">Link to static sitemap.xml (scheduler-task needed)</label>
+			<label index="tx_tqseo_setting_root.robotstxt">Robots.txt content (replaces default robots.txt content)</label>
+			<label index="tx_tqseo_setting_root.robotstxt_additional">Robots.txt additional content (below default)</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolut, überschreibt Prefix/Suffix)</label>
@@ -57,8 +69,9 @@
 			<label index="pages.tx_tqseo_change_frequency.I.6">Jährlich</label>
 			<label index="pages.tx_tqseo_change_frequency.I.7">Nie (Archivseite)</label>
 
-			<label index="tx_tqseo_settings">SEO Einstellungen</label>
-			<label index="tx_tqseo_settings.robotstxt">Robots.txt</label>
+			<label index="tx_tqseo_setting_root">SEO Einstellungen für Website</label>
+			<label index="tx_tqseo_setting_root.is_robotstxt">Robots.txt aktiv</label>
+			<label index="tx_tqseo_setting_root.robotstxt">Robots.txt</label>
 		</languageKey>
 	</data>
 </T3locallang>

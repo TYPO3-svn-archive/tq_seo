@@ -6,6 +6,18 @@ if (!defined ('TYPO3_MODE')) {
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tq_seo']);
 
 #################################################
+## BACKEND
+#################################################
+if (TYPO3_MODE == 'BE') {
+	// AJAX
+	$TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_backend_ajax::sitemap']	= 'EXT:tq_seo/lib/backend/ajax/class.sitemap.php:tx_tqseo_backend_ajax_sitemap->main';
+	$TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_backend_ajax::page']		= 'EXT:tq_seo/lib/backend/ajax/class.sitemap.php:tx_tqseo_backend_ajax_page->main';
+
+	// Field validations
+	$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_tqseo_backend_validation_float'] = 'EXT:tq_seo/lib/backend/validation/class.float.php';
+}
+
+#################################################
 ## SEO
 #################################################
 
@@ -54,13 +66,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_schedu
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_scheduler_task_sitemap_xml'] = array(
     'extension'        => $_EXTKEY,
-    'title'            => 'TQ SEO sitemap.xml builder (BETA!)',
+    'title'            => 'TQ SEO sitemap.xml builder',
     'description'      => 'Build sitemap xml as static file (in uploads/tx_tqseo/sitemap-xml/)'
 );
 
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_tqseo_scheduler_task_sitemap_txt'] = array(
     'extension'        => $_EXTKEY,
-    'title'            => 'TQ SEO sitemap.txt builder (BETA!)',
+    'title'            => 'TQ SEO sitemap.txt builder',
     'description'      => 'Build sitemap txt as static file (in uploads/tx_tqseo/sitemap-txt/)'
 );
 

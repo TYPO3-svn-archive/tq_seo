@@ -51,25 +51,40 @@ class tx_tqseo_scheduler_task_sitemap_xml extends tx_tqseo_scheduler_task_sitema
 	 * Build sitemap
 	 *
 	 * @param	integer	$rootPageId	Root page id
+	 * @param	integer	$languageId	Language id
 	 */
-	protected function _buildSitemap($rootPageId) {
+	protected function _buildSitemap($rootPageId, $languageId) {
 		global $TSFE;
+
+		if( $languageId !== null ) {
+			// Language lock enabled
+			$rootPageLinkTempalte	= 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
+			$sitemapIndexFileName	= 'index-r%s-l%s.xml.gz';
+			$sitemapPageFileName	= 'sitemap-r%s-l%s-p%s.xml.gz';
+		} else {
+			$rootPageLinkTempalte	= 'sitemap-r%s-p###PAGE###.xml.gz';
+			$sitemapIndexFileName	= 'index-r%s.xml.gz';
+			$sitemapPageFileName	= 'sitemap-r%s-p%3$s.xml.gz';
+		}
 
 		// Init builder
 		$builder = new tx_tqseo_sitemap_builder_xml();
-		$builder->indexPathTemplate = $this->_generateSitemapLinkTemplate('root-'.(int)$rootPageId.'-###PAGE###.xml');
+		$fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+		$builder->indexPathTemplate = $this->_generateSitemapLinkTemplate($fileName);
 
 		// Get list of pages
 		$pageCount	= $builder->pageCount();
 
 		// Index
 		$content = $builder->sitemapIndex();
-		$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/tree-'.(int)$rootPageId.'-index.xml.gz', $content);
+		$fileName = sprintf($sitemapIndexFileName, $rootPageId, $languageId);
+		$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/'.$fileName, $content);
 
 		// Page
 		for($i=0; $i<$pageCount; $i++) {
 			$content = $builder->sitemap($i);
-			$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/tree-'.(int)$rootPageId.'-'.(int)$i.'.xml.gz', $content);
+			$fileName = sprintf($sitemapPageFileName, $rootPageId, $languageId, $i);
+			$this->_writeToFile(PATH_site.'/'.$this->_sitemapDir.'/'.$fileName, $content);
 		}
 
 		return true;

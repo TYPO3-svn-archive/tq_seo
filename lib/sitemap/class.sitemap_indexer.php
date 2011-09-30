@@ -46,8 +46,9 @@ class user_tqseo_sitemap_indexer {
 	public function addPageToSitemapIndex() {
 		global $TYPO3_DB, $TSFE, $TYPO3_CONF_VARS;
 
-		// check if sitemap is enabled
-		if( empty($TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['enable']) ) {
+		// check if sitemap is enabled in root
+		if( !tx_tqseo_tools::getRootSettingValue('is_sitemap', true)
+			|| !tx_tqseo_tools::getRootSettingValue('is_sitemap_page_indexer', true) ) {
 			return true;
 		}
 
@@ -74,10 +75,7 @@ class user_tqseo_sitemap_indexer {
 		}
 
 		// Fetch sysLanguage
-		$pageLanguage = 0;
-		if(!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
-			$pageLanguage = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
-		}
+		$pageLanguage = tx_tqseo_tools::getLanguageId();
 
 		// Fetch page changeFrequency
 		$pageChangeFrequency = 0;
@@ -188,9 +186,10 @@ class user_tqseo_sitemap_indexer {
 	public static function hook_linkParse(&$pObj) {
 		global $TSFE;
 
-		// BETA
-		if( !tx_tqseo_tools::getExtConf('enableBeta', false) ) {
-			return;
+		// check if sitemap is enabled in root
+		if( !tx_tqseo_tools::getRootSettingValue('is_sitemap', true)
+			|| !tx_tqseo_tools::getRootSettingValue('is_sitemap_typolink_indexer', true) ) {
+			return true;
 		}
 
 		// skip POST-calls and feuser login

@@ -43,6 +43,20 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 	 */
 	protected $_sitemapDir = null;
 
+	/**
+	 * Language lock
+	 *
+	 * @var	integer
+	 */
+	protected $_languageLock = false;
+
+	/**
+	 * Language list
+	 *
+	 * @var	array
+	 */
+	protected $_languageIdList = null;
+
 	###########################################################################
 	# Methods
 	###########################################################################
@@ -57,9 +71,21 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 
 		$this->_cleanupDirectory();
 
+		$this->_initLanguages();
+
+
 		foreach($rootPageList as $uid => $page) {
 			$this->_initRootPage($uid);
-			$this->_buildSitemap($uid);
+
+
+			if( tx_tqseo_tools::getRootSettingValue('is_sitemap_language_lock', false, $uid) ) {
+				foreach($this->_languageIdList as $languageId) {
+					$this->_setRootPageLanguage($languageId);
+					$this->_buildSitemap($uid, $languageId);
+				}
+			} else {
+				$this->_buildSitemap($uid, null);
+			}
 		}
 
 		return true;
@@ -87,6 +113,41 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 		}
 
 		return $ret;
+	}
+
+
+	/**
+	 * Get list of root pages in current typo3
+	 *
+	 * @return	array
+	 */
+	protected function _initLanguages() {
+		global $TYPO3_DB;
+
+		$this->_languageIdList[0] = 0;
+
+		$query = 'SELECT uid
+					FROM sys_language
+				   WHERE hidden = 0';
+		$res = $TYPO3_DB->sql_query($query);
+
+		while($row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+			$uid = $row['uid'];
+			$this->_languageIdList[$uid] = $uid;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Set root page language
+	 *
+	 */
+	protected function _setRootPageLanguage($languageId) {
+		global $TSFE;
+
+		$TSFE->tmpl->setup['config.']['sys_language_uid'] = $languageId;
+		$this->_languageLock = $languageId;
 	}
 
 	/**
@@ -197,8 +258,9 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 	 * Build sitemap
 	 *
 	 * @param	integer	$rootPageId	Root page id
+	 * @param	integer	$languageId	Language id
 	 */
-	abstract protected function _buildSitemap($rootPageId);
+	abstract protected function _buildSitemap($rootPageId, $languageId);
 
 }
 

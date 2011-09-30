@@ -1,3 +1,14 @@
+2011-09-30 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added template code for google analytics and piwik to TypoScript setup (easy to customize now)
+
+2011-09-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Implemented sitemap-listing manipulations
+	* Implemented better control center
+
+2011-09-06 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Implemented backend modules (Bug #28498)
+	* Implemented robots.txt support (Bug #28195)
+
 2011-09-01 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added tt_news support (auto-metatags collecting)
 

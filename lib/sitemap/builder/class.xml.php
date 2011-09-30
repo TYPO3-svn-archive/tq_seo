@@ -54,7 +54,6 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 		$pageItems		= count($this->sitemapPages);
 		$pageCount		= ceil($pageItems/$pageLimit);
 
-		// TODO: pages?
 		$linkConf = array(
 			'parameter'			=> tx_tqseo_tools::getRootPid(),
 			'additionalParams'	=> '',
@@ -128,24 +127,26 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 		$ret .= ' xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9';
 		$ret .= ' http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">';
 
-		$pagePriorityDefaultValue		= 1;
-		$pagePriorityDepthMultiplier	= 1;
-		$pagePriorityDepthModificator	= 1;
+		$pagePriorityDefaultValue		= (float)tx_tqseo_tools::getRootSettingValue('sitemap_priorty', 0);
+		$pagePriorityDepthMultiplier	= (float)tx_tqseo_tools::getRootSettingValue('sitemap_priorty_depth_multiplier', 0);
+		$pagePriorityDepthModificator	= (float)tx_tqseo_tools::getRootSettingValue('sitemap_priorty_depth_modificator', 0);
+
+		if($pagePriorityDefaultValue == 0) {
+			$pagePriorityDefaultValue = 1;
+		}
+
+		if($pagePriorityDepthMultiplier == 0) {
+			$pagePriorityDepthMultiplier = 1;
+		}
+
+		if($pagePriorityDepthModificator == 0) {
+			$pagePriorityDepthModificator = 1;
+		}
+
 
 		#####################
 		# SetupTS conf
 		#####################
-		if( isset($this->tsSetup['pagePriority']) && $this->tsSetup['pagePriority'] != '' ) {
-			$pagePriorityDefaultValue = floatval($this->tsSetup['pagePriority']);
-		}
-
-		if( isset($this->tsSetup['pagePriorityDepthMultiplier']) && $this->tsSetup['pagePriorityDepthMultiplier'] != '' ) {
-			$pagePriorityDepthMultiplier = floatval($this->tsSetup['pagePriorityDepthMultiplier']);
-		}
-
-		if( isset($this->tsSetup['pagePriorityDepthModificator']) && $this->tsSetup['pagePriorityDepthModificator'] != '' ) {
-			$pagePriorityDepthModificator = floatval($this->tsSetup['pagePriorityDepthModificator']);
-		}
 
 		foreach($this->sitemapPages as $sitemapPage) {
 			if(empty($this->pages[ $sitemapPage['page_uid'] ])) {

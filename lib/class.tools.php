@@ -31,14 +31,14 @@
  * @version		$Id$
  */
 class tx_tqseo_tools {
-	
+
 	###########################################################################
 	# Attributes
 	###########################################################################
 
 	/**
 	 * Page Select
-	 * 
+	 *
 	 * @var t3lib_pageSelect
 	 */
 	protected static $sysPageObj = null;
@@ -48,6 +48,22 @@ class tx_tqseo_tools {
 	# Public methods
 	###########################################################################
 
+	/**
+	 * Get current language id
+	 *
+	 * @return	integer
+	 */
+	public static function getLanguageId() {
+		global $TSFE;
+
+		$ret = 0;
+
+		if( !empty($TSFE->tmpl->setup['config.']['sys_language_uid']) ) {
+			$ret = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
+		}
+
+		return $ret;
+	}
 
 	/**
 	 * Get current root pid
@@ -59,26 +75,26 @@ class tx_tqseo_tools {
 		global $TSFE;
 		static $cache = array();
 		$ret = null;
-		
+
 		if( $uid === null ) {
 			$ret = (int)$TSFE->rootLine[0]['uid'];
 		} else {
-			
+
 			if( !isset($cache[$uid]) ) {
 				$cache[$uid] = null;
 				$rootline = self::getRootLine($uid);
-				
+
 				if( !empty($rootline[0]) ) {
 					$cache[$uid] = $rootline[0]['uid'];
 				}
 			}
-			
+
 			$ret = $cache[$uid];
 		}
-		
+
 		return $ret;
 	}
-	
+
 	/**
 	 * Get current root pid
 	 *
@@ -87,16 +103,15 @@ class tx_tqseo_tools {
 	 */
 	public static function getRootLine($uid = null) {
 		$ret = array();
-		
+
 		if( $uid === null ) {
 			$ret = (int)$TSFE->rootLine;
 		} else {
 			$ret = self::_getSysPageObj()->getRootLine($uid);
 		}
-		
+
 		return $ret;
 	}
-	
 
 	/**
 	 * Get domain
@@ -128,7 +143,63 @@ class tx_tqseo_tools {
 
 		return $ret;
 	}
-	
+
+	/**
+	 * Get root setting row
+	 *
+	 * @param	integer	$rootPid	Root Page Id
+	 * @return	array
+	 */
+	public static function getRootSetting($rootPid = null) {
+		global $TSFE, $TYPO3_DB;
+		static $ret = null;
+
+		if( $ret !== null ) {
+			return $ret;
+		}
+
+		$ret = array();
+
+		if( $rootPid === null ) {
+			$rootPid	= self::getRootPid();
+		}
+
+		$res = $TYPO3_DB->exec_SELECTquery(
+			'*',
+			'tx_tqseo_setting_root',
+			'pid = '.(int)$rootPid,
+			'',
+			'',
+			1
+		);
+
+		if( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+			$ret = $row;
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Get root setting value
+	 *
+	 * @param	string	$name			Name of configuration
+	 * @param	mixed	$defaultValue	Default value
+	 * * @param	integer	$rootPid		Root Page Id
+	 * @return	array
+	 */
+	public static function getRootSettingValue($name, $defaultValue = null,$rootPid = null) {
+		$setting = self::getRootSetting($rootPid);
+
+		if( isset($setting[$name]) ) {
+			$ret = $setting[$name];
+		} else {
+			$ret = $defaultValue;
+		}
+
+		return $ret;
+	}
+
 	/**
 	 * Get extension configuration
 	 *
@@ -140,7 +211,7 @@ class tx_tqseo_tools {
 		global $TYPO3_CONF_VARS;
 		static $conf = null;
 		$ret = $default;
-		
+
 		if( $conf === null ) {
 		// Load ext conf
 			$conf= unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tq_seo']);
@@ -148,15 +219,15 @@ class tx_tqseo_tools {
 				$conf = array();
 			}
 		}
-		
+
 		if( isset($conf[$name]) ) {
 			$ret = $conf[$name];
 		}
-		
-		
+
+
 		return $ret;
 	}
-	
+
 	/**
 	 * Call hook
 	 *
@@ -167,16 +238,16 @@ class tx_tqseo_tools {
 	 */
 	public static function callHook($name, $obj, &$args) {
 		static $hookConf = null;
-		
+
 		// Fetch hooks config for tq_seo, minimize array lookups
 		if( $hookConf === null ) {
 			$hookConf = array();
-			if( 	isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks']) 
+			if( 	isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'])
 				&&	is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks']) ) {
 				$hookConf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'];
 			}
 		}
-		
+
 		// Call hooks
 		if( !empty($hookConf[$name]) && is_array($hookConf[$name]) ) {
 			foreach($hookConf[$name] as $_funcRef) {
@@ -186,14 +257,14 @@ class tx_tqseo_tools {
 			}
 		}
 	}
-	
+
 	###########################################################################
 	# Protected methods
 	###########################################################################
 
 	/**
 	 * Get sys page object
-	 * 
+	 *
 	 * @return	t3lib_pageSelect
 	 */
 	protected static function _getSysPageObj() {

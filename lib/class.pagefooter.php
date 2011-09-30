@@ -76,27 +76,28 @@ class user_tqseo_pagefooter {
 			if( $gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn) ) {
 				$tmp = '';
 
-				$tmp .= '<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :"http://www.");
-document.write(unescape("%3Cscript src=\'" + gaJsHost +"google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("'.htmlspecialchars($tsServices['googleAnalytics']).'");';
+				$customCode = '';
+				if( !empty($gaConf['customizationCode']) ) {
+					$customCode .= "\n".$this->cObj->stdWrap($gaConf['customizationCode'], $gaConf['customizationCode.']);
+				}
+
+				$markerList = array(
+					'###GOOGLEANALYTICS_CODE###'				=> htmlspecialchars($tsServices['googleAnalytics']),
+					'###GOOGLEANALYTICS_CUSTOMIZATION_CODE###'	=> $customCode,
+				);
+
+				$wrapperList = array(
+					'###GOOGLEANALYTICS_ANONIP_WRAPPER###'	=> '',
+				);
 
 				if( !empty($gaConf['anonymizeIp']) ) {
-					$tmp .= '
-_gat._anonymizeIp();';
+					$wrapperList['###GOOGLEANALYTICS_ANONIP_WRAPPER###'] = array('','');
 				}
 
-				if( !empty($gaConf['customizationCode']) ) {
-					$tmp .= "\n".$this->cObj->stdWrap($gaConf['customizationCode'], $gaConf['customizationCode.']);
-				}
-
-				$tmp .= '
-pageTracker._trackPageview();
-} catch(err) {}</script>';
-
+				// Build code
+				$tmp = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
+				$tmp = $this->cObj->substituteMarkerArray($tmp, $markerList);
+				$tmp = $this->cObj->substituteSubpartArray($tmp, $wrapperList);
 
 				$ret['ga'] = $tmp;
 
@@ -125,26 +126,26 @@ pageTracker._trackPageview();
 				$piwikEnabled = false;
 			}
 
-			if( $piwikEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn) ) {
+			if( $piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn) ) {
 				$tmp = '';
 
-				$tmp .= '
-<script type="text/javascript">
-var pkBaseURL = (("https:" == document.location.protocol) ? "https://'.htmlspecialchars($piwikConf['url']).'/" : "http://'.htmlspecialchars($piwikConf['url']).'/");
-document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", '.htmlspecialchars($piwikConf['id']).');
-piwikTracker.trackPageView();';
-
+				$customCode = '';
 				if( !empty($piwikConf['customizationCode']) ) {
-					$tmp .= "\n".$this->cObj->stdWrap($piwikConf['customizationCode'], $piwikConf['customizationCode.']);
+					$customCode .= "\n".$this->cObj->stdWrap($piwikConf['customizationCode'], $piwikConf['customizationCode.']);
 				}
 
-				$tmp .= '
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src="http://'.htmlspecialchars($piwikConf['url']).'/piwik.php?idsite='.htmlspecialchars($piwikConf['id']).'" style="border:0" alt="" /></p></noscript>';
+				// remove last slash
+				$piwikConf['url'] = rtrim($piwikConf['url'], '/');
+
+				$markerList = array(
+					'###PIWIK_URL###'					=> htmlspecialchars($piwikConf['url']),
+					'###PIWIK_ID###'					=> htmlspecialchars($piwikConf['id']),
+					'###PIWIK_CUSTOMIZATION_CODE###'	=> $customCode,
+				);
+
+				// Build code
+				$tmp = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
+				$tmp = $this->cObj->substituteMarkerArray($tmp, $markerList);
 
 				$ret['piwik'] = $tmp;
 			} elseif($piwikEnabled && $beLoggedIn) {

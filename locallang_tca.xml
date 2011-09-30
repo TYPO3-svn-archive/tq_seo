@@ -10,6 +10,9 @@
 			<label index="pages.palette.pagetitle">Pagetitle</label>
 			<label index="pages.palette.crawler">Searchengines</label>
 			<label index="pages.palette.sitemap">Sitemap</label>
+
+			<label index="tx_tqseo_setting_root.tab.sitemap">Sitemap</label>
+			<label index="tx_tqseo_setting_root.tab.robotstxt">Robots.txt</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pages.tab.seo">SEO</label>

@@ -47,9 +47,9 @@ abstract class tx_tqseo_sitemap_output_base {
 		// INIT
 		$this->tsSetup		= $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
-		// check if sitemap is enabled
-		if( empty($this->tsSetup['enable']) ) {
-			$this->showError();
+		// check if sitemap is enabled in root
+		if( !tx_tqseo_tools::getRootSettingValue('is_sitemap', true) ) {
+			$this->showError('Sitemap is not available, please check your configuration [control-center]');
 		}
 
 		$ret .= $this->_build();

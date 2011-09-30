@@ -19,6 +19,17 @@ return array(
 	'tx_tqseo_scheduler_task_sitemap_base'	=> $extensionPath.'lib/scheduler/class.sitemap_base.php',
 	'tx_tqseo_scheduler_task_sitemap_txt'	=> $extensionPath.'lib/scheduler/class.sitemap_txt.php',
 	'tx_tqseo_scheduler_task_sitemap_xml'	=> $extensionPath.'lib/scheduler/class.sitemap_xml.php',
+
+	'tx_tqseo_module_base'					=> $extensionPath.'lib/backend/class.base.php',
+	'tx_tqseo_module_standalone'			=> $extensionPath.'lib/backend/class.standalone.php',
+	'tx_tqseo_module_tree'					=> $extensionPath.'lib/backend/class.tree.php',
+	'tx_tqseo_backend_tools'				=> $extensionPath.'lib/backend/class.tools.php',
+
+	'tx_tqseo_backend_ajax_base'			=> $extensionPath.'lib/backend/ajax/class.base.php',
+	'tx_tqseo_backend_ajax_sitemap'			=> $extensionPath.'lib/backend/ajax/class.sitemap.php',
+	'tx_tqseo_backend_ajax_page'			=> $extensionPath.'lib/backend/ajax/class.page.php',
+
+	'tx_tqseo_backend_validation_float'		=> $extensionPath.'lib/backend/validation/class.float.php',
 );
 
 ?>

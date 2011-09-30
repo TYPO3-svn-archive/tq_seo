@@ -142,25 +142,6 @@ plugin.tq_seo {
   pageTitle.sitetitlePosition = 0
 
 
-
-    # cat=plugin.tq_seo.sitemap/page/01; type=boolean; label= Enable sitemap: Enable sitemap output and indexing (make sure this is set on the root-page to have effect)
-  sitemap.enable = 1
-
-    # cat=plugin.tq_seo.sitemap/page/01; type=int+; label= Page limit: Limit pages on sitemap pages (not on sitemap-index page)
-  sitemap.pageLimit = 10000
-
-    # cat=plugin.tq_seo.sitemap/page/02; type=boolean; label= Limit to current language: Limit the output of the sitemap to the current language (eg. for language domains, so the sitemap only contains pages for the current domain/language)
-  sitemap.limitToCurrentLanguage = 0
-
     # cat=plugin.tq_seo.sitemap/page/03; type=options[,Always=1,Hourly=2,Daily=3,Weekly=4,Monthly=5,Yearly=6,Never (archive)=7]; label= Default change frequency: Default change frequency for sitemap cache (will be cached!)
   sitemap.changeFrequency =
-
-    # cat=plugin.tq_seo.sitemap/page/04; type=string; label= Page priority: Value of the default page priority for xml-sitemaps => (priority-modificator) * ( 1/depth * multiplier) (Default 1, only float values!)
-  sitemap.pagePriority = 
-
-    # cat=plugin.tq_seo.sitemap/page/05; type=string; label= Page priority depth multiplier: Value of the page depth multipltiplier (Default 1, only float values!)
-  sitemap.pagePriorityDepthMultiplier = 
-
-    # cat=plugin.tq_seo.sitemap/page/06; type=string; label= Page priority depth modificator: Value of the page depth modificator (Default 1, only float values!)
-  sitemap.pagePriorityDepthModificator = 
 }
