@@ -2,6 +2,7 @@
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', '{gaCode}']);
 <f:if condition="{gaIsAnonymize}">_gaq.push(['_gat._anonymizeIp']);</f:if>
+<f:if condition="{gaDomainName}">_gaq.push(['_setDomainName', '{gaDomainName}']);</f:if>
 _gaq.push(['_trackPageview']);
 <f:if condition="{gaCustomizationCode}"><f:format.html parseFuncTSPath="">{gaCustomizationCode}</f:format.html></f:if>
 

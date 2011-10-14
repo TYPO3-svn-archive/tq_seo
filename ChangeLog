@@ -1,5 +1,7 @@
 2011-10-14 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
-	* Implemented template code for GA/Piwik as Fluid template (TYPO3 4.5 is required now but it's awesome)
+	* Implemented template code for Google Analytics/Piwik as Fluid template (TYPO3 4.5 is required now but it's awesome)
+	* Implement asynchronous Google Analytics/Piwik
+	* Implemented Mozilla's DoNotTrack with Piwik
 
 2011-09-30 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added template code for google analytics and piwik to TypoScript setup (easy to customize now)

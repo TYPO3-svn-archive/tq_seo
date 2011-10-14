@@ -82,8 +82,9 @@ class user_tqseo_pagefooter {
 				}
 
 				$this->cObj->data['gaCode']					= $tsServices['googleAnalytics'];
-				$this->cObj->data['gaCustomizationCode']	= $customCode;
 				$this->cObj->data['gaIsAnonymize']			= (int)!empty($gaConf['anonymizeIp']);
+				$this->cObj->data['gaDomainName']			= $gaConf['domainName'];
+				$this->cObj->data['gaCustomizationCode']	= $customCode;
 
 				// Build code
 				$ret['ga'] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
@@ -125,6 +126,9 @@ class user_tqseo_pagefooter {
 
 				$this->cObj->data['piwikUrl']					= $piwikConf['url'];
 				$this->cObj->data['piwikId']					= $piwikConf['id'];
+				$this->cObj->data['piwikDomainName']			= $piwikConf['domainName'];
+				$this->cObj->data['piwikCookieDomainName']		= $piwikConf['cookieDomainName'];
+				$this->cObj->data['piwikDoNotTrack']			= $piwikConf['doNotTrack'];
 				$this->cObj->data['piwikCustomizationCode']		= $customCode;
 
 				// Build code

@@ -233,6 +233,7 @@ plugin.tq_seo {
 			# show google analytics if user is logged in be (default is disable, we don't want to track be-users)
 			showIfBeLogin = 0
 			anonymizeIp = {$plugin.tq_seo.services.googleAnalytics.anonymizeIp}
+			domainName = {$plugin.tq_seo.services.googleAnalytics.domainName}
 			trackDownloads = {$plugin.tq_seo.services.googleAnalytics.trackDownloads}
 			trackDownloadsScript = EXT:tq_seo/res/ga-track-download.js
 			customizationCode =
@@ -255,6 +256,9 @@ plugin.tq_seo {
 
 						gaIsAnonymize = TEXT
 						gaIsAnonymize.field = gaIsAnonymize
+
+						gaDomainName = TEXT
+						gaDomainName.field = gaDomainName
 					}
 				}
 			}
@@ -267,6 +271,9 @@ plugin.tq_seo {
 			showIfBeLogin = 0
 			url = {$plugin.tq_seo.services.piwik.url}
 			id = {$plugin.tq_seo.services.piwik.id}
+			domainName = {$plugin.tq_seo.services.piwik.domainName}
+			cookieDomainName = {$plugin.tq_seo.services.piwik.cookieDomainName}
+			doNotTrack = {$plugin.tq_seo.services.piwik.doNotTrack}
 			customizationCode =
 
 			enableIfHeaderIsDisabled  = {$plugin.tq_seo.services.enableIfHeaderIsDisabled}
@@ -286,6 +293,15 @@ plugin.tq_seo {
 
 						piwikCustomizationCode = TEXT
 						piwikCustomizationCode.field = piwikCustomizationCode
+
+						piwikDomainName = TEXT
+						piwikDomainName.field = piwikDomainName
+
+						piwikCookieDomainName = TEXT
+						piwikCookieDomainName.field = piwikCookieDomainName
+
+						piwikDoNotTrack = TEXT
+						piwikDoNotTrack.field = piwikDoNotTrack
 					}
 				}
 			}
