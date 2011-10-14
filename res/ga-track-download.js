@@ -23,7 +23,7 @@ function tqSeoGa_TrackLink(e, target) {
 				if( hostMatch && hostMatch[0] ) {
 					linkLocation = linkLocation.slice( hostMatch[0].length );
 					// track pageview
-					pageTracker._trackPageview(linkLocation);
+					_gaq.push(['_trackPageview', linkLocation]);
 				}
 			}
 		}
