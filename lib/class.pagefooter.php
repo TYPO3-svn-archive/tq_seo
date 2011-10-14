@@ -78,7 +78,7 @@ class user_tqseo_pagefooter {
 
 				$customCode = '';
 				if( !empty($gaConf['customizationCode']) ) {
-					$customCode .= "\n".$this->cObj->stdWrap($gaConf['customizationCode'], $gaConf['customizationCode.']);
+					$customCode .= "\n".$this->cObj->cObjGetSingle($gaConf['customizationCode'], $gaConf['customizationCode.']);
 				}
 
 				$this->cObj->data['gaCode']					= $tsServices['googleAnalytics'];
@@ -117,7 +117,7 @@ class user_tqseo_pagefooter {
 
 				$customCode = '';
 				if( !empty($piwikConf['customizationCode']) ) {
-					$customCode .= "\n".$this->cObj->stdWrap($piwikConf['customizationCode'], $piwikConf['customizationCode.']);
+					$customCode .= "\n".$this->cObj->cObjGetSingle($piwikConf['customizationCode'], $piwikConf['customizationCode.']);
 				}
 
 				// remove last slash
