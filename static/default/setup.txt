@@ -237,23 +237,27 @@ plugin.tq_seo {
 			trackDownloadsScript = EXT:tq_seo/res/ga-track-download.js
 			customizationCode =
 
+
 			enableIfHeaderIsDisabled  = {$plugin.tq_seo.services.enableIfHeaderIsDisabled}
 
 			## google analytics template code
-			template = TEXT
-			template.value (
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :"http://www.");
-document.write(unescape("%3Cscript src=\'" + gaJsHost +"google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("###GOOGLEANALYTICS_CODE###");
-###GOOGLEANALYTICS_ANONIP_WRAPPER### _gat._anonymizeIp(); ###GOOGLEANALYTICS_ANONIP_WRAPPER###
-###GOOGLEANALYTICS_CUSTOMIZATION_CODE###
-pageTracker._trackPageview();
-} catch(err) {}</script>
-)
+			template = COA
+			template {
+				10 = FLUIDTEMPLATE
+				10 {
+					file = EXT:tq_seo/res/templates/service-ga.html
+					variables {
+						gaCode = TEXT
+						gaCode.field = gaCode
+
+						gaCustomizationCode = TEXT
+						gaCustomizationCode.field = gaCustomizationCode
+
+						gaIsAnonymize = TEXT
+						gaIsAnonymize.field = gaIsAnonymize
+					}
+				}
+			}
 		}
 
 		# Piwik configuration
@@ -268,20 +272,23 @@ pageTracker._trackPageview();
 			enableIfHeaderIsDisabled  = {$plugin.tq_seo.services.enableIfHeaderIsDisabled}
 
 			## piwik template code
-			template = TEXT
-			template.value (
-<script type="text/javascript">
-var pkBaseURL = (("https:" == document.location.protocol) ? "https://###PIWIK_URL###/" : "http://###PIWIK_URL###/");
-document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", '###PIWIK_ID###');
-piwikTracker.trackPageView();
-###PIWIK_CUSTOMIZATION_CODE###
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src="http://###PIWIK_URL###/piwik.php?idsite=###PIWIK_ID###" style="border:0" alt="" /></p></noscript>
-)
+			template = COA
+			template {
+				10 = FLUIDTEMPLATE
+				10 {
+					file = EXT:tq_seo/res/templates/service-piwik.html
+					variables {
+						piwikUrl = TEXT
+						piwikUrl.field = piwikUrl
+
+						piwikId = TEXT
+						piwikId.field = piwikId
+
+						piwikCustomizationCode = TEXT
+						piwikCustomizationCode.field = piwikCustomizationCode
+					}
+				}
+			}
 		}
 	}
 

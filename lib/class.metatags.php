@@ -229,7 +229,7 @@ class user_tqseo_metatags {
 			}
 
 			// expire
-			if( !empty($tsSetupSeo['useLastUpdate']) && !empty($tsfePage['endtime']) ) {
+			if( !empty($tsSetupSeo['useExpire']) && !empty($tsfePage['endtime']) ) {
 				$ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: '.date('d-M-Y H:i:s T', $tsfePage['endtime']).'" /> ';
 			}
 

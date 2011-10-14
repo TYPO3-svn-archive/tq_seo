@@ -81,26 +81,12 @@ class user_tqseo_pagefooter {
 					$customCode .= "\n".$this->cObj->stdWrap($gaConf['customizationCode'], $gaConf['customizationCode.']);
 				}
 
-				$markerList = array(
-					'###GOOGLEANALYTICS_CODE###'				=> htmlspecialchars($tsServices['googleAnalytics']),
-					'###GOOGLEANALYTICS_CUSTOMIZATION_CODE###'	=> $customCode,
-				);
-
-				$wrapperList = array(
-					'###GOOGLEANALYTICS_ANONIP_WRAPPER###'	=> '',
-				);
-
-				if( !empty($gaConf['anonymizeIp']) ) {
-					$wrapperList['###GOOGLEANALYTICS_ANONIP_WRAPPER###'] = array('','');
-				}
+				$this->cObj->data['gaCode']					= $tsServices['googleAnalytics'];
+				$this->cObj->data['gaCustomizationCode']	= $customCode;
+				$this->cObj->data['gaIsAnonymize']			= (int)!empty($gaConf['anonymizeIp']);
 
 				// Build code
-				$tmp = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
-				$tmp = $this->cObj->substituteMarkerArray($tmp, $markerList);
-				$tmp = $this->cObj->substituteSubpartArray($tmp, $wrapperList);
-
-				$ret['ga'] = $tmp;
-
+				$ret['ga'] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
 
 				if( !empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript']) ) {
 					$jsFile = t3lib_div::getFileAbsFileName($gaConf['trackDownloadsScript']);
@@ -137,17 +123,13 @@ class user_tqseo_pagefooter {
 				// remove last slash
 				$piwikConf['url'] = rtrim($piwikConf['url'], '/');
 
-				$markerList = array(
-					'###PIWIK_URL###'					=> htmlspecialchars($piwikConf['url']),
-					'###PIWIK_ID###'					=> htmlspecialchars($piwikConf['id']),
-					'###PIWIK_CUSTOMIZATION_CODE###'	=> $customCode,
-				);
+				$this->cObj->data['piwikUrl']					= $piwikConf['url'];
+				$this->cObj->data['piwikId']					= $piwikConf['id'];
+				$this->cObj->data['piwikCustomizationCode']		= $customCode;
 
 				// Build code
-				$tmp = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
-				$tmp = $this->cObj->substituteMarkerArray($tmp, $markerList);
+				$ret['piwik'] = $this->cObj->cObjGetSingle($piwikConf['template'], $piwikConf['template.']);
 
-				$ret['piwik'] = $tmp;
 			} elseif($piwikEnabled && $beLoggedIn) {
 				// Backend login detected, disable cache because this page is viewed by BE-users
 				$ret['piwik.disabled'] = '<!-- Piwik disabled - Backend-Login detected -->';
