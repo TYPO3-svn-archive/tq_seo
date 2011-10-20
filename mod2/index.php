@@ -53,9 +53,30 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 	 * @return string
 	 */
 	public function executeMain() {
-		global $TYPO3_DB, $LANG;
+		global $TYPO3_DB, $LANG, $BE_USER;
 
 		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
+		$rootIdList			= array_keys($rootPageList);
+
+		// check which root lages have no root settings
+		$query = 'SELECT p.uid
+					FROM pages p
+						 LEFT JOIN tx_tqseo_setting_root seosr
+							ON   seosr.pid = p.uid
+							 AND seosr.deleted = 0
+					WHERE p.uid IN ('.implode(',', $rootIdList).')
+					  AND seosr.uid IS NULL';
+		$res = $TYPO3_DB->sql_query($query);
+		while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+			$tmpUid = $row['uid'];
+			$query = 'INSERT INTO tx_tqseo_setting_root (pid, tstamp, crdate, cruser_id)
+							VALUES ('.(int)$tmpUid.',
+									'.(int)time().',
+									'.(int)time().',
+									'.(int)$BE_USER->user['uid'].')';
+			$TYPO3_DB->sql_query($query);
+		}
+
 		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
 
 
@@ -106,6 +127,10 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 				$sitemapCell = '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-granted"></span>';
 			} else {
 				$sitemapCell = '<span class="t3-icon t3-icon-status t3-icon-status-status t3-icon-status-permission-denied"></span>';
+			}
+
+			if( !empty($settingRow['is_sitemap_language_lock']) ) {
+				$sitemapCell .= '<br /><i>'.$LANG->getLL('is_sitemap_language_lock_active').'</i>';
 			}
 
 			// Robots.txt support

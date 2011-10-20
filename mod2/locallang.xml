@@ -12,6 +12,7 @@
 			<label index="header_domain">Domains</label>
 			<label index="header_sitemap">Sitemap</label>
 			<label index="header_robotstxt">Robots.txt</label>
+			<label index="is_sitemap_language_lock_active">language lock</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">SEO Kontrollzentrum</label>
@@ -20,6 +21,7 @@
 			<label index="header_domain">Domains</label>
 			<label index="header_sitemap">Sitemap</label>
 			<label index="header_robotstxt">Robots.txt</label>
+			<label index="is_sitemap_language_lock_active">Sprach-Domain-Unterstütztung</label>
 		</languageKey>
 	</data>
 </T3locallang>
