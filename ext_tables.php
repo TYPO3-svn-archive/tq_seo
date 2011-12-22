@@ -27,6 +27,18 @@ $tempColumns = array (
 		)
 	),
 
+	'tx_tqseo_pagetitle_rel' => array (
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_pagetitle_rel',
+		'exclude' => 1,
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+
 	'tx_tqseo_pagetitle_prefix' => array (
 		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_pagetitle_prefix',
 		'exclude' => 1,
@@ -181,6 +193,9 @@ $TCA['pages']['palettes']['tx_tqseo_sitemap'] = array(
 	'canNotCollapse'	=> 1
 );
 
+
+t3lib_extMgm::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '', 'after:title');
+
 // Put it for standard page
 if( t3lib_div::compat_version('4.5') ) {
 	// TYPO3 4.5 and higher
@@ -198,6 +213,17 @@ $tempColumns = array (
 	'tx_tqseo_pagetitle' => array (
 		'exclude' => 1,
 		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages_language_overlay.tx_tqseo_pagetitle',
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+	'tx_tqseo_pagetitle_rel' => array (
+		'exclude' => 1,
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages_language_overlay.tx_tqseo_pagetitle_rel',
 		'config' => array (
 			'type' => 'input',
 			'size' => '30',
@@ -268,6 +294,8 @@ $TCA['pages_language_overlay']['palettes']['tx_tqseo_crawler'] = array(
 	'showitem'			=> 'tx_tqseo_canonicalurl',
 	'canNotCollapse'	=> 1
 );
+
+t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','tx_tqseo_pagetitle_rel', '', 'after:title');
 
 // Put it for standard page overlay
 if( t3lib_div::compat_version('4.5') ) {
@@ -355,7 +383,7 @@ if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::addModule('tqseo', 'txtqseoM2', 'bottom', $extPath . 'mod2/');
 	t3lib_extMgm::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
 
-	
+
 //    t3lib_extMgm::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
 //    t3lib_extMgm::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
 }

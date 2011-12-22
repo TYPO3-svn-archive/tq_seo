@@ -57,7 +57,12 @@ class user_tqseo_pagetitle {
 		if( !empty($tsSetup['plugin.']['tq_seo.']) ) {
 			$tsSeoSetup = $tsSetup['plugin.']['tq_seo.'];
 		}
-		
+
+		// Use browsertitle if available
+		if( !empty($TSFE->page['tx_tqseo_pagetitle_rel']) ) {
+			$rawTitel	= $TSFE->page['tx_tqseo_pagetitle_rel'];
+		}
+
 		// Call hook
 		tx_tqseo_tools::callHook('pagetitle-setup', $this, $tsSeoSetup);
 
@@ -198,7 +203,7 @@ class user_tqseo_pagetitle {
 		if( !empty($stdWrapList['after.']) ) {
 			$ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);
 		}
-		
+
 		// Call hook
 		tx_tqseo_tools::callHook('pagetitle-output', $this, $ret);
 

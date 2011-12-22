@@ -6,8 +6,10 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolute, overwrites prefix/suffix)</label>
+			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolute, without prefix/suffix)</label>
 			<label index="pages_language_overlay.tx_tqseo_pagetitle">title-TAG</label>
+			<label index="pages.tx_tqseo_pagetitle_rel">Browsertitle</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle_rel">Browsertitle</label>
 			<label index="pages.tx_tqseo_is_exclude">Exclude page from SearchEngines</label>
 			<label index="pages.tx_tqseo_pagetitle_prefix">Prefix (inheritable)</label>
 			<label index="pages.tx_tqseo_pagetitle_suffix">Suffix (inheritable)</label>
@@ -45,8 +47,10 @@
 			<label index="tx_tqseo_setting_root.robotstxt_additional">Robots.txt additional content (below default)</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolut, überschreibt Prefix/Suffix)</label>
+			<label index="pages.tx_tqseo_pagetitle">title-TAG (absolut, ohne Prefix/Suffix)</label>
 			<label index="pages_language_overlay.tx_tqseo_pagetitle">title-TAG</label>
+			<label index="pages.tx_tqseo_pagetitle_rel">Browsertitel</label>
+			<label index="pages_language_overlay.tx_tqseo_pagetitle_rel">Browsertitel</label>
 			<label index="pages.tx_tqseo_is_exclude">Seite von Suchmaschinen ausschließen</label>
 			<label index="pages.tx_tqseo_priority">Priorität (0-100)</label>
 			<label index="pages.tx_tqseo_pagetitle_prefix">Präfix (vererbbar)</label>
