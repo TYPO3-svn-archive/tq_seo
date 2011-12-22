@@ -46,7 +46,7 @@ class tx_tqseo_hook_ttnews_metatags {
 
 		$theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-		switch( strtolower($theCode) ) {
+		switch($theCode) {
 			case 'SINGLE':
 			case 'SINGLE2':
 				// Keywords
@@ -55,10 +55,10 @@ class tx_tqseo_hook_ttnews_metatags {
 					$TSFE->cObj->data['keywords']	= $row['keywords'];
 				}
 
-				// Description
-				if( !empty($row['subheader']) ) {
-					$TSFE->page['description']			= $row['subheader'];
-					$TSFE->cObj->data['description']	= $row['subheader'];
+				// Short/Description
+				if( !empty($row['short']) ) {
+					$TSFE->page['description']			= $row['short'];
+					$TSFE->cObj->data['description']	= $row['short'];
 				}
 
 				// Author
@@ -68,9 +68,9 @@ class tx_tqseo_hook_ttnews_metatags {
 				}
 
 				// E-Mail
-				if( !empty($row['email']) ) {
-					$TSFE->page['email']		= $row['email'];
-					$TSFE->cObj->data['email']	= $row['email'];
+				if( !empty($row['author_email']) ) {
+					$TSFE->page['email']		= $row['author_email'];
+					$TSFE->cObj->data['email']	= $row['author_email'];
 				}
 				break;
 		}
