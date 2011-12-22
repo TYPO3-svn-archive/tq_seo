@@ -1,3 +1,8 @@
+2011-12-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Release of 4.0.1
+	* Fixed tt_news support (Thanks to Tobias Arendt)
+	* Fixed TYPO3 4.6 support  (still need fix for http://forge.typo3.org/issues/31333)
+
 2011-10-28 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Release of 4.0
 
