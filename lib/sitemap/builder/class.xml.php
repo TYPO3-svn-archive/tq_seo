@@ -55,7 +55,7 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 		$pageCount		= ceil($pageItems/$pageLimit);
 
 		$linkConf = array(
-			'parameter'			=> tx_tqseo_tools::getRootPid(),
+			'parameter'			=> tx_tqseo_tools::getCurrentPid(),
 			'additionalParams'	=> '',
 			'useCacheHash'		=> 1,
 		);

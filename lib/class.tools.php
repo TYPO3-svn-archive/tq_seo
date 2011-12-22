@@ -96,6 +96,17 @@ class tx_tqseo_tools {
 	}
 
 	/**
+	 * Get current pid
+	 *
+	 * @return	integer
+	 */
+	public static function getCurrentPid() {
+		global $TSFE;
+
+		return $TSFE->id;
+	}
+
+	/**
 	 * Get current root pid
 	 *
 	 * @param	integer	$uid	Page UID
