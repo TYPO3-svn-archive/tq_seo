@@ -11,7 +11,7 @@ $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tq_seo']);
 if (TYPO3_MODE == 'BE') {
 	// AJAX
 	$TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_backend_ajax::sitemap']	= 'EXT:tq_seo/lib/backend/ajax/class.sitemap.php:tx_tqseo_backend_ajax_sitemap->main';
-	$TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_backend_ajax::page']		= 'EXT:tq_seo/lib/backend/ajax/class.sitemap.php:tx_tqseo_backend_ajax_page->main';
+	$TYPO3_CONF_VARS['BE']['AJAX']['tx_tqseo_backend_ajax::page']		= 'EXT:tq_seo/lib/backend/ajax/class.page.php:tx_tqseo_backend_ajax_page->main';
 
 	// Field validations
 	$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_tqseo_backend_validation_float'] = 'EXT:tq_seo/lib/backend/validation/class.float.php';

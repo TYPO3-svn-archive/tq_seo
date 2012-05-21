@@ -33,6 +33,23 @@ Ext.onReady(function(){
 TQSeo.overview.grid = {
 
 	init: function() {
+		var me = this;
+
+		var cellEditMode = false;
+
+		switch( TQSeo.overview.conf.listType ) {
+			case 'metadata':
+				cellEditMode = true;
+				break;
+
+			case 'pagetitle':
+				cellEditMode = true;
+				break;
+		}
+
+
+
+
 		/****************************************************
 		 * grid storage
 		 ****************************************************/
@@ -52,12 +69,15 @@ TQSeo.overview.grid = {
 					{name: 'description', type: 'string'},
 					{name: 'abstract', type: 'string'},
 					{name: 'author', type: 'string'},
-					{name: 'email', type: 'string'},
+					{name: 'author_email', type: 'string'},
 
 					// Pagetitle
 					{name: 'tx_tqseo_pagetitle', type: 'string'},
 					{name: 'tx_tqseo_pagetitle_prefix', type: 'string'},
 					{name: 'tx_tqseo_pagetitle_suffix', type: 'string'},
+
+					// Pagetitle sim
+					{name: 'title_simulated', type: 'string'},
 
 					{name: '_depth', type: 'int'}
 				]
@@ -98,61 +118,122 @@ TQSeo.overview.grid = {
 			id       : 'uid',
 			header   : TQSeo.overview.conf.lang.page_uid,
 			width    : 'auto',
-			sortable : true,
+			sortable : false,
 			dataIndex: 'uid',
 			hidden	 : true
 		}, {
 			id       : 'title',
 			header   : TQSeo.overview.conf.lang.page_title,
 			width    : 200,
-			sortable : true,
+			sortable : false,
 			dataIndex: 'title',
 			renderer: function(value, metaData, record, rowIndex, colIndex, store) {
 				var ret = value;
+				var qtip = String.escape(value);
+				qtip = qtip.replace(/\n/g, "<br />");
+
+
+				if( ret != '' && ret.length >= 23 ) {
+					ret = ret.substring(0, 20)+'...';
+				}
 
 				if( record.data._depth ) {
 					ret = new Array(record.data._depth).join('&nbsp;&nbsp;&nbsp;&nbsp;') + ret;
 				}
 
-				return ret;
+				if( cellEditMode ) {
+					return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + ret + '</div>';
+				} else {
+					return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
+				}
+
+			},
+			tqSeoEditor	: {
+				fieldType: 'textfield',
+				fieldMinLength: 3
 			}
 		}];
+
+		var fieldRenderer = function(value) {
+			var qtip = String.escape(value);
+			qtip = qtip.replace(/\n/g, "<br />");
+
+			if( value != '' && value.length >= 23 ) {
+				value = value.substring(0, 20)+'...';
+			}
+
+			if( cellEditMode ) {
+				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
+			} else {
+				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
+			}
+		}
+
+		var fieldRendererRaw = function(value) {
+			var qtip = String.escape(value);
+			qtip = qtip.replace(/\n/g, "<br />");
+
+			if( cellEditMode ) {
+				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
+			} else {
+				return '<div ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
+			}
+		}
+
 
 		switch( TQSeo.overview.conf.listType ) {
 			case 'metadata':
 				columnModel.push({
-					id       : 'keywords',
-					header   : TQSeo.overview.conf.lang.page_keywords,
-					width    : 'auto',
-					sortable : true,
-					dataIndex: 'keywords'
+					id			: 'keywords',
+					header		: TQSeo.overview.conf.lang.page_keywords,
+					width		: 'auto',
+					sortable	: true,
+					dataIndex	: 'keywords',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textarea'
+					}
 				},{
-					id       : 'description',
-					header   : TQSeo.overview.conf.lang.page_description,
-					width    : 'auto',
-					sortable : true,
-					dataIndex: 'description'
-
+					id			: 'description',
+					header		: TQSeo.overview.conf.lang.page_description,
+					width		: 'auto',
+					sortable	: true,
+					dataIndex	: 'description',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textarea'
+					}
 				},{
-					id       : 'abstract',
-					header   : TQSeo.overview.conf.lang.page_abstract,
-					width    : 'auto',
-					sortable : true,
-					dataIndex: 'abstract'
-
+					id			: 'abstract',
+					header		: TQSeo.overview.conf.lang.page_abstract,
+					width		: 'auto',
+					sortable	: true,
+					dataIndex	: 'abstract',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textarea'
+					}
 				},{
-					id       : 'author',
-					header   : TQSeo.overview.conf.lang.page_author,
-					width    : 'auto',
-					sortable : true,
-					dataIndex: 'author'
-
+					id			: 'author',
+					header		: TQSeo.overview.conf.lang.page_author,
+					width		: 'auto',
+					sortable	: true,
+					dataIndex	: 'author',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textfield'
+					}
 				},{
-					id       : 'author_email',
-					header   : TQSeo.overview.conf.lang.page_author_email,
-					width    : 'auto',
-					sortable : true,
-					dataIndex: 'author_email'
+					id			: 'author_email',
+					header		: TQSeo.overview.conf.lang.page_author_email,
+					width		: 'auto',
+					sortable	: true,
+					dataIndex	: 'author_email',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textfield',
+						fieldVType: 'email'
+					}
 				});
 
 				break;
@@ -163,21 +244,45 @@ TQSeo.overview.grid = {
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle,
 					width    : 'auto',
 					sortable : true,
-					dataIndex: 'tx_tqseo_pagetitle'
+					dataIndex: 'tx_tqseo_pagetitle',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textfield'
+					}
 				},{
 					id       : 'tx_tqseo_pagetitle_prefix',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_prefix,
 					width    : 'auto',
 					sortable : true,
-					dataIndex: 'tx_tqseo_pagetitle_prefix'
-
+					dataIndex: 'tx_tqseo_pagetitle_prefix',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textfield'
+					}
 				},{
 					id       : 'tx_tqseo_pagetitle_suffix',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_suffix,
 					width    : 'auto',
 					sortable : true,
-					dataIndex: 'tx_tqseo_pagetitle_suffix'
+					dataIndex: 'tx_tqseo_pagetitle_suffix',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						fieldType: 'textfield'
+					}
 				});
+				break;
+
+			case 'pagetitlesim':
+				columnModel.push({
+					id       : 'title_simulated',
+					header   : TQSeo.overview.conf.lang.page_title_simulated,
+					width    : 400,
+					sortable : false,
+					dataIndex: 'title_simulated',
+					renderer	: fieldRendererRaw
+				});
+
+
 				break;
 		}
 
@@ -199,8 +304,7 @@ TQSeo.overview.grid = {
 			frame: true,
 			border: true,
 			title: TQSeo.overview.conf.lang.title,
-			tbar: [
-			],
+			tbar: [],
 			bbar: [
 				TQSeo.overview.conf.lang.labelDepth,
 		    	{
@@ -233,6 +337,104 @@ TQSeo.overview.grid = {
 		    	},
 			]
 		});
+
+		var editWindow = false;
+
+		if( cellEditMode ) {
+			grid.addClass('tqseo-grid-editable');
+
+			grid.on('cellclick', function(grid, rowIndex, colIndex, e) {
+				var record = grid.getStore().getAt(rowIndex);
+				var fieldName = grid.getColumnModel().getDataIndex(colIndex);
+				var col = grid.getColumnModel().getColumnById(fieldName);
+				var data = record.get(fieldName);
+
+				var title = record.get('title');
+
+
+				if( col.tqSeoEditor ) {
+
+					var fieldWidth		= 375;
+					var fieldHeight		= null;
+					var fieldVType		= null;
+					var fieldMinLength	= 0;
+
+					if(col.tqSeoEditor.fieldType == 'textarea') {
+						fieldHeight = 150;
+					}
+
+					if(col.tqSeoEditor.fieldVType) {
+						fieldVType = col.tqSeoEditor.fieldVType;
+					}
+
+					if(col.tqSeoEditor.fieldMinLength) {
+						fieldMinLength = col.tqSeoEditor.fieldMinLength;
+					}
+
+					var editWindow = new Ext.Window({
+						xtype: 'form',
+						width: 400,
+						height: 'auto',
+						modal: true,
+						title: title+': '+col.header,
+						items: [
+							{
+								xtype : col.tqSeoEditor.fieldType,
+								itemId: 'form-field',
+								value:  data,
+								width:  fieldWidth,
+								height: fieldHeight,
+								vtype:  fieldVType,
+								minLength: fieldMinLength
+							}
+						],
+						buttons: [
+							{
+								text: 'Save',
+								handler: function(cmp, e) {
+									grid.loadMask.show();
+
+									var pid = record.get('uid');
+									var fieldValue = editWindow.getComponent('form-field').getValue();
+
+									var callbackFinish = function(response) {
+										var response = Ext.decode(response.responseText);
+
+										if( response && response.error ) {
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, 'TODO', response.error);
+										}
+
+										grid.getStore().load();
+									};
+
+									Ext.Ajax.request({
+										url: TQSeo.overview.conf.ajaxController + '&cmd=updatePageField',
+										params: {
+											pid:   Ext.encode(pid),
+											field: Ext.encode(fieldName),
+											value: Ext.encode(fieldValue)
+										},
+										success: callbackFinish,
+										failure: callbackFinish
+									});
+
+									editWindow.destroy();
+								}
+							},{
+								text: 'Cancel',
+								handler: function(cmp, e) {
+									editWindow.destroy();
+								}
+							}
+						]
+					});
+					editWindow.show();
+
+				}
+
+
+			});
+		}
 
 	}
 

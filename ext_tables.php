@@ -384,8 +384,8 @@ if (TYPO3_MODE == 'BE') {
 	t3lib_extMgm::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
 
 
-//    t3lib_extMgm::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
-//    t3lib_extMgm::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
+    t3lib_extMgm::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
+    t3lib_extMgm::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
 }
 
 ###############################################################################

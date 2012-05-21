@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for module &quot;web_txtqseoM4&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="title">SEO</label>
+			<label index="title_content">TEQneers SEO Settings</label>
+			<label index="function_metadata">Metadata</label>
+			<label index="function_pagetitle">Pagetitle</label>
+			<label index="function_pagetitle_simulator">Pagetitle (Simulator)</label>
+
+			<label index="title_overview">SEO Overview</label>
+
+			<label index="title_sitemap_list">Sitemap list for "%s"</label>
+			<label index="pager_desc">Page %s of %s</label>
+			<label index="pager_results">Show rows {0} - {1} of {2}</label>
+			<label index="pager_noresults">There are no mails</label>
+
+			<label index="label_depth">Depth</label>
+
+			<label index="header_sitemap_page_uid">UID</label>
+			<label index="header_sitemap_page_title">Page</label>
+
+			<label index="header_sitemap_page_keywords">Keywords</label>
+			<label index="header_sitemap_page_description">Description</label>
+			<label index="header_sitemap_page_abstract">Abstract</label>
+			<label index="header_sitemap_page_author">Author Name</label>
+			<label index="header_sitemap_page_author_email">Author E-Mail</label>
+
+			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title</label>
+			<label index="header_sitemap_page_tx_tqseo_pagetitle_prefix">Prefix</label>
+			<label index="header_sitemap_page_tx_tqseo_pagetitle_suffix">Suffix</label>
+
+			<label index="header_pagetitlesim_title_simulated">Title (Simulated)</label>
+		</languageKey>
+	</data>
+</T3locallang>

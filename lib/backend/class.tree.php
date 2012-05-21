@@ -109,7 +109,7 @@ class  tx_tqseo_module_tree extends tx_tqseo_module_base {
 
 				// Renders the module page
 			$this->content = $this->doc->render(
-				$GLOBALS['LANG']->getLL('title'),
+				$this->_moduleTitle(),
 				$content
 			);
 		} else {
@@ -117,12 +117,13 @@ class  tx_tqseo_module_tree extends tx_tqseo_module_base {
 			$this->doc = t3lib_div::makeInstance('mediumDoc');
 			$this->doc->backPath = $BACK_PATH;
 
-			$this->content.=$this->doc->startPage($LANG->getLL('title'));
-			$this->content.=$this->doc->header($LANG->getLL('title'));
+			$this->content.=$this->doc->startPage($this->_moduleTitle());
+			$this->content.=$this->doc->header($this->_moduleTitle());
 			$this->content.=$this->doc->spacer(5);
 			$this->content.=$this->doc->spacer(10);
 		}
 	}
+
 }
 
 ?>

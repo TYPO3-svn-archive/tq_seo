@@ -86,9 +86,13 @@ class tx_tqseo_backend_ajax_base {
 			$method = '_execute'.$function;
 			$call	= array($this, $method);
 
-			$this->_fetchParams();
+
 
 			if(	is_callable($call) ) {
+				$this->_fetchParams();
+
+				$this->_init();
+
 				$ret = $this->$method();
 			}
 		}
@@ -97,6 +101,17 @@ class tx_tqseo_backend_ajax_base {
 		header('Content-type: application/json');
 		echo json_encode($ret);
 		exit;
+	}
+
+
+	/**
+	 * Init
+	 */
+	protected function _init() {
+		global $LANG;
+
+		// Include ajax local lang
+		$LANG->includeLLFile('EXT:tq_seo/locallang_ajax.xml');
 	}
 
 	/**

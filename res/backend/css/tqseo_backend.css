@@ -2,6 +2,40 @@
 	background-color: yellow;
 }
 
+,
+.tqseo-cell-editable {
+
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-title,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-description,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-abstract,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author_email,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_prefix,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_suffix {
+	padding-right: 16px;
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-title:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-description:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-abstract:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author_email:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_prefix:hover,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_suffix:hover {
+	cursor: pointer;
+	background-color: #B3B3B3;
+	color: white;
+	background-image: url(../../images/icon-edit.png);
+	background-position: right center;
+	background-repeat: no-repeat;
+}
+
 td.center,
 th.center {
 	text-align: center;

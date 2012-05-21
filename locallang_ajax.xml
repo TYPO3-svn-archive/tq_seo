@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>ajax</type>
+		<description>Language labels for ajax stuff belonging to extension 'tq_seo'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="access_denied">Access to this element was denied.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="access_denied">Der Zugriff auf dieses Element wurde verweigert.</label>
+		</languageKey>
+	</data>
+</T3locallang>

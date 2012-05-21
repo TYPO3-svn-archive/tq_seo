@@ -104,8 +104,8 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 		$this->doc = t3lib_div::makeInstance('mediumDoc');
 		$this->doc->backPath = $BACK_PATH;
 
-		$this->content.=$this->doc->startPage($LANG->getLL('title'));
-		$this->content.=$this->doc->header($LANG->getLL('title'));
+		$this->content.=$this->doc->startPage($this->_moduleTitle());
+		$this->content.=$this->doc->header($this->_moduleTitle());
 		$this->content.=$this->doc->spacer(5);
 		$this->content.=$this->doc->spacer(10);
 	}
@@ -184,7 +184,7 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 			'CSH'		=> $this->getModuleHelp(),
 			'FUNC_MENU' => $this->getFunctionMenu(),
 			'CONTENT'   => $this->content,
-			'TITLE'     => $GLOBALS['LANG']->getLL('title'),
+			'TITLE'     => $this->_moduleTitle(),
 		);
 
 		return $markers;
@@ -278,6 +278,10 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 	protected function _moduleLinkOnClick($action, $params = null) {
 		$url = $this->_moduleLink($action, $params);
 		return 'window.location.href=\''.$url.'\'; return false;';
+	}
+
+	protected function _moduleTitle() {
+		return $GLOBALS['LANG']->getLL('title');
 	}
 
 }
