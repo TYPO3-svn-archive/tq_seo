@@ -142,11 +142,14 @@ plugin.tq_seo {
     # cat=plugin.tq_seo.pageTitle/enable/04; type=boolean; label= Sitetitle glue spacer (before): Add spacer between title and glue (from template)
   pageTitle.sitetitleGlueSpaceBefore = 0
 
-    # cat=plugin.tq_seo.pageTitle/enable/04; type=boolean; label= Sitetitle glue spacer (after): Add spacer between glue and sitetitle (from template)
+    # cat=plugin.tq_seo.pageTitle/enable/05; type=boolean; label= Sitetitle glue spacer (after): Add spacer between glue and sitetitle (from template)
   pageTitle.sitetitleGlueSpaceAfter = 1
 
-    # cat=plugin.tq_seo.pageTitle/enable/05; type=options[Sitetitle-Pagetitle=0, Pagetitle-Sitetitle=1]; label= Sitetitle position: Position of template-sitetitle in title
+    # cat=plugin.tq_seo.pageTitle/enable/06; type=options[Sitetitle-Pagetitle=0, Pagetitle-Sitetitle=1]; label= Sitetitle position: Position of template-sitetitle in title
   pageTitle.sitetitlePosition = 0
+
+	# cat=plugin.tq_seo.pageTitle/enable/07; type=string; label= Sitetitle : Overwrite the template sitetitle with a custom one
+  pageTitle.sitetitle =
 
 
     # cat=plugin.tq_seo.sitemap/page/03; type=options[,Always=1,Hourly=2,Daily=3,Weekly=4,Monthly=5,Yearly=6,Never (archive)=7]; label= Default change frequency: Default change frequency for sitemap cache (will be cached!)

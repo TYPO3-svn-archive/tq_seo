@@ -43,6 +43,7 @@ plugin.tq_seo {
 		sitetitleGlueSpaceBefore = {$plugin.tq_seo.pageTitle.sitetitleGlueSpaceBefore}
 		sitetitleGlueSpaceAfter = {$plugin.tq_seo.pageTitle.sitetitleGlueSpaceAfter}
 		sitetitlePosition = {$plugin.tq_seo.pageTitle.sitetitlePosition}
+		sitetitle = {$plugin.tq_seo.pageTitle.sitetitle}
 
 
 		# list of stdWraps for advanced page title manipulations

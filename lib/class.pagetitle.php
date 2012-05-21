@@ -165,9 +165,15 @@ class user_tqseo_pagetitle {
 		# APPLY SITETITLE (from setup)
 		#######################################################################
 		if($applySitetitle) {
-			$pageTitleGlue = ':';
-			$glueSpacerBefore = '';
-			$glueSpacerAfter = '';
+			$pageTitleGlue		= ':';
+			$glueSpacerBefore	= '';
+			$glueSpacerAfter	= '';
+			$sitetitle = $tsSetup['sitetitle'];
+
+			// Overwrite sitetitle with the one from ts-setup (if available)
+			if( !empty($tsSeoSetup['pageTitle.']['sitetitle']) ) {
+				$sitetitle = $tsSeoSetup['pageTitle.']['sitetitle'];
+			}
 
 			if( isset($tsSeoSetup['pageTitle.']['sitetitleGlue']) ) {
 				$pageTitleGlue = $tsSeoSetup['pageTitle.']['sitetitleGlue'];
@@ -191,10 +197,10 @@ class user_tqseo_pagetitle {
 			// add overall pagetitel from template/ts-setup
 			if($sitetitlePosition) {
 				// suffix
-				$ret .= $glueSpacerBefore.$pageTitleGlue.$glueSpacerAfter.$tsSetup['sitetitle'];
+				$ret .= $glueSpacerBefore.$pageTitleGlue.$glueSpacerAfter.$sitetitle;
 			} else {
 				// prefix (default)
-				$ret = $tsSetup['sitetitle'].$glueSpacerBefore.$pageTitleGlue.$glueSpacerAfter.$ret;
+				$ret = $sitetitle.$glueSpacerBefore.$pageTitleGlue.$glueSpacerAfter.$ret;
 			}
 		}
 
