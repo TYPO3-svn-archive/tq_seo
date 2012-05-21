@@ -54,6 +54,11 @@ plugin.tq_seo {
 			before {
 			}
 
+			# stdWrap for sitetitle (the title from the template, not from the page)
+			sitetitle =
+			sitetitle {
+			}
+
 			# stdWrap for processed page title (after processing)
 			after =
 			after {

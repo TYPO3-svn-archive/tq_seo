@@ -175,6 +175,12 @@ class user_tqseo_pagetitle {
 				$sitetitle = $tsSeoSetup['pageTitle.']['sitetitle'];
 			}
 
+			// Apply stdWrap after
+			if( !empty($stdWrapList['sitetitle.']) ) {
+				$sitetitle = $this->cObj->stdWrap($sitetitle, $stdWrapList['sitetitle.']);
+			}
+
+
 			if( isset($tsSeoSetup['pageTitle.']['sitetitleGlue']) ) {
 				$pageTitleGlue = $tsSeoSetup['pageTitle.']['sitetitleGlue'];
 			}
