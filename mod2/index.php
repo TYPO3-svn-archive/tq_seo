@@ -114,12 +114,14 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 			$domainList = array();
 			while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
 				if( !empty($row['forced']) ) {
-					$domainList[] = '<strong>'.htmlspecialchars($row['domainName']).'</strong>';
+					$domainName = '<strong>'.htmlspecialchars($row['domainName']).'</strong>';
 				} else {
-					$domainList[] = htmlspecialchars($row['domainName']);
+					$domainName = htmlspecialchars($row['domainName']);
 				}
+
+				$domainList[] = '<div style="white-space: nowrap">'.$domainName.'</div>';
 			}
-			$domainCell = implode('<br />', $domainList);
+			$domainCell = implode('', $domainList);
 
 
 			// Sitemap support
@@ -160,7 +162,7 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 			<table border="0" cellpadding="0" cellspacing="1" width="100%" class="typo3-dblist">
 				<colgroup>
 					<col width="*" />
-					<col width="80" />
+					<col width="200" />
 					<col width="80" />
 					<col width="80" />
 					<col width="20" />

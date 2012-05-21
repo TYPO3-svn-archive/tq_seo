@@ -117,9 +117,9 @@ class tx_tqseo_sitemap {
 		#####################
 		$expireDays = (int)tx_tqseo_tools::getExtConf('sitemap_pageSitemapExpireDays', 60);
 
-		$tsstamp = time() - $expireDays*24*60*60;
+		$tstamp = time() - $expireDays*24*60*60;
 
-		$query = 'DELETE FROM tx_tqseo_sitemap WHERE tsstamp <= '.(int)$tsstamp;
+		$query = 'DELETE FROM tx_tqseo_sitemap WHERE tstamp <= '.(int)$tstamp;
 		$res = $TYPO3_DB->sql_query($query);
 
 		#####################
