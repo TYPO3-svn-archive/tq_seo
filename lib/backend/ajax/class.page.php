@@ -224,15 +224,15 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 
 			$query = 'SELECT pid
 						FROM sys_template
-					   WHERE pid IN ('.implode($uidList).')
+					   WHERE pid IN ('.implode(',', $uidList).')
 					     AND deleted = 0
 					     AND hidden = 0';
-
 			$res = $TYPO3_DB->sql_query($query);
 			while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
 				$this->_templatePidList[ $row['pid'] ] = $row['pid'];
 			}
 
+			// Build simulated title
 			foreach($list as &$row) {
 				$row['title_simulated'] = $this->_simulateTitle($row);
 			}
