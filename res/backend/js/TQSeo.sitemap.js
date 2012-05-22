@@ -27,7 +27,7 @@ Ext.onReady(function(){
 	Ext.QuickTips.init();
 	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 
-	new TQSeo.sitemap.grid.init();
+	TQSeo.sitemap.grid.init();
 });
 
 TQSeo.sitemap.grid = {

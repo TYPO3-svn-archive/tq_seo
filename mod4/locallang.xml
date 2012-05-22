@@ -11,6 +11,8 @@
 			<label index="function_metadata">Metadata</label>
 			<label index="function_pagetitle">Pagetitle</label>
 			<label index="function_pagetitle_simulator">Pagetitle (Simulator)</label>
+			<label index="function_searchengines">SearchEngines</label>
+			<label index="function_sitemap">Sitemap</label>
 
 			<label index="title_overview">SEO Overview</label>
 
@@ -29,6 +31,7 @@
 			<label index="header_sitemap_page_abstract">Abstract</label>
 			<label index="header_sitemap_page_author">Author Name</label>
 			<label index="header_sitemap_page_author_email">Author E-Mail</label>
+			<label index="header_sitemap_page_lastupdated">Last updated</label>
 
 			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title (Absolute)</label>
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_rel">Browsertitle</label>
@@ -36,6 +39,11 @@
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_suffix">Suffix</label>
 
 			<label index="header_pagetitlesim_title_simulated">Title (Simulated)</label>
+
+			<label index="header_searchengine_canonicalurl">Canonical URL</label>
+			<label index="header_searchengine_is_excluded">Excluded</label>
+
+			<label index="header_sitemap_priority">Priority</label>
 
 			<label index="label_search_fulltext">Search</label>
 			<label index="empty_search_fulltext">Search...</label>

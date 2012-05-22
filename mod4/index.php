@@ -58,6 +58,8 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		$this->MOD_MENU = Array (
 			'function' => Array (
 				'metadata'		=> $LANG->getLL('function_metadata'),
+				'searchengines'	=> $LANG->getLL('function_searchengines'),
+				'sitemap'		=> $LANG->getLL('function_sitemap'),
 				'pagetitle'		=> $LANG->getLL('function_pagetitle'),
 				'pagetitlesim'	=> $LANG->getLL('function_pagetitle_simulator'),
 			)
@@ -80,6 +82,14 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 	public function executePagetitleSim() {
 		return $this->_handleList('pagetitlesim');
+	}
+
+	public function executeSearchengines() {
+		return $this->_handleList('searchengines');
+	}
+
+	public function executeSitemap() {
+		return $this->_handleList('sitemap');
 	}
 
 	protected function _handleList($type) {
@@ -139,13 +149,19 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				page_abstract			: '. json_encode( $LANG->getLL('header_sitemap_page_abstract') ) .',
 				page_author				: '. json_encode( $LANG->getLL('header_sitemap_page_author') ) .',
 				page_author_email		: '. json_encode( $LANG->getLL('header_sitemap_page_author_email') ) .',
+				page_lastupdated		: '. json_encode( $LANG->getLL('header_sitemap_page_lastupdated') ) .',
 
 				page_tx_tqseo_pagetitle			: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle') ) .',
 				page_tx_tqseo_pagetitle_rel		: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_rel') ) .',
 				page_tx_tqseo_pagetitle_prefix	: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_prefix') ) .',
 				page_tx_tqseo_pagetitle_suffix	: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_suffix') ) .',
 
-				page_title_simulated			: '. json_encode( $LANG->getLL('header_pagetitlesim_title_simulated') ) .'
+				page_title_simulated			: '. json_encode( $LANG->getLL('header_pagetitlesim_title_simulated') ) .',
+
+				page_searchengine_canonicalurl	: '. json_encode( $LANG->getLL('header_searchengine_canonicalurl') ) .',
+				page_searchengine_is_exclude	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded') ) .',
+
+				page_sitemap_priority			: '. json_encode( $LANG->getLL('header_sitemap_priority') ) .'
 
 			};
 

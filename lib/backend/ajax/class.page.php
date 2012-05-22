@@ -83,9 +83,21 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 						'abstract',
 						'author',
 						'author_email',
+						'lastupdated',
 					));
 
 					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+
+					unset($row);
+					foreach($list as &$row) {
+						if( !empty($row['lastupdated']) ) {
+							$row['lastupdated'] = date('Y-m-d', $row['lastupdated']);
+						} else {
+							$row['lastupdated'] = '';
+						}
+					}
+					unset($row);
+
 					break;
 
 				case 'pagetitle':
@@ -102,6 +114,28 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 				case 'pagetitlesim':
 					$buildTree = false;
 					$list = $this->_listPageTitleSim($page, $depth);
+					break;
+
+				case 'searchengines':
+					$fieldList = array_merge($fieldList, array(
+						'tx_tqseo_canonicalurl',
+						'tx_tqseo_is_exclude',
+					));
+
+					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+					break;
+
+				case 'sitemap':
+					$fieldList = array_merge($fieldList, array(
+						'tx_tqseo_priority',
+					));
+
+					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+					break;
+
+				default:
+					// Not defined
+					return;
 					break;
 			}
 		}
@@ -358,7 +392,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		}
 
 		$pid			= (int)$this->_postVar['pid'];
-		$fieldName		= (string)$this->_postVar['field'];
+		$fieldName		= strtolower( (string)$this->_postVar['field'] );
 		$fieldValue		= (string)$this->_postVar['value'];
 
 		// validate field name
@@ -367,6 +401,10 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( empty($fieldName) ) {
 			return;
 		}
+
+		###############################
+		# Security checks
+		###############################
 
 
 		// check if user is able to modify pages
@@ -394,6 +432,22 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 				'error'	=> $LANG->getLL('access_denied'),
 			);
 		}
+
+		###############################
+		# Transformations
+		###############################
+
+		switch($fieldName) {
+			case 'lastupdated':
+				// transform to unix timestamp
+				$fieldValue = strtotime($fieldValue);
+				break;
+		}
+
+
+		###############################
+		# Update
+		###############################
 
 		// Update field in page
 		$TYPO3_DB->exec_UPDATEquery(
