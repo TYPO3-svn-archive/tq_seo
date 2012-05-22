@@ -321,9 +321,9 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 			$lastTsSetupPid = $pageUid;
 		}
 
-		$TSFE->page = $pageData;
-		$TSFE->rootLine = $rootlineFull;
-		$TSFE->cObj->data = $pageData;
+		$GLOBALS['TSFE']->page = $pageData;
+		$GLOBALS['TSFE']->rootLine = $rootlineFull;
+		$GLOBALS['TSFE']->cObj->data = $pageData;
 	}
 
 	/**
