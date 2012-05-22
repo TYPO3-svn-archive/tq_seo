@@ -314,6 +314,15 @@ plugin.tq_seo {
 		}
 	}
 
+	# Social services (Google+,...)
+	social =
+	social {
+		googlePlus =
+		googlePlus {
+			profilePageId = {$plugin.tq_seo.social.googleplus.profilePageId}
+		}
+	}
+
 	# Sitemap indexer and generator
 	sitemap =
 	sitemap {

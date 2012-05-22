@@ -147,6 +147,9 @@ class tx_tqseo_robots_txt {
 				$markerList['%sitemap%'] = $cObj->typolink_URL($conf);
 			}
 
+			// Fix sitemap-marker url (add prefix if needed)
+			$markerList['%sitemap%'] = tx_tqseo_tools::fullUrl($markerList['%sitemap%']);
+
 			// Call hook
 			tx_tqseo_tools::callHook('robotstxt-marker', $this, $markerList);
 

@@ -66,7 +66,7 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 				$sitemaps[] = $link;
 			} else {
 				$linkConf['additionalParams'] = '&type='.$TSFE->type.'&page='.($i+1);
-				$sitemaps[] = t3lib_div::locationHeaderUrl($TSFE->cObj->typoLink_URL($linkConf));
+				$sitemaps[] = tx_tqseo_tools::fullUrl( $TSFE->cObj->typoLink_URL($linkConf) );
 			}
 		}
 
@@ -192,7 +192,7 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 			#####################################
 
 			// page Url
-			$pageUrl = t3lib_div::locationHeaderUrl( $sitemapPage['page_url'] );
+			$pageUrl = tx_tqseo_tools::fullUrl( $sitemapPage['page_url'] );
 
 			// Page modification date
 			$pageModifictionDate = date('c', $sitemapPage['tstamp']);

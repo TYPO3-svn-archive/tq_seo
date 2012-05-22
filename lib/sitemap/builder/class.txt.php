@@ -60,9 +60,9 @@ class tx_tqseo_sitemap_builder_txt extends tx_tqseo_sitemap_builder_base {
 				continue;
 			}
 
-			$page = $this->pages[ $sitemapPage['page_uid'] ];
+			//$page = $this->pages[ $sitemapPage['page_uid'] ];
 
-			$ret[] = t3lib_div::locationHeaderUrl( $sitemapPage['page_url'] );
+			$ret[] = tx_tqseo_tools::fullUrl( $sitemapPage['page_url'] );
 		}
 
 		// Call hook

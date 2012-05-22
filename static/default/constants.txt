@@ -130,6 +130,9 @@ plugin.tq_seo {
   services.piwik.doNotTrack = 1
 
 
+    # cat=plugin.tq_seo.social/page/1; type=string; label= Google+ Direct Connect: Your Google+ Profile Page ID (see https://developers.google.com/+/plugins/badge/)
+  social.googleplus.profilePageId =
+
     # cat=plugin.tq_seo.pageTitle/enable/01; type=boolean; label= Apply Tmpl-Sitetitle to absolute <title>: This enables the addition of the template-sitetitle to the rendered page-title (in absolute <title>-mode)
   pageTitle.applySitetitleToPagetitle = 0
 

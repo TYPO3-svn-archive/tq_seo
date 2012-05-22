@@ -415,6 +415,17 @@ class user_tqseo_metatags {
 			// TODO
 		}
 
+		#####################################
+		# SOCIAL
+		#####################################
+		if( !empty($tsSetup['plugin.']['tq_seo.']['social.']) ) {
+			$tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['social.'];
+
+			if( !empty($tsSetupSeo['googlePlus.']['profilePageId']) ) {
+				$ret['social.googleplus.direct-connect'] = '<link href="https://plus.google.com/'.htmlspecialchars($tsSetupSeo['googlePlus.']['profilePageId']).'" rel="publisher" />';
+			}
+		}
+
 		$separator = "\n";
 
 		$this->_processMetaTags($ret);
@@ -440,7 +451,7 @@ class user_tqseo_metatags {
 
 		$ret = $TSFE->cObj->typoLink_URL($conf);
 		// maybe baseUrlWrap is better? but breaks with realurl currently?
-		$ret = t3lib_div::locationHeaderUrl($ret);
+		$ret = tx_tqseo_tools::fullUrl($ret);
 
 		return $ret;
 	}

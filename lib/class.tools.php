@@ -269,6 +269,22 @@ class tx_tqseo_tools {
 		}
 	}
 
+	/**
+	 * Full url
+	 *
+	 * Make sure the url is absolute (http://....)
+	 *
+	 * @param	string	$url	URL
+	 * @return	string
+	 */
+	public static function fullUrl($url) {
+		if( !preg_match('/^https?:\/\//i', $url ) ) {
+			$url = t3lib_div::locationHeaderUrl($url);
+		}
+
+		return $url;
+	}
+
 	###########################################################################
 	# Protected methods
 	###########################################################################

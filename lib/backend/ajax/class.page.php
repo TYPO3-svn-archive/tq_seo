@@ -26,7 +26,7 @@
  *
  * Hint: use extdeveval to insert/update function index above.
  */
-require_once(PATH_t3lib.'class.t3lib_pagetree.php');
+require_once PATH_t3lib.'class.t3lib_pagetree.php';
 
 /**
  * TYPO3 Backend ajax module page
@@ -37,8 +37,20 @@ require_once(PATH_t3lib.'class.t3lib_pagetree.php');
  */
 class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 
+	###########################################################################
+	# Attributes
+	###########################################################################
 
+	/**
+	 * List of page uids which have templates
+	 *
+	 * @var	array
+	 */
 	protected $_templatePidList = array();
+
+	###########################################################################
+	# Methods
+	###########################################################################
 
 	/**
 	 * Return overview entry list for root tree
@@ -160,6 +172,14 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		return $list;
 	}
 
+	/**
+	 * Calculate the depth of a page
+	 *
+	 * @param	integer	$pageUid		Page UID
+	 * @param	array	$rootLineRaw	Root line (raw list)
+	 * @param	integer	$depth			Current depth
+	 * @return	integer
+	 */
 	protected function _listCalcDepth($pageUid, $rootLineRaw, $depth = null) {
 
 		if( $depth === null ) {
@@ -341,6 +361,15 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		$fieldName		= (string)$this->_postVar['field'];
 		$fieldValue		= (string)$this->_postVar['value'];
 
+		// validate field name
+		$fieldName = preg_replace('/[^-_a-zA-Z0-9]/i', '', $fieldName);
+
+		if( empty($fieldName) ) {
+			return;
+		}
+
+
+		// check if user is able to modify pages
 		if( !$BE_USER->check('tables_modify','pages') ) {
 			// No access
 			return array(
@@ -348,6 +377,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 			);
 		}
 
+		// check if user is able to modify the field of pages
 		if( !$BE_USER->check('non_exclude_fields', 'pages:'.$fieldName) ) {
 			// No access
 			return array(
@@ -357,6 +387,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 
 		$page = t3lib_BEfunc::getRecord('pages', $pid);
 
+		// check if page exists and user can edit this specific record
 		if( empty($page) || !$BE_USER->doesUserHaveAccess($pageRec,2) ) {
 			// No access
 			return array(
@@ -364,6 +395,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 			);
 		}
 
+		// Update field in page
 		$TYPO3_DB->exec_UPDATEquery(
 			'pages',
 			'uid = '.(int)$pid,
