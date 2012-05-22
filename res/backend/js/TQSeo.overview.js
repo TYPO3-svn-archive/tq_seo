@@ -36,8 +36,17 @@ TQSeo.overview.grid = {
 	_fullCellHighlight: true,
 
 	gridDs: false,
+	grid: false,
 
 	filterReload: function() {
+		TQSeo.overview.conf.criteriaFulltext = Ext.getCmp('searchFulltext').getValue();
+		TQSeo.overview.conf.depth = Ext.getCmp('listDepth').getValue();
+
+		this.grid.getView().refresh();
+	},
+
+	storeReload: function() {
+		TQSeo.overview.conf.criteriaFulltext = Ext.getCmp('searchFulltext').getValue();
 		TQSeo.overview.conf.depth = Ext.getCmp('listDepth').getValue();
 
 		this.gridDs.reload();
@@ -140,7 +149,7 @@ TQSeo.overview.grid = {
 		    		id: 'listDepth',
 					listeners: {
 						select: function(f,e){
-							me.filterReload(this);
+							me.storeReload(this);
 						}
 					},
 					forceSelection: true,
@@ -165,6 +174,7 @@ TQSeo.overview.grid = {
 		    	},
 			]
 		});
+		this.grid = grid;
 
 		var editWindow = false;
 
