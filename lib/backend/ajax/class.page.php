@@ -79,6 +79,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 				case 'pagetitle':
 					$fieldList = array_merge($fieldList, array(
 						'tx_tqseo_pagetitle',
+						'tx_tqseo_pagetitle_rel',
 						'tx_tqseo_pagetitle_prefix',
 						'tx_tqseo_pagetitle_suffix',
 					));
@@ -203,23 +204,24 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		$fieldList = array(
 			'title',
 			'tx_tqseo_pagetitle',
+			'tx_tqseo_pagetitle_rel',
 			'tx_tqseo_pagetitle_prefix',
 			'tx_tqseo_pagetitle_suffix',
 		);
 
 		$list = $this->_listDefaultTree($page, $depth, $fieldList);
 
-
-
-		require_once (PATH_t3lib.'class.t3lib_page.php');
-		require_once (PATH_t3lib.'class.t3lib_tstemplate.php');
-		require_once (PATH_t3lib.'class.t3lib_tsparser_ext.php');
+		// Load TYPO3 classes
+		// TODO: check if this is needed anymore with autoloading
+		require_once PATH_t3lib.'class.t3lib_page.php';
+		require_once PATH_t3lib.'class.t3lib_tstemplate.php';
+		require_once PATH_t3lib.'class.t3lib_tsparser_ext.php';
 		require_once dirname(__FILE__).'/../../class.pagetitle.php';
 
 		$uidList = array_keys($list);
 
 		if( !empty($uidList) ) {
-			// Find templates (for caching)
+			// Check which pages have templates (for caching and faster building)
 			$this->_templatePidList = array();
 
 			$query = 'SELECT pid
@@ -238,7 +240,6 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 			}
 		}
 
-
 		return $list;
 	}
 
@@ -249,7 +250,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 	 * @return	string
 	 */
 	protected function _simulateTitle($page) {
-		$this->_initTsfe($page);
+		$this->_initTsfe($page, null, $page, null);
 
 		$pagetitle = new user_tqseo_pagetitle();
 		$ret = $pagetitle->main($page['title']);
@@ -267,11 +268,10 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 	 * @return	void
 	 */
 	protected function _initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null) {
-		global $TSFE;
+		static $cacheTSFE		= array();
+		static $lastTsSetupPid	= null;
 
-		static $lastTsSetupPid = null;
-
-		$pageUid = $page['uid'];
+		$pageUid = (int)$page['uid'];
 
 		if($rootLine === null) {
 			$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
@@ -281,14 +281,10 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 			$rootlineFull = $rootLine;
 		}
 
-		if( $pageData === null ) {
-			reset($rootLine);
-			$pageData = current($rootLine);
-		}
-
-
+		// check if current page has a ts-setup-template
+		// if not, we go down the tree to the parent page
 		if( count($rootLine) >= 2 && empty($this->_templatePidList[$pageUid]) ) {
-			// go to prev page in rootline
+			// go to parent page in rootline
 			reset($rootLine);
 			next($rootLine);
 			$prevPage = current($rootLine);
@@ -302,19 +298,27 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		}
 
 		// Only setup tsfe if current instance must be changed
-		if( $lastTsSetupPid !== $page['uid'] ) {
-			$TSFE = t3lib_div::makeInstance('tslib_fe',  $TYPO3_CONF_VARS);
-			$TSFE->cObj = t3lib_div::makeInstance('tslib_cObj');
+		if( $lastTsSetupPid !== $pageUid ) {
 
-			$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
-			$TSObj->tt_track = 0;
-			$TSObj->init();
-			$TSObj->runThroughTemplates($rootLine);
-			$TSObj->generateConfig();
+			// Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
+			if( empty($cacheTSFE[$pageUid]) ) {
+				$TSFE = t3lib_div::makeInstance('tslib_fe',  $TYPO3_CONF_VARS);
+				$TSFE->cObj = t3lib_div::makeInstance('tslib_cObj');
 
-			$TSFE->tmpl->setup = $TSObj->setup;
+				$TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+				$TSObj->tt_track = 0;
+				$TSObj->init();
+				$TSObj->runThroughTemplates($rootLine);
+				$TSObj->generateConfig();
 
-			$lastTsSetupPid = $page['uid'];
+				$TSFE->tmpl->setup = $TSObj->setup;
+
+				$cacheTSFE[$pageUid] = $TSFE;
+			}
+
+			$GLOBALS['TSFE'] = $cacheTSFE[$pageUid];
+
+			$lastTsSetupPid = $pageUid;
 		}
 
 		$TSFE->page = $pageData;

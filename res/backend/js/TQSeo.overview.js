@@ -32,8 +32,6 @@ Ext.onReady(function(){
 
 TQSeo.overview.grid = {
 
-	highlightFilter: false,
-
 	init: function() {
 		// Init
 		var me = this;
@@ -54,9 +52,6 @@ TQSeo.overview.grid = {
 				fullCellHighlight = false;
 				break;
 		}
-
-
-
 
 		/****************************************************
 		 * grid storage
@@ -81,6 +76,7 @@ TQSeo.overview.grid = {
 
 					// Pagetitle
 					{name: 'tx_tqseo_pagetitle', type: 'string'},
+					{name: 'tx_tqseo_pagetitle_rel', type: 'string'},
 					{name: 'tx_tqseo_pagetitle_prefix', type: 'string'},
 					{name: 'tx_tqseo_pagetitle_suffix', type: 'string'},
 
@@ -248,15 +244,15 @@ TQSeo.overview.grid = {
 
 			case 'pagetitle':
 				columnModel.push({
-					id       : 'tx_tqseo_pagetitle',
-					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle,
+					id       : 'tx_tqseo_pagetitle_rel',
+					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_rel,
 					width    : 'auto',
 					sortable : false,
-					dataIndex: 'tx_tqseo_pagetitle',
+					dataIndex: 'tx_tqseo_pagetitle_rel',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
-					}
+					fieldType: 'textfield'
+				}
 				},{
 					id       : 'tx_tqseo_pagetitle_prefix',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_prefix,
@@ -277,6 +273,16 @@ TQSeo.overview.grid = {
 					tqSeoEditor	: {
 						fieldType: 'textfield'
 					}
+				},{
+					id       : 'tx_tqseo_pagetitle',
+					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle,
+					width    : 'auto',
+					sortable : false,
+					dataIndex: 'tx_tqseo_pagetitle',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+					fieldType: 'textfield'
+				}
 				});
 				break;
 

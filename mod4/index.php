@@ -141,6 +141,7 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				page_author_email		: '. json_encode( $LANG->getLL('header_sitemap_page_author_email') ) .',
 
 				page_tx_tqseo_pagetitle			: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle') ) .',
+				page_tx_tqseo_pagetitle_rel		: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_rel') ) .',
 				page_tx_tqseo_pagetitle_prefix	: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_prefix') ) .',
 				page_tx_tqseo_pagetitle_suffix	: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_suffix') ) .',
 

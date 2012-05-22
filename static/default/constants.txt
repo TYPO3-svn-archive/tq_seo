@@ -9,7 +9,7 @@ plugin.tq_seo {
     # cat=plugin.tq_seo.metaTags/page/02; type=string; label= Meta Keywords: Comma separated list of keywords.
   metaTags.keywords =
 
-    # cat=plugin.tq_seo.metaTags/page/03; type=string; label= Meta Copyright info: Copyright information (eg. "Me Myself and I, 2001. All rights reserved.").
+    # cat=plugin.tq_seo.metaTags/page/03; type=string; label= Meta Copyright info: Copyright information (eg. "Me Myself and I, %YEAR%. All rights reserved.", %YEAR% will be substituted with the current year).
   metaTags.copyright =
 
     # cat=plugin.tq_seo.metaTags/page/04; type=string; label= Meta Reply-to email: Enter the e-mail adress for contact issues

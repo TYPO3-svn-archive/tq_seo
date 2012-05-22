@@ -30,7 +30,8 @@
 			<label index="header_sitemap_page_author">Author Name</label>
 			<label index="header_sitemap_page_author_email">Author E-Mail</label>
 
-			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title</label>
+			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title (Absolute)</label>
+			<label index="header_sitemap_page_tx_tqseo_pagetitle_rel">Browsertitle</label>
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_prefix">Prefix</label>
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_suffix">Suffix</label>
 
