@@ -35,6 +35,9 @@
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_suffix">Suffix</label>
 
 			<label index="header_pagetitlesim_title_simulated">Title (Simulated)</label>
+
+			<label index="label_search_fulltext">Search</label>
+			<label index="empty_search_fulltext">Search...</label>
 		</languageKey>
 	</data>
 </T3locallang>

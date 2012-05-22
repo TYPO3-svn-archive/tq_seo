@@ -32,10 +32,13 @@ Ext.onReady(function(){
 
 TQSeo.overview.grid = {
 
-	init: function() {
-		var me = this;
+	highlightFilter: false,
 
-		var cellEditMode = false;
+	init: function() {
+		// Init
+		var me = this;
+		var cellEditMode		= false;
+		var fullCellHighlight	= true;
 
 		switch( TQSeo.overview.conf.listType ) {
 			case 'metadata':
@@ -44,6 +47,11 @@ TQSeo.overview.grid = {
 
 			case 'pagetitle':
 				cellEditMode = true;
+				fullCellHighlight = false;
+				break;
+
+			case 'pagetitlesim':
+				fullCellHighlight = false;
 				break;
 		}
 
@@ -103,6 +111,11 @@ TQSeo.overview.grid = {
 			}
 		});
 
+		var function_filter = function(ob) {
+			TQSeo.overview.conf.criteriaFulltext = Ext.getCmp('searchFulltext').getValue();
+			grid.getView().refresh();
+		}
+
  		var function_reload = function(ob) {
 			filterAction(ob, 'getItems');
 		};
@@ -113,6 +126,40 @@ TQSeo.overview.grid = {
  			gridDs.reload();
 		};
 
+
+		var fieldRenderer = function(value) {
+			return fieldRendererCallback(value, value, 23);
+		}
+
+		var fieldRendererRaw = function(value) {
+			return fieldRendererCallback(value, value, false);
+		}
+
+		var fieldRendererCallback = function(value, qtip, maxLength) {
+			var classes = '';
+
+			if( cellEditMode ) {
+				classes += 'tqseo-cell-editable ';
+			}
+
+			if(fullCellHighlight && !Ext.isEmpty(TQSeo.overview.conf.criteriaFulltext)) {
+				if( TQSeo.highlightTextExists(value, TQSeo.overview.conf.criteriaFulltext) ) {
+					classes += 'tqseo-cell-highlight ';
+				}
+			}
+
+			if( maxLength && value != '' && value.length >= maxLength ) {
+				value = value.substring(0, (maxLength-3) )+'...';
+			}
+			value = String.escape(value);
+			value = value.replace(/ /g, "&nbsp;");
+
+
+			var qtip = String.escape(qtip);
+			qtip = qtip.replace(/\n/g, "<br />");
+
+			return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + '&nbsp;<div class="icon"></div></div>';
+		}
 
 		var columnModel = [{
 			id       : 'uid',
@@ -128,25 +175,13 @@ TQSeo.overview.grid = {
 			sortable : false,
 			dataIndex: 'title',
 			renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-				var ret = value;
-				var qtip = String.escape(value);
-				qtip = qtip.replace(/\n/g, "<br />");
-
-
-				if( ret != '' && ret.length >= 23 ) {
-					ret = ret.substring(0, 20)+'...';
-				}
+				var qtip = value;
 
 				if( record.data._depth ) {
-					ret = new Array(record.data._depth).join('&nbsp;&nbsp;&nbsp;&nbsp;') + ret;
+					value = new Array(record.data._depth).join('    ') + value;
 				}
 
-				if( cellEditMode ) {
-					return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + ret + '</div>';
-				} else {
-					return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
-				}
-
+				return fieldRendererCallback(value, qtip, false);
 			},
 			tqSeoEditor	: {
 				fieldType: 'textfield',
@@ -154,40 +189,13 @@ TQSeo.overview.grid = {
 			}
 		}];
 
-		var fieldRenderer = function(value) {
-			var qtip = String.escape(value);
-			qtip = qtip.replace(/\n/g, "<br />");
-
-			if( value != '' && value.length >= 23 ) {
-				value = value.substring(0, 20)+'...';
-			}
-
-			if( cellEditMode ) {
-				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
-			} else {
-				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
-			}
-		}
-
-		var fieldRendererRaw = function(value) {
-			var qtip = String.escape(value);
-			qtip = qtip.replace(/\n/g, "<br />");
-
-			if( cellEditMode ) {
-				return '<div class="tqseo-cell-editable" ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
-			} else {
-				return '<div ext:qtip="' + qtip +'">' + value + '&nbsp;</div>';
-			}
-		}
-
-
 		switch( TQSeo.overview.conf.listType ) {
 			case 'metadata':
 				columnModel.push({
 					id			: 'keywords',
 					header		: TQSeo.overview.conf.lang.page_keywords,
 					width		: 'auto',
-					sortable	: true,
+					sortable	: false,
 					dataIndex	: 'keywords',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -197,7 +205,7 @@ TQSeo.overview.grid = {
 					id			: 'description',
 					header		: TQSeo.overview.conf.lang.page_description,
 					width		: 'auto',
-					sortable	: true,
+					sortable	: false,
 					dataIndex	: 'description',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -207,7 +215,7 @@ TQSeo.overview.grid = {
 					id			: 'abstract',
 					header		: TQSeo.overview.conf.lang.page_abstract,
 					width		: 'auto',
-					sortable	: true,
+					sortable	: false,
 					dataIndex	: 'abstract',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -217,7 +225,7 @@ TQSeo.overview.grid = {
 					id			: 'author',
 					header		: TQSeo.overview.conf.lang.page_author,
 					width		: 'auto',
-					sortable	: true,
+					sortable	: false,
 					dataIndex	: 'author',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -227,7 +235,7 @@ TQSeo.overview.grid = {
 					id			: 'author_email',
 					header		: TQSeo.overview.conf.lang.page_author_email,
 					width		: 'auto',
-					sortable	: true,
+					sortable	: false,
 					dataIndex	: 'author_email',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -243,7 +251,7 @@ TQSeo.overview.grid = {
 					id       : 'tx_tqseo_pagetitle',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle,
 					width    : 'auto',
-					sortable : true,
+					sortable : false,
 					dataIndex: 'tx_tqseo_pagetitle',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -253,7 +261,7 @@ TQSeo.overview.grid = {
 					id       : 'tx_tqseo_pagetitle_prefix',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_prefix,
 					width    : 'auto',
-					sortable : true,
+					sortable : false,
 					dataIndex: 'tx_tqseo_pagetitle_prefix',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -263,7 +271,7 @@ TQSeo.overview.grid = {
 					id       : 'tx_tqseo_pagetitle_suffix',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_suffix,
 					width    : 'auto',
-					sortable : true,
+					sortable : false,
 					dataIndex: 'tx_tqseo_pagetitle_suffix',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
@@ -279,7 +287,7 @@ TQSeo.overview.grid = {
 					width    : 400,
 					sortable : false,
 					dataIndex: 'title_simulated',
-					renderer	: fieldRendererRaw
+					renderer : fieldRendererRaw
 				});
 
 
@@ -304,7 +312,35 @@ TQSeo.overview.grid = {
 			frame: true,
 			border: true,
 			title: TQSeo.overview.conf.lang.title,
-			tbar: [],
+			viewConfig: {
+				forceFit: true,
+				listeners: {
+					refresh: function(view) {
+						if (!fullCellHighlight && !Ext.isEmpty(TQSeo.overview.conf.criteriaFulltext)) {
+							view.el.select('.x-grid3-body .x-grid3-cell').each(function(el) {
+								TQSeo.highlightText(el.dom, TQSeo.overview.conf.criteriaFulltext);
+							});
+						}
+					}
+				}
+			},
+			tbar: [
+				TQSeo.overview.conf.lang.labelSearchFulltext,
+				{
+					xtype: 'textfield',
+					id: 'searchFulltext',
+					fieldLabel: TQSeo.overview.conf.lang.labelSearchFulltext,
+					emptyText : TQSeo.overview.conf.lang.emptySearchFulltext,
+					listeners: {
+						specialkey: function(f,e){
+							if (e.getKey() == e.ENTER) {
+								function_filter(this);
+							}
+						}
+					}
+				},
+				{xtype: 'tbspacer', width: 10}
+			],
 			bbar: [
 				TQSeo.overview.conf.lang.labelDepth,
 		    	{

@@ -50,5 +50,22 @@ TQSeo = {
 			}
 		}
 		return skip;
+	},
+
+	/**
+	 * Check if highlight text is available
+	 *
+	 * @copyright	Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+	 */
+	highlightTextExists: function(value, search) {
+		search		= search.toUpperCase();
+		var skip	= 0;
+
+		var pos = value.toUpperCase().indexOf(search);
+		if (pos >= 0) {
+			return true;
+		}
+
+		return false;
 	}
 }

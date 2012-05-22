@@ -116,7 +116,9 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 				languageFullList		: '. json_encode($languageFullList) .',
 
-				listType				: '. json_encode($type) .'
+				listType				: '. json_encode($type) .',
+
+				criteriaFulltext		: ""
 			};
 
 			// Localisation:
@@ -126,6 +128,9 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				pagingEmpty				: '. json_encode( $LANG->getLL('pager_noresults') ) .',
 
 				labelDepth				: '. json_encode( $LANG->getLL('label_depth') ) .',
+
+				labelSearchFulltext		: '. json_encode( $LANG->getLL('label_search_fulltext') ) .',
+				emptySearchFulltext		: '. json_encode( $LANG->getLL('empty_search_fulltext') ) .',
 
 				page_uid				: '. json_encode( $LANG->getLL('header_sitemap_page_uid') ) .',
 				page_title				: '. json_encode( $LANG->getLL('header_sitemap_page_title') ) .',

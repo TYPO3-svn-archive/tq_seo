@@ -2,22 +2,10 @@
 	background-color: yellow;
 }
 
-,
-.tqseo-cell-editable {
-
+.tqseo-cell-highlight {
+	background-color: #FCFF91;
 }
 
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-title,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-description,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-abstract,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-author,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-author_email,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_prefix,
-.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_suffix {
-	padding-right: 16px;
-}
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-col-title:hover,
 .tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords:hover,
@@ -31,10 +19,41 @@
 	cursor: pointer;
 	background-color: #B3B3B3;
 	color: white;
+	position: relative;
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-title:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-description:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-abstract:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author_email:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_prefix:hover .tqseo-cell-highlight,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_suffix:hover .tqseo-cell-highlight {
+	color: black;
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-title:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-keywords:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-description:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-abstract:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-author_email:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_prefix:hover .icon,
+.tqseo-grid-editable .x-grid3-body .x-grid3-col-tx_tqseo_pagetitle_suffix:hover .icon {
+	position: absolute; right: 0px; top: 0px; bottom: 0px;
+
+	height: 16px;
+	width: 16px;
+
+	background-color: #B3B3B3;
 	background-image: url(../../images/icon-edit.png);
 	background-position: right center;
 	background-repeat: no-repeat;
 }
+
 
 td.center,
 th.center {
