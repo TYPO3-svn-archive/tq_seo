@@ -194,16 +194,10 @@ $TCA['pages']['palettes']['tx_tqseo_sitemap'] = array(
 );
 
 
-t3lib_extMgm::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '', 'after:title');
+t3lib_extMgm::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '1,4,7,3', 'after:title');
 
 // Put it for standard page
-if( t3lib_div::compat_version('4.5') ) {
-	// TYPO3 4.5 and higher
-	t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '', 'after:author_email');
-} else {
-	// TYPO3 4.3 and 4.4
-	t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '', 'after:description');
-}
+t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '1,4,7,3', 'after:author_email');
 
 ###################
 # Page overlay (lang)
@@ -298,13 +292,7 @@ $TCA['pages_language_overlay']['palettes']['tx_tqseo_crawler'] = array(
 t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','tx_tqseo_pagetitle_rel', '', 'after:title');
 
 // Put it for standard page overlay
-if( t3lib_div::compat_version('4.5') ) {
-	// TYPO3 4.5 and higher
-	t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler', '', 'after:author_email');
-} else {
-	// TYPO3 4.3 and 4.4
-	t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler', '', 'after:description');
-}
+t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler', '', 'after:author_email');
 
 ###################
 # Domains
