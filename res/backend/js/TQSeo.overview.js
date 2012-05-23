@@ -166,7 +166,9 @@ TQSeo.overview.grid = {
 						data: [
 							[1, 1],
 							[2, 2],
-							[3, 3]
+							[3, 3],
+							[4, 4],
+							[5, 5],
 						]
 					}),
 					valueField: 'id',
@@ -191,43 +193,32 @@ TQSeo.overview.grid = {
 
 
 				if( col.tqSeoEditor ) {
+					// Init editor field
+					var field = col.tqSeoEditor;
+					field.itemId = 'form-field';
 
-					var fieldWidth		= 375;
-					var fieldHeight		= null;
-					var fieldVType		= null;
-					var fieldMinLength	= 0;
+					if( !field.width)	field.width = 375;
 
-					if(col.tqSeoEditor.fieldType == 'textarea') {
-						fieldHeight = 150;
+					switch( field.xtype ) {
+						case 'textarea':
+							if( !field.height)	field.height = 150;
+							field.value = data;
+							break;
+
+						case 'checkbox':
+							if( data == '0' || data == '' ) {
+								field.checked = false;
+							} else {
+								field.checked = true;
+							}
+							break;
+
+						default:
+							field.value = data;
+							break;
 					}
 
-					if(col.tqSeoEditor.fieldVType) {
-						fieldVType = col.tqSeoEditor.fieldVType;
-					}
-
-					if(col.tqSeoEditor.fieldMinLength) {
-						fieldMinLength = col.tqSeoEditor.fieldMinLength;
-					}
-
-					var field = {
-						xtype : col.tqSeoEditor.fieldType,
-						itemId: 'form-field',
-						value:  data,
-						width:  fieldWidth,
-						height: fieldHeight,
-						vtype:  fieldVType,
-						minLength: fieldMinLength
-					};
-
-					if( col.tqSeoEditor.fieldType == 'checkbox' ) {
-						if( data == '0' || data == '' ) {
-							field.checked = false;
-						} else {
-							field.checked = true;
-						}
-					}
-
-
+					// Init editor window
 					var editWindow = new Ext.Window({
 						xtype: 'form',
 						width: 400,
@@ -381,6 +372,16 @@ TQSeo.overview.grid = {
 			return me._fieldRendererRaw(value);
 		};
 
+		var fieldRendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
+			if( value == 0 || value == '' ) {
+				value = String.escape(TQSeo.overview.conf.lang.boolean_no);
+			} else {
+				value = '<strong>'+String.escape(TQSeo.overview.conf.lang.boolean_yes)+'</strong>';
+			}
+
+			return me._fieldRendererCallback(value, '', false, false);
+		}
+
 		var columnModel = [{
 			id       : 'uid',
 			header   : TQSeo.overview.conf.lang.page_uid,
@@ -404,8 +405,8 @@ TQSeo.overview.grid = {
 				return me._fieldRendererCallback(value, qtip, false);
 			},
 			tqSeoEditor	: {
-				fieldType: 'textfield',
-				fieldMinLength: 3
+				xtype: 'textfield',
+				minLength: 3
 			}
 		}];
 
@@ -419,7 +420,7 @@ TQSeo.overview.grid = {
 					dataIndex	: 'keywords',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textarea'
+						xtype: 'textarea'
 					}
 				},{
 					id			: 'description',
@@ -429,7 +430,7 @@ TQSeo.overview.grid = {
 					dataIndex	: 'description',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textarea'
+						xtype: 'textarea'
 					}
 				},{
 					id			: 'abstract',
@@ -439,7 +440,7 @@ TQSeo.overview.grid = {
 					dataIndex	: 'abstract',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textarea'
+						xtype: 'textarea'
 					}
 				},{
 					id			: 'author',
@@ -449,7 +450,7 @@ TQSeo.overview.grid = {
 					dataIndex	: 'author',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				},{
 					id			: 'author_email',
@@ -459,8 +460,8 @@ TQSeo.overview.grid = {
 					dataIndex	: 'author_email',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield',
-						fieldVType: 'email'
+						xtype: 'textfield',
+						vtype: 'email'
 					}
 				},{
 					id			: 'lastupdated',
@@ -470,7 +471,7 @@ TQSeo.overview.grid = {
 					dataIndex	: 'lastupdated',
 					renderer	: fieldRendererRaw,
 					tqSeoEditor	: {
-						fieldType: 'datefield'
+						xtype: 'datefield'
 					}
 				});
 
@@ -485,7 +486,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_pagetitle_rel',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				},{
 					id       : 'tx_tqseo_pagetitle_prefix',
@@ -495,7 +496,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_pagetitle_prefix',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				},{
 					id       : 'tx_tqseo_pagetitle_suffix',
@@ -505,7 +506,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_pagetitle_suffix',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				},{
 					id       : 'tx_tqseo_pagetitle',
@@ -515,7 +516,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_pagetitle',
 					renderer	: fieldRenderer,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				});
 				break;
@@ -540,7 +541,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_canonicalurl',
 					renderer : fieldRendererRaw,
 					tqSeoEditor	: {
-						fieldType: 'textfield'
+						xtype: 'textfield'
 					}
 				},{
 					id       : 'tx_tqseo_is_exclude',
@@ -548,9 +549,26 @@ TQSeo.overview.grid = {
 					width    : 50,
 					sortable : false,
 					dataIndex: 'tx_tqseo_is_exclude',
-					renderer : fieldRendererRaw,
+					renderer : fieldRendererBoolean,
 					tqSeoEditor	: {
-						fieldType: 'checkbox'
+						xtype: 'combo',
+						forceSelection: true,
+						editable: false,
+						mode: 'local',
+						triggerAction: 'all',
+						store: new Ext.data.ArrayStore({
+							id: 0,
+							fields: [
+								'id',
+								'label'
+							],
+							data: [
+								[0, TQSeo.overview.conf.lang.page_searchengine_is_exclude_disabled],
+								[1, TQSeo.overview.conf.lang.page_searchengine_is_exclude_enabled]
+							]
+						}),
+						valueField: 'id',
+						displayField: 'label'
 					}
 				});
 				break;
@@ -564,7 +582,7 @@ TQSeo.overview.grid = {
 					dataIndex: 'tx_tqseo_priority',
 					renderer : fieldRendererRaw,
 					tqSeoEditor	: {
-						fieldType: 'numberfield'
+						xtype: 'numberfield'
 					}
 				});
 				break;
@@ -577,14 +595,14 @@ TQSeo.overview.grid = {
 
 
 	_fieldRenderer: function(value) {
-		return this._fieldRendererCallback(value, value, 23);
+		return this._fieldRendererCallback(value, value, 23, true);
 	},
 
 	_fieldRendererRaw: function(value) {
-		return this._fieldRendererCallback(value, value, false);
+		return this._fieldRendererCallback(value, value, false, true);
 	},
 
-	_fieldRendererCallback: function(value, qtip, maxLength) {
+	_fieldRendererCallback: function(value, qtip, maxLength, escape) {
 		var classes = '';
 
 		if( this._cellEditMode ) {
@@ -600,11 +618,15 @@ TQSeo.overview.grid = {
 		if( maxLength && value != '' && value.length >= maxLength ) {
 			value = value.substring(0, (maxLength-3) )+'...';
 		}
-		value = String.escape(value);
+		if(escape) {
+			value = String.escape(value);
+		}
 		value = value.replace(/ /g, "&nbsp;");
 
 
-		var qtip = String.escape(qtip);
+		if(escape) {
+			qtip = String.escape(qtip);
+		}
 		qtip = qtip.replace(/\n/g, "<br />");
 
 		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + '&nbsp;<div class="icon"></div></div>';

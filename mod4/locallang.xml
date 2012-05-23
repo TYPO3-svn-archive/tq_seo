@@ -16,6 +16,9 @@
 
 			<label index="title_overview">SEO Overview</label>
 
+			<label index="boolean_yes">Yes</label>
+			<label index="boolean_no">No</label>
+
 			<label index="title_sitemap_list">Sitemap list for "%s"</label>
 			<label index="pager_desc">Page %s of %s</label>
 			<label index="pager_results">Show rows {0} - {1} of {2}</label>
@@ -42,8 +45,10 @@
 
 			<label index="header_searchengine_canonicalurl">Canonical URL</label>
 			<label index="header_searchengine_is_excluded">Excluded</label>
+			<label index="header_searchengine_is_excluded_disabled">No, visible to SearchEngines</label>
+			<label index="header_searchengine_is_excluded_enabled">Yes, EXCLUDE page from SearchEngines index</label>
 
-			<label index="header_sitemap_priority">Priority</label>
+			<label index="header_sitemap_priority">Sitemap Priority</label>
 
 			<label index="label_search_fulltext">Search</label>
 			<label index="empty_search_fulltext">Search...</label>

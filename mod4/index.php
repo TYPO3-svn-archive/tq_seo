@@ -137,6 +137,9 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				pagingMessage			: '. json_encode( $LANG->getLL('pager_results') ) .',
 				pagingEmpty				: '. json_encode( $LANG->getLL('pager_noresults') ) .',
 
+				boolean_yes				: '. json_encode( $LANG->getLL('boolean_yes') ) .',
+				boolean_no				: '. json_encode( $LANG->getLL('boolean_no') ) .',
+
 				labelDepth				: '. json_encode( $LANG->getLL('label_depth') ) .',
 
 				labelSearchFulltext		: '. json_encode( $LANG->getLL('label_search_fulltext') ) .',
@@ -160,6 +163,8 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 				page_searchengine_canonicalurl	: '. json_encode( $LANG->getLL('header_searchengine_canonicalurl') ) .',
 				page_searchengine_is_exclude	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded') ) .',
+				page_searchengine_is_exclude_disabled	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded_disabled') ) .',
+				page_searchengine_is_exclude_enabled	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded_enabled') ) .',
 
 				page_sitemap_priority			: '. json_encode( $LANG->getLL('header_sitemap_priority') ) .'
 
