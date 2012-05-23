@@ -10,5 +10,10 @@
 			<label index="mlang_labels_tablabel">SEO Control center</label>
 			<label index="mlang_labels_tabdescr">TEQneers SEO Control center, sitemap configuration and rootpage settings</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">Kontrollzentrum</label>
+			<label index="mlang_labels_tabdescr">SEO Kontrollzentrum</label>
+			<label index="mlang_labels_tablabel">TEQneers SEO Kontrollzentrum, Sitemap- und Rootsite-Konfiguration</label>
+		</languageKey>
 	</data>
 </T3locallang>

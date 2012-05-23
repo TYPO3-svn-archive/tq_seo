@@ -69,11 +69,6 @@ TQSeo.overview.grid = {
 				this._cellEditMode = true;
 				break;
 
-			case 'sitemap':
-				this._fullCellHighlight = false;
-				this._cellEditMode = true;
-				break;
-
 			case 'url':
 				this._fullCellHighlight = false;
 				this._cellEditMode = true;
@@ -119,6 +114,7 @@ TQSeo.overview.grid = {
 			width: '98%',
 			frame: true,
 			border: true,
+			disableSelection: false,
 			title: TQSeo.overview.conf.lang.title,
 			viewConfig: {
 				forceFit: true,
@@ -193,11 +189,15 @@ TQSeo.overview.grid = {
 			grid.on('cellclick', function(grid, rowIndex, colIndex, e) {
 				var record = grid.getStore().getAt(rowIndex);
 				var fieldName = grid.getColumnModel().getDataIndex(colIndex);
-				var col = grid.getColumnModel().getColumnById(fieldName);
+				var fieldId = grid.getColumnModel().getColumnId(colIndex);
+				var col = grid.getColumnModel().getColumnById(fieldId);
 				var data = record.get(fieldName);
 
 				var title = record.get('title');
 
+				if( col.tqSeoOnClick ) {
+					col.tqSeoOnClick(record, fieldName, fieldId, col, data);
+				}
 
 				if( col.tqSeoEditor ) {
 					// Init editor field
@@ -246,7 +246,7 @@ TQSeo.overview.grid = {
 										var response = Ext.decode(response.responseText);
 
 										if( response && response.error ) {
-											TYPO3.Flashmessage.display(TYPO3.Severity.error, 'TODO', response.error);
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, '', response.error);
 										}
 
 										grid.getStore().load();
@@ -306,12 +306,7 @@ TQSeo.overview.grid = {
 			case 'searchengines':
 				gridDsColumns.push(
 					{name: 'tx_tqseo_canonicalurl', type: 'string'},
-					{name: 'tx_tqseo_is_exclude', type: 'string'}
-				);
-				break;
-
-			case 'sitemap':
-				gridDsColumns.push(
+					{name: 'tx_tqseo_is_exclude', type: 'string'},
 					{name: 'tx_tqseo_priority', type: 'string'}
 				);
 				break;
@@ -424,7 +419,7 @@ TQSeo.overview.grid = {
 					value = new Array(record.data._depth).join('    ') + value;
 				}
 
-				return me._fieldRendererCallback(value, qtip, false);
+				return me._fieldRendererCallback(value, qtip, false, true);
 			},
 			tqSeoEditor	: {
 				xtype: 'textfield',
@@ -501,6 +496,19 @@ TQSeo.overview.grid = {
 				break;
 
 			case 'searchengines':
+
+				var fieldRendererSitemapPriority = function(value, metaData, record, rowIndex, colIndex, store) {
+					var qtip = value;
+
+					if( value == '0' ) {
+						value = '<span class="tqseo-default">'+String.escape(TQSeo.overview.conf.lang.value_default)+'</span>';
+					} else {
+						value = String.escape(value);
+					}
+
+					return me._fieldRendererCallback(value, qtip, false, false);
+				}
+
 				columnModel.push({
 					id       : 'tx_tqseo_canonicalurl',
 					header   : TQSeo.overview.conf.lang.page_searchengine_canonicalurl,
@@ -512,9 +520,19 @@ TQSeo.overview.grid = {
 						xtype: 'textfield'
 					}
 				},{
+					id       : 'tx_tqseo_priority',
+					header   : TQSeo.overview.conf.lang.page_sitemap_priority,
+					width    : 150,
+					sortable : false,
+					dataIndex: 'tx_tqseo_priority',
+					renderer : fieldRendererSitemapPriority,
+					tqSeoEditor	: {
+						xtype: 'numberfield'
+					}
+				},{
 					id       : 'tx_tqseo_is_exclude',
 					header   : TQSeo.overview.conf.lang.page_searchengine_is_exclude,
-					width    : 50,
+					width    : 100,
 					sortable : false,
 					dataIndex: 'tx_tqseo_is_exclude',
 					renderer : fieldRendererBoolean,
@@ -541,19 +559,6 @@ TQSeo.overview.grid = {
 				});
 				break;
 
-			case 'sitemap':
-				columnModel.push({
-					id       : 'tx_tqseo_priority',
-					header   : TQSeo.overview.conf.lang.page_sitemap_priority,
-					width    : 100,
-					sortable : false,
-					dataIndex: 'tx_tqseo_priority',
-					renderer : fieldRendererRaw,
-					tqSeoEditor	: {
-						xtype: 'numberfield'
-					}
-				});
-				break;
 
 			case 'url':
 				var fieldRendererUrlScheme = function(value, metaData, record, rowIndex, colIndex, store) {
@@ -562,7 +567,7 @@ TQSeo.overview.grid = {
 					value = parseInt(value);
 					switch(value) {
 						case 0:
-							ret = String.escape( TQSeo.overview.conf.lang.page_url_scheme_default );
+							ret = '<span class="tqseo-default">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_default )+'</span>';
 							break;
 
 						case 1:
@@ -690,6 +695,12 @@ TQSeo.overview.grid = {
 
 
 			case 'pagetitle':
+				var fieldRendererTitleSimulate = function(value, metaData, record, rowIndex, colIndex, store) {
+					var qtip = String.escape(TQSeo.overview.conf.lang.qtip_pagetitle_simulate);
+
+					return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.info+'</div>';
+				}
+
 				columnModel.push({
 					id       : 'tx_tqseo_pagetitle_rel',
 					header   : TQSeo.overview.conf.lang.page_tx_tqseo_pagetitle_rel,
@@ -730,6 +741,39 @@ TQSeo.overview.grid = {
 					tqSeoEditor	: {
 						xtype: 'textfield'
 					}
+				},{
+					id       : 'title_simulated',
+					header   : '',
+					width    : 50,
+					sortable : false,
+					renderer : fieldRendererTitleSimulate,
+					tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+						me.grid.loadMask.show();
+
+						var callbackFinish = function(response) {
+							var response = Ext.decode(response.responseText);
+
+							me.grid.loadMask.hide();
+
+							if( response && response.error ) {
+								TYPO3.Flashmessage.display(TYPO3.Severity.error, '', response.error);
+							}
+
+							if( response && response.title ) {
+								TYPO3.Flashmessage.display(TYPO3.Severity.information, '', response.title);
+							}
+						};
+
+						Ext.Ajax.request({
+							url: TQSeo.overview.conf.ajaxController + '&cmd=generateSimulatedTitle',
+							params: {
+								pid:   Ext.encode(record.get('uid'))
+							},
+							success: callbackFinish,
+							failure: callbackFinish
+						});
+
+					}
 				});
 				break;
 
@@ -745,6 +789,14 @@ TQSeo.overview.grid = {
 				break;
 
 		}
+
+
+		// Add tooltip
+		Ext.each(columnModel, function(item, index) {
+			if( !item.tooltip ) {
+				item.tooltip = item.header;
+			}
+		});
 
 		return columnModel;
 	},
@@ -787,7 +839,7 @@ TQSeo.overview.grid = {
 		}
 		qtip = qtip.replace(/\n/g, "<br />");
 
-		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + '<div class="icon"></div></div>';
+		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + TQSeo.overview.conf.sprite.edit+'</div>';
 	}
 
 

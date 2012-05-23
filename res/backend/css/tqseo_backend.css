@@ -14,6 +14,11 @@
 	text-align: center;
 }
 
+.tqseo-default {
+	color: #808080;
+	font-style: italic;
+}
+
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover {
 	cursor: pointer;
 	background-color: #B3B3B3;
@@ -25,16 +30,24 @@
 	color: black;
 }
 
-.tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover .icon {
+.tqseo-grid-editable .x-grid3-body .x-grid3-cell .t3-icon {
+	visibility: hidden;
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3-icon {
 	position: absolute; right: 0px; top: 0px; bottom: 0px;
-
-	height: 16px;
-	width: 16px;
-
+	visibility: visible;
 	background-color: #B3B3B3;
-	background-image: url(../../images/icon-edit.png);
-	background-position: right center;
-	background-repeat: no-repeat;
+}
+
+.x-grid3-body .x-grid3-cell  .tqseo-toolbar {
+	text-align: center;
+}
+
+.x-grid3-body .x-grid3-cell .tqseo-toolbar .t3-icon {
+	visibility: visible !important;
+	position: static !important;
+	background-color: transparent !important;
 }
 
 

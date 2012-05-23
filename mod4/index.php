@@ -59,7 +59,6 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 			'function' => Array (
 				'metadata'		=> $LANG->getLL('function_metadata'),
 				'searchengines'	=> $LANG->getLL('function_searchengines'),
-				'sitemap'		=> $LANG->getLL('function_sitemap'),
 				'url'			=> $LANG->getLL('function_url'),
 				'pagetitle'		=> $LANG->getLL('function_pagetitle'),
 				'pagetitlesim'	=> $LANG->getLL('function_pagetitle_simulator'),
@@ -81,10 +80,6 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		return $this->_handleList('searchengines');
 	}
 
-	public function executeSitemap() {
-		return $this->_handleList('sitemap');
-	}
-
 	public function executeUrl() {
 		return $this->_handleList('url');
 	}
@@ -102,6 +97,10 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 		$pageId		= (int)$this->id;
 
+		if( empty($pageId) ) {
+			return '<div class="typo3-message message-warning">'.htmlspecialchars($LANG->getLL('message_no_valid_page')).'</div>';
+		}
+
 		###############################
 		# HTML
 		###############################
@@ -110,7 +109,6 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/TQSeo.overview.js');
 
 		$realUrlAvailable = t3lib_extMgm::isLoaded('realurl');
-$realUrlAvailable=true;
 
 			// Include Ext JS inline code
 		$this->pageRenderer->addJsInlineCode(
@@ -138,7 +136,12 @@ $realUrlAvailable=true;
 
 				criteriaFulltext		: "",
 
-				realurlAvailable		: '. json_encode($realUrlAvailable) .'
+				realurlAvailable		: '. json_encode($realUrlAvailable) .',
+
+				sprite : {
+					edit	: '.json_encode( t3lib_iconWorks::getSpriteIcon('actions-document-open') ).',
+					info	: '.json_encode( t3lib_iconWorks::getSpriteIcon('actions-document-info') ).'
+				}
 			};
 
 			// Localisation:
@@ -185,10 +188,12 @@ $realUrlAvailable=true;
 				page_url_alias					: '. json_encode( $LANG->getLL('header_url_alias') ) .',
 				page_url_realurl_pathsegment	: '. json_encode( $LANG->getLL('header_url_realurl_pathsegment') ) .',
 				page_url_realurl_pathoverride	: '. json_encode( $LANG->getLL('header_url_realurl_pathoverride') ) .',
-				page_url_realurl_exclude		: '. json_encode( $LANG->getLL('header_url_realurl_exclude') ) .'
+				page_url_realurl_exclude		: '. json_encode( $LANG->getLL('header_url_realurl_exclude') ) .',
 
+				qtip_pagetitle_simulate			: '. json_encode( $LANG->getLL('qtip_pagetitle_simulate') ) .',
+
+				value_default					: '. json_encode( $LANG->getLL('value_default') ) .'
 			};
-
 			');
 
 		###############################

@@ -104,13 +104,6 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 					$fieldList = array_merge($fieldList, array(
 						'tx_tqseo_canonicalurl',
 						'tx_tqseo_is_exclude',
-					));
-
-					$list = $this->_listDefaultTree($page, $depth, $fieldList);
-					break;
-
-				case 'sitemap':
-					$fieldList = array_merge($fieldList, array(
 						'tx_tqseo_priority',
 					));
 
@@ -156,6 +149,42 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		$ret = array(
 			'results'	=> count($list),
 			'rows'		=> array_values($list),
+		);
+
+		return $ret;
+	}
+
+	/**
+	 * Generate simulated title for one page
+	 *
+	 * @return	string
+	 */
+	protected function _executeGenerateSimulatedTitle() {
+		global $TYPO3_DB, $BE_USER;
+
+		// Init
+		$ret = '';
+
+		$pid = (int)$this->_postVar['pid'];
+
+		if( !empty($pid) ) {
+			$page = t3lib_BEfunc::getRecord('pages', $pid);
+
+			// Load TYPO3 classes
+			// TODO: check if this is needed anymore with autoloading
+			require_once PATH_t3lib.'class.t3lib_page.php';
+			require_once PATH_t3lib.'class.t3lib_tstemplate.php';
+			require_once PATH_t3lib.'class.t3lib_tsparser_ext.php';
+			require_once dirname(__FILE__).'/../../class.pagetitle.php';
+
+			$this->_initTsfe($page, null, $page, null);
+
+			$pagetitle = new user_tqseo_pagetitle();
+			$ret = $pagetitle->main($page['title']);
+		}
+
+		$ret = array(
+			'title' => $ret,
 		);
 
 		return $ret;
@@ -350,7 +379,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 
 		// check if current page has a ts-setup-template
 		// if not, we go down the tree to the parent page
-		if( count($rootLine) >= 2 && empty($this->_templatePidList[$pageUid]) ) {
+		if( count($rootLine) >= 2 && !empty($this->_templatePidList) && empty($this->_templatePidList[$pageUid]) ) {
 			// go to parent page in rootline
 			reset($rootLine);
 			next($rootLine);

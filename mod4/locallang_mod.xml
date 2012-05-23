@@ -7,8 +7,13 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="mlang_tabs_tab">SEO</label>
-			<label index="mlang_labels_tablabel">SEO Overview</label>
-			<label index="mlang_labels_tabdescr">SEO Overview</label>
+			<label index="mlang_labels_tablabel">SEO Page Overview</label>
+			<label index="mlang_labels_tabdescr">SEO Page Overview</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">SEO</label>
+			<label index="mlang_labels_tabdescr">SEO Seitenübersicht</label>
+			<label index="mlang_labels_tablabel">SEO Seitenübersicht</label>
 		</languageKey>
 	</data>
 </T3locallang>
