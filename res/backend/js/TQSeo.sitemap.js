@@ -180,8 +180,8 @@ TQSeo.sitemap.grid = {
 		var dateYesterday	= new Date().add(Date.DAY, -1).format("Y-m-d");
 
 		var rendererDatetime = function(value, metaData, record, rowIndex, colIndex, store) {
-			var ret = String.escape(value);
-			var qtip = String.escape(value);
+			var ret = Ext.util.Format.htmlEncode(value);
+			var qtip = Ext.util.Format.htmlEncode(value);
 
 			ret = ret.split(dateToday).join('<strong>'+TQSeo.sitemap.conf.lang.today+'</strong>');
 			ret = ret.split(dateYesterday).join('<strong>'+TQSeo.sitemap.conf.lang.yesterday+'</strong>');
@@ -199,13 +199,13 @@ TQSeo.sitemap.grid = {
 
 				// Flag (if available)
 				if( lang.flag ) {
-					ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+String.escape(lang.flag)+' t3-icon-'+String.escape(lang.flag)+'"></span>';
+					ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+Ext.util.Format.htmlEncode(lang.flag)+' t3-icon-'+Ext.util.Format.htmlEncode(lang.flag)+'"></span>';
 					ret += '&nbsp;';
 				}
 
 				// Label
-				ret += String.escape(lang.label);
-				qtip = String.escape(lang.label);
+				ret += Ext.util.Format.htmlEncode(lang.label);
+				qtip = Ext.util.Format.htmlEncode(lang.label);
 
 			} else {
 				ret = value;
@@ -216,9 +216,9 @@ TQSeo.sitemap.grid = {
 
 
 		var rendererUrl = function(value, metaData, record, rowIndex, colIndex, store) {
-			value = String.escape(value);
+			value = Ext.util.Format.htmlEncode(value);
 
-			var qtip = String.escape(value);
+			var qtip = Ext.util.Format.htmlEncode(value);
 
 			return '<div ext:qtip="' + qtip +'">' + value + '</div>';
 		}

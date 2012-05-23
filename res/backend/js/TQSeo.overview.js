@@ -171,12 +171,12 @@ TQSeo.overview.grid = {
 							[2, 2],
 							[3, 3],
 							[4, 4],
-							[5, 5],
+							[5, 5]
 						]
 					}),
 					valueField: 'id',
 					displayField: 'label'
-		    	},
+		    	}
 			]
 		});
 		this.grid = grid;
@@ -246,7 +246,7 @@ TQSeo.overview.grid = {
 										var response = Ext.decode(response.responseText);
 
 										if( response && response.error ) {
-											TYPO3.Flashmessage.display(TYPO3.Severity.error, '', response.error);
+											TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
 										}
 
 										grid.getStore().load();
@@ -391,9 +391,9 @@ TQSeo.overview.grid = {
 
 		var fieldRendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
 			if( value == 0 || value == '' ) {
-				value = '<div class="tqseo-boolean">'+String.escape(TQSeo.overview.conf.lang.boolean_no)+'</div>';
+				value = '<div class="tqseo-boolean">'+Ext.util.Format.htmlEncode(TQSeo.overview.conf.lang.boolean_no)+'</div>';
 			} else {
-				value = '<div class="tqseo-boolean"><strong>'+String.escape(TQSeo.overview.conf.lang.boolean_yes)+'</strong></div>';
+				value = '<div class="tqseo-boolean"><strong>'+Ext.util.Format.htmlEncode(TQSeo.overview.conf.lang.boolean_yes)+'</strong></div>';
 			}
 
 			return me._fieldRendererCallback(value, '', false, false);
@@ -501,9 +501,9 @@ TQSeo.overview.grid = {
 					var qtip = value;
 
 					if( value == '0' ) {
-						value = '<span class="tqseo-default">'+String.escape(TQSeo.overview.conf.lang.value_default)+'</span>';
+						value = '<span class="tqseo-default">'+Ext.util.Format.htmlEncode(TQSeo.overview.conf.lang.value_default)+'</span>';
 					} else {
-						value = String.escape(value);
+						value = Ext.util.Format.htmlEncode(value);
 					}
 
 					return me._fieldRendererCallback(value, qtip, false, false);
@@ -567,15 +567,15 @@ TQSeo.overview.grid = {
 					value = parseInt(value);
 					switch(value) {
 						case 0:
-							ret = '<span class="tqseo-default">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_default )+'</span>';
+							ret = '<span class="tqseo-default">'+Ext.util.Format.htmlEncode( TQSeo.overview.conf.lang.page_url_scheme_default )+'</span>';
 							break;
 
 						case 1:
-							ret = '<strong class="tqseo-url-http">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_http)+'</strong>';
+							ret = '<strong class="tqseo-url-http">'+Ext.util.Format.htmlEncode( TQSeo.overview.conf.lang.page_url_scheme_http)+'</strong>';
 							break;
 
 						case 2:
-							ret = '<strong class="tqseo-url-https">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_https)+'</strong>';
+							ret = '<strong class="tqseo-url-https">'+Ext.util.Format.htmlEncode( TQSeo.overview.conf.lang.page_url_scheme_https)+'</strong>';
 							break;
 					}
 
@@ -696,7 +696,7 @@ TQSeo.overview.grid = {
 
 			case 'pagetitle':
 				var fieldRendererTitleSimulate = function(value, metaData, record, rowIndex, colIndex, store) {
-					var qtip = String.escape(TQSeo.overview.conf.lang.qtip_pagetitle_simulate);
+					var qtip = Ext.util.Format.htmlEncode(TQSeo.overview.conf.lang.qtip_pagetitle_simulate);
 
 					return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.info+'</div>';
 				}
@@ -756,11 +756,11 @@ TQSeo.overview.grid = {
 							me.grid.loadMask.hide();
 
 							if( response && response.error ) {
-								TYPO3.Flashmessage.display(TYPO3.Severity.error, '', response.error);
+								TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
 							}
 
 							if( response && response.title ) {
-								TYPO3.Flashmessage.display(TYPO3.Severity.information, '', response.title);
+								TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.title) );
 							}
 						};
 
@@ -812,9 +812,11 @@ TQSeo.overview.grid = {
 
 	_fieldRendererCallback: function(value, qtip, maxLength, escape) {
 		var classes = '';
+		var icon = '';
 
 		if( this._cellEditMode ) {
 			classes += 'tqseo-cell-editable ';
+			icon = TQSeo.overview.conf.sprite.edit;
 		}
 
 		if(this._fullCellHighlight && !Ext.isEmpty(TQSeo.overview.conf.criteriaFulltext)) {
@@ -826,8 +828,9 @@ TQSeo.overview.grid = {
 		if( maxLength && value != '' && value.length >= maxLength ) {
 			value = value.substring(0, (maxLength-3) )+'...';
 		}
+		
 		if(escape) {
-			value = String.escape(value);
+			value = Ext.util.Format.htmlEncode(value);
 			value = value.replace(/ /g, "&nbsp;");
 			value += '&nbsp;';
 		}
@@ -835,11 +838,11 @@ TQSeo.overview.grid = {
 
 
 		if(escape) {
-			qtip = String.escape(qtip);
+			qtip = Ext.util.Format.htmlEncode(qtip);
 		}
 		qtip = qtip.replace(/\n/g, "<br />");
 
-		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + TQSeo.overview.conf.sprite.edit+'</div>';
+		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value +icon+'</div>';
 	}
 
 

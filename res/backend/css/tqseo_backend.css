@@ -19,11 +19,14 @@
 	font-style: italic;
 }
 
-.tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover {
+.tqseo-grid-editable .x-grid3-body .x-grid3-cell {
+	position: relative;
 	cursor: pointer;
+}
+
+.tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover {
 	background-color: #B3B3B3;
 	color: white;
-	position: relative;
 }
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover.tqseo-cell-highlight {
@@ -32,12 +35,12 @@
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell .t3-icon {
 	visibility: hidden;
+	position: absolute; right: -1px; top: 0px; bottom: 0px;
+	background-color: #B3B3B3;
 }
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover .t3-icon {
-	position: absolute; right: 0px; top: 0px; bottom: 0px;
 	visibility: visible;
-	background-color: #B3B3B3;
 }
 
 .x-grid3-body .x-grid3-cell  .tqseo-toolbar {
