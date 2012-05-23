@@ -10,9 +10,10 @@
 			<label index="title_content">TEQneers SEO Settings</label>
 			<label index="function_metadata">Metadata</label>
 			<label index="function_pagetitle">Pagetitle</label>
-			<label index="function_pagetitle_simulator">Pagetitle (Simulator)</label>
 			<label index="function_searchengines">SearchEngines</label>
 			<label index="function_sitemap">Sitemap</label>
+			<label index="function_url">URL Handling</label>
+			<label index="function_pagetitle_simulator">Pagetitle (Simulator)</label>
 
 			<label index="title_overview">SEO Overview</label>
 
@@ -45,8 +46,18 @@
 
 			<label index="header_searchengine_canonicalurl">Canonical URL</label>
 			<label index="header_searchengine_is_excluded">Excluded</label>
-			<label index="header_searchengine_is_excluded_disabled">No, visible to SearchEngines</label>
-			<label index="header_searchengine_is_excluded_enabled">Yes, EXCLUDE page from SearchEngines index</label>
+			<label index="searchengine_is_exclude_disabled">No, visible to SearchEngines</label>
+			<label index="searchengine_is_exclude_enabled">Yes, EXCLUDE page from SearchEngines index</label>
+
+			<label index="header_url_scheme">Scheme</label>
+			<label index="page_url_scheme_default">Default</label>
+			<label index="page_url_scheme_http">HTTP</label>
+			<label index="page_url_scheme_https">HTTPS</label>
+
+			<label index="header_url_alias">Alias</label>
+			<label index="header_url_realurl_pathsegment">RealURL Path Segment</label>
+			<label index="header_url_realurl_pathoverride">RealURL Path Override</label>
+			<label index="header_url_realurl_exclude">RealURL Exclude</label>
 
 			<label index="header_sitemap_priority">Sitemap Priority</label>
 

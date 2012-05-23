@@ -1,6 +1,3 @@
 * Backend module for page-seo
-	-> meta
 	-> settings
-	-> sitemap
-	-> realurl
 * Better Security/Permission checks in backend

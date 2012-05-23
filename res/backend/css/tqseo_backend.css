@@ -6,6 +6,13 @@
 	background-color: #FCFF91;
 }
 
+.tqseo-url-https {
+	color: green;
+}
+
+.tqseo-boolean {
+	text-align: center;
+}
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell:hover {
 	cursor: pointer;

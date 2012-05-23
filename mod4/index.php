@@ -60,6 +60,7 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				'metadata'		=> $LANG->getLL('function_metadata'),
 				'searchengines'	=> $LANG->getLL('function_searchengines'),
 				'sitemap'		=> $LANG->getLL('function_sitemap'),
+				'url'			=> $LANG->getLL('function_url'),
 				'pagetitle'		=> $LANG->getLL('function_pagetitle'),
 				'pagetitlesim'	=> $LANG->getLL('function_pagetitle_simulator'),
 			)
@@ -76,20 +77,24 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		return $this->_handleList('metadata');
 	}
 
-	public function executePagetitle() {
-		return $this->_handleList('pagetitle');
-	}
-
-	public function executePagetitleSim() {
-		return $this->_handleList('pagetitlesim');
-	}
-
 	public function executeSearchengines() {
 		return $this->_handleList('searchengines');
 	}
 
 	public function executeSitemap() {
 		return $this->_handleList('sitemap');
+	}
+
+	public function executeUrl() {
+		return $this->_handleList('url');
+	}
+
+	public function executePagetitle() {
+		return $this->_handleList('pagetitle');
+	}
+
+	public function executePagetitleSim() {
+		return $this->_handleList('pagetitlesim');
 	}
 
 	protected function _handleList($type) {
@@ -104,7 +109,10 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
 		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/TQSeo.overview.js');
 
-		// Include Ext JS inline code
+		$realUrlAvailable = t3lib_extMgm::isLoaded('realurl');
+$realUrlAvailable=true;
+
+			// Include Ext JS inline code
 		$this->pageRenderer->addJsInlineCode(
 			'TQSeo.overview',
 
@@ -128,7 +136,9 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 				listType				: '. json_encode($type) .',
 
-				criteriaFulltext		: ""
+				criteriaFulltext		: "",
+
+				realurlAvailable		: '. json_encode($realUrlAvailable) .'
 			};
 
 			// Localisation:
@@ -163,10 +173,19 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 
 				page_searchengine_canonicalurl	: '. json_encode( $LANG->getLL('header_searchengine_canonicalurl') ) .',
 				page_searchengine_is_exclude	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded') ) .',
-				page_searchengine_is_exclude_disabled	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded_disabled') ) .',
-				page_searchengine_is_exclude_enabled	: '. json_encode( $LANG->getLL('header_searchengine_is_excluded_enabled') ) .',
+				searchengine_is_exclude_disabled	: '. json_encode( $LANG->getLL('searchengine_is_exclude_disabled') ) .',
+				searchengine_is_exclude_enabled	: '. json_encode( $LANG->getLL('searchengine_is_exclude_enabled') ) .',
 
-				page_sitemap_priority			: '. json_encode( $LANG->getLL('header_sitemap_priority') ) .'
+				page_sitemap_priority			: '. json_encode( $LANG->getLL('header_sitemap_priority') ) .',
+
+				page_url_scheme					: '. json_encode( $LANG->getLL('header_url_scheme') ) .',
+				page_url_scheme_default			: '. json_encode( $LANG->getLL('page_url_scheme_default') ) .',
+				page_url_scheme_http			: '. json_encode( $LANG->getLL('page_url_scheme_http') ) .',
+				page_url_scheme_https			: '. json_encode( $LANG->getLL('page_url_scheme_https') ) .',
+				page_url_alias					: '. json_encode( $LANG->getLL('header_url_alias') ) .',
+				page_url_realurl_pathsegment	: '. json_encode( $LANG->getLL('header_url_realurl_pathsegment') ) .',
+				page_url_realurl_pathoverride	: '. json_encode( $LANG->getLL('header_url_realurl_pathoverride') ) .',
+				page_url_realurl_exclude		: '. json_encode( $LANG->getLL('header_url_realurl_exclude') ) .'
 
 			};
 

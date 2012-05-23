@@ -100,22 +100,6 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 
 					break;
 
-				case 'pagetitle':
-					$fieldList = array_merge($fieldList, array(
-						'tx_tqseo_pagetitle',
-						'tx_tqseo_pagetitle_rel',
-						'tx_tqseo_pagetitle_prefix',
-						'tx_tqseo_pagetitle_suffix',
-					));
-
-					$list = $this->_listDefaultTree($page, $depth, $fieldList);
-					break;
-
-				case 'pagetitlesim':
-					$buildTree = false;
-					$list = $this->_listPageTitleSim($page, $depth);
-					break;
-
 				case 'searchengines':
 					$fieldList = array_merge($fieldList, array(
 						'tx_tqseo_canonicalurl',
@@ -131,6 +115,35 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 					));
 
 					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+					break;
+
+				case 'url':
+					$fieldList = array_merge($fieldList, array(
+						'title',
+						'url_scheme',
+						'alias',
+						'tx_realurl_pathsegment',
+						'tx_realurl_pathoverride',
+						'tx_realurl_exclude',
+					));
+
+					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+					break;
+
+				case 'pagetitle':
+					$fieldList = array_merge($fieldList, array(
+						'tx_tqseo_pagetitle',
+						'tx_tqseo_pagetitle_rel',
+						'tx_tqseo_pagetitle_prefix',
+						'tx_tqseo_pagetitle_suffix',
+					));
+
+					$list = $this->_listDefaultTree($page, $depth, $fieldList);
+					break;
+
+				case 'pagetitlesim':
+					$buildTree = false;
+					$list = $this->_listPageTitleSim($page, $depth);
 					break;
 
 				default:
@@ -449,10 +462,10 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		# Update
 		###############################
 
-		// Update field in page
-		$TYPO3_DB->exec_UPDATEquery(
+		// Update field in page (also logs update event and clear cache for this page)
+		$this->_tce()->updateDB(
 			'pages',
-			'uid = '.(int)$pid,
+			(int)$pid,
 			array(
 				$fieldName => $fieldValue
 			)

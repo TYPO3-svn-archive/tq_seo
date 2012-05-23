@@ -64,15 +64,6 @@ TQSeo.overview.grid = {
 				this._cellEditMode = true;
 				break;
 
-			case 'pagetitle':
-				this._cellEditMode = true;
-				this._fullCellHighlight = false;
-				break;
-
-			case 'pagetitlesim':
-				this._fullCellHighlight = false;
-				break;
-
 			case 'searchengines':
 				this._fullCellHighlight = false;
 				this._cellEditMode = true;
@@ -81,6 +72,20 @@ TQSeo.overview.grid = {
 			case 'sitemap':
 				this._fullCellHighlight = false;
 				this._cellEditMode = true;
+				break;
+
+			case 'url':
+				this._fullCellHighlight = false;
+				this._cellEditMode = true;
+				break;
+
+			case 'pagetitle':
+				this._cellEditMode = true;
+				this._fullCellHighlight = false;
+				break;
+
+			case 'pagetitlesim':
+				this._fullCellHighlight = false;
 				break;
 
 			default:
@@ -298,6 +303,34 @@ TQSeo.overview.grid = {
 				);
 				break;
 
+			case 'searchengines':
+				gridDsColumns.push(
+					{name: 'tx_tqseo_canonicalurl', type: 'string'},
+					{name: 'tx_tqseo_is_exclude', type: 'string'}
+				);
+				break;
+
+			case 'sitemap':
+				gridDsColumns.push(
+					{name: 'tx_tqseo_priority', type: 'string'}
+				);
+				break;
+
+			case 'url':
+				gridDsColumns.push(
+					{name: 'alias', type: 'string'},
+					{name: 'url_scheme', type: 'string'}
+				);
+
+				if( TQSeo.overview.conf.realurlAvailable ) {
+					gridDsColumns.push(
+						{name: 'tx_realurl_pathsegment', type: 'string'},
+						{name: 'tx_realurl_pathoverride', type: 'string'},
+						{name: 'tx_realurl_exclude', type: 'string'}
+					);
+				}
+				break;
+
 			case 'pagetitle':
 				gridDsColumns.push(
 					{name: 'tx_tqseo_pagetitle', type: 'string'},
@@ -310,19 +343,6 @@ TQSeo.overview.grid = {
 			case 'pagetitlesim':
 				gridDsColumns.push(
 					{name: 'title_simulated', type: 'string'}
-				);
-				break;
-
-			case 'searchengines':
-				gridDsColumns.push(
-					{name: 'tx_tqseo_canonicalurl', type: 'string'},
-					{name: 'tx_tqseo_is_exclude', type: 'string'}
-				);
-				break;
-
-			case 'sitemap':
-				gridDsColumns.push(
-					{name: 'tx_tqseo_priority', type: 'string'}
 				);
 				break;
 		}
@@ -376,9 +396,9 @@ TQSeo.overview.grid = {
 
 		var fieldRendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
 			if( value == 0 || value == '' ) {
-				value = String.escape(TQSeo.overview.conf.lang.boolean_no);
+				value = '<div class="tqseo-boolean">'+String.escape(TQSeo.overview.conf.lang.boolean_no)+'</div>';
 			} else {
-				value = '<strong>'+String.escape(TQSeo.overview.conf.lang.boolean_yes)+'</strong>';
+				value = '<div class="tqseo-boolean"><strong>'+String.escape(TQSeo.overview.conf.lang.boolean_yes)+'</strong></div>';
 			}
 
 			return me._fieldRendererCallback(value, '', false, false);
@@ -473,11 +493,201 @@ TQSeo.overview.grid = {
 					dataIndex	: 'lastupdated',
 					renderer	: fieldRendererRaw,
 					tqSeoEditor	: {
-						xtype: 'datefield'
+						xtype: 'datefield',
+						format: 'Y-m-d'
 					}
 				});
 
 				break;
+
+			case 'searchengines':
+				columnModel.push({
+					id       : 'tx_tqseo_canonicalurl',
+					header   : TQSeo.overview.conf.lang.page_searchengine_canonicalurl,
+					width    : 400,
+					sortable : false,
+					dataIndex: 'tx_tqseo_canonicalurl',
+					renderer : fieldRendererRaw,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				},{
+					id       : 'tx_tqseo_is_exclude',
+					header   : TQSeo.overview.conf.lang.page_searchengine_is_exclude,
+					width    : 50,
+					sortable : false,
+					dataIndex: 'tx_tqseo_is_exclude',
+					renderer : fieldRendererBoolean,
+					tqSeoEditor	: {
+						xtype: 'combo',
+						forceSelection: true,
+						editable: false,
+						mode: 'local',
+						triggerAction: 'all',
+						store: new Ext.data.ArrayStore({
+							id: 0,
+							fields: [
+								'id',
+								'label'
+							],
+							data: [
+								[0, TQSeo.overview.conf.lang.page_searchengine_is_exclude_disabled],
+								[1, TQSeo.overview.conf.lang.page_searchengine_is_exclude_enabled]
+							]
+						}),
+						valueField: 'id',
+						displayField: 'label'
+					}
+				});
+				break;
+
+			case 'sitemap':
+				columnModel.push({
+					id       : 'tx_tqseo_priority',
+					header   : TQSeo.overview.conf.lang.page_sitemap_priority,
+					width    : 100,
+					sortable : false,
+					dataIndex: 'tx_tqseo_priority',
+					renderer : fieldRendererRaw,
+					tqSeoEditor	: {
+						xtype: 'numberfield'
+					}
+				});
+				break;
+
+			case 'url':
+				var fieldRendererUrlScheme = function(value, metaData, record, rowIndex, colIndex, store) {
+					var ret = '';
+
+					value = parseInt(value);
+					switch(value) {
+						case 0:
+							ret = String.escape( TQSeo.overview.conf.lang.page_url_scheme_default );
+							break;
+
+						case 1:
+							ret = '<strong class="tqseo-url-http">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_http)+'</strong>';
+							break;
+
+						case 2:
+							ret = '<strong class="tqseo-url-https">'+String.escape( TQSeo.overview.conf.lang.page_url_scheme_https)+'</strong>';
+							break;
+					}
+
+					return ret;
+				}
+
+
+				columnModel.push({
+					id       : 'url_scheme',
+					header   : TQSeo.overview.conf.lang.page_url_scheme,
+					width    : 100,
+					sortable : false,
+					dataIndex: 'url_scheme',
+					renderer : fieldRendererUrlScheme,
+					tqSeoEditor	: {
+						xtype: 'combo',
+						forceSelection: true,
+						editable: false,
+						mode: 'local',
+						triggerAction: 'all',
+						store: new Ext.data.ArrayStore({
+							id: 0,
+							fields: [
+								'id',
+								'label'
+							],
+							data: [
+								[0, TQSeo.overview.conf.lang.page_url_scheme_default],
+								[1, TQSeo.overview.conf.lang.page_url_scheme_http],
+								[2, TQSeo.overview.conf.lang.page_url_scheme_https]
+							]
+						}),
+						valueField: 'id',
+						displayField: 'label'
+					}
+				},{
+					id       : 'alias',
+					header   : TQSeo.overview.conf.lang.page_url_alias,
+					width    : 200,
+					sortable : false,
+					dataIndex: 'alias',
+					renderer : fieldRendererRaw,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				});
+
+				if( TQSeo.overview.conf.realurlAvailable ) {
+					columnModel.push({
+						id       : 'tx_realurl_pathsegment',
+						header   : TQSeo.overview.conf.lang.page_url_realurl_pathsegment,
+						width    : 200,
+						sortable : false,
+						dataIndex: 'tx_realurl_pathsegment',
+						renderer : fieldRendererRaw,
+						tqSeoEditor	: {
+							xtype: 'textfield'
+						}
+					},{
+						id       : 'tx_realurl_pathoverride',
+						header   : TQSeo.overview.conf.lang.page_url_realurl_pathoverride,
+						width    : 150,
+						sortable : false,
+						dataIndex: 'tx_realurl_pathoverride',
+						renderer : fieldRendererBoolean,
+						tqSeoEditor	: {
+							xtype: 'combo',
+							forceSelection: true,
+							editable: false,
+							mode: 'local',
+							triggerAction: 'all',
+							store: new Ext.data.ArrayStore({
+								id: 0,
+								fields: [
+									'id',
+									'label'
+								],
+								data: [
+									[0, TQSeo.overview.conf.lang.boolean_no],
+									[1, TQSeo.overview.conf.lang.boolean_yes]
+								]
+							}),
+							valueField: 'id',
+							displayField: 'label'
+						}
+					},{
+						id       : 'tx_realurl_exclude',
+						header   : TQSeo.overview.conf.lang.page_url_realurl_exclude,
+						width    : 150,
+						sortable : false,
+						dataIndex: 'tx_realurl_exclude',
+						renderer : fieldRendererBoolean,
+						tqSeoEditor	: {
+							xtype: 'combo',
+							forceSelection: true,
+							editable: false,
+							mode: 'local',
+							triggerAction: 'all',
+							store: new Ext.data.ArrayStore({
+								id: 0,
+								fields: [
+									'id',
+									'label'
+								],
+								data: [
+									[0, TQSeo.overview.conf.lang.boolean_no],
+									[1, TQSeo.overview.conf.lang.boolean_yes]
+								]
+							}),
+							valueField: 'id',
+							displayField: 'label'
+						}
+					});
+				}
+
+				break;
+
 
 			case 'pagetitle':
 				columnModel.push({
@@ -534,62 +744,6 @@ TQSeo.overview.grid = {
 				});
 				break;
 
-			case 'searchengines':
-				columnModel.push({
-					id       : 'tx_tqseo_canonicalurl',
-					header   : TQSeo.overview.conf.lang.page_searchengine_canonicalurl,
-					width    : 400,
-					sortable : false,
-					dataIndex: 'tx_tqseo_canonicalurl',
-					renderer : fieldRendererRaw,
-					tqSeoEditor	: {
-						xtype: 'textfield'
-					}
-				},{
-					id       : 'tx_tqseo_is_exclude',
-					header   : TQSeo.overview.conf.lang.page_searchengine_is_exclude,
-					width    : 50,
-					sortable : false,
-					dataIndex: 'tx_tqseo_is_exclude',
-					renderer : fieldRendererBoolean,
-					tqSeoEditor	: {
-						xtype: 'combo',
-						forceSelection: true,
-						editable: false,
-						mode: 'local',
-						triggerAction: 'all',
-						store: new Ext.data.ArrayStore({
-							id: 0,
-							fields: [
-								'id',
-								'label'
-							],
-							data: [
-								[0, TQSeo.overview.conf.lang.page_searchengine_is_exclude_disabled],
-								[1, TQSeo.overview.conf.lang.page_searchengine_is_exclude_enabled]
-							]
-						}),
-						valueField: 'id',
-						displayField: 'label'
-					}
-				});
-				break;
-
-			case 'sitemap':
-				columnModel.push({
-					id       : 'tx_tqseo_priority',
-					header   : TQSeo.overview.conf.lang.page_sitemap_priority,
-					width    : 400,
-					sortable : false,
-					dataIndex: 'tx_tqseo_priority',
-					renderer : fieldRendererRaw,
-					tqSeoEditor	: {
-						xtype: 'numberfield'
-					}
-				});
-				break;
-
-
 		}
 
 		return columnModel;
@@ -622,8 +776,10 @@ TQSeo.overview.grid = {
 		}
 		if(escape) {
 			value = String.escape(value);
+			value = value.replace(/ /g, "&nbsp;");
+			value += '&nbsp;';
 		}
-		value = value.replace(/ /g, "&nbsp;");
+
 
 
 		if(escape) {
@@ -631,7 +787,7 @@ TQSeo.overview.grid = {
 		}
 		qtip = qtip.replace(/\n/g, "<br />");
 
-		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + '&nbsp;<div class="icon"></div></div>';
+		return '<div class="'+classes+'" ext:qtip="' + qtip +'">' + value + '<div class="icon"></div></div>';
 	}
 
 

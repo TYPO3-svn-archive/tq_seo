@@ -59,6 +59,13 @@ class tx_tqseo_backend_ajax_base {
 	 */
 	protected $_sortDir	= null;
 
+	/**
+	 * TCE
+	 *
+	 * @var t3lib_TCEmain
+	 */
+	protected $_tce = null;
+
 	###########################################################################
 	# Methods
 	###########################################################################
@@ -152,6 +159,20 @@ class tx_tqseo_backend_ajax_base {
 	 */
 	protected function _escapeSortField($value) {
 		return preg_replace('[^_a-zA-Z]', '', $value);
+	}
+
+	/**
+	 * Create an (cached) instance of t3lib_TCEmain
+	 *
+	 * @return t3lib_TCEmain
+	 */
+	protected function _tce() {
+		if( $this->_tce === null ) {
+			$this->_tce = t3lib_div::makeInstance ('t3lib_TCEmain');
+			$this->_tce->start();
+		}
+
+		return $this->_tce;
 	}
 
 }
