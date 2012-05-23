@@ -180,32 +180,47 @@ TQSeo.sitemap.grid = {
 		var dateYesterday	= new Date().add(Date.DAY, -1).format("Y-m-d");
 
 		var rendererDatetime = function(value, metaData, record, rowIndex, colIndex, store) {
-			var ret = value;
+			var ret = String.escape(value);
+			var qtip = String.escape(value);
+
 			ret = ret.split(dateToday).join('<strong>'+TQSeo.sitemap.conf.lang.today+'</strong>');
 			ret = ret.split(dateYesterday).join('<strong>'+TQSeo.sitemap.conf.lang.yesterday+'</strong>');
-			return ret;
+
+			return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
 		}
 
 
 		var rendererLanguage = function(value, metaData, record, rowIndex, colIndex, store) {
 			var ret = '';
+			var qtip = '';
+
 			if( TQSeo.sitemap.conf.languageFullList[value] ) {
 				var lang = TQSeo.sitemap.conf.languageFullList[value];
 
 				// Flag (if available)
 				if( lang.flag ) {
-					ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+lang.flag+' t3-icon-'+lang.flag+'"></span>';
+					ret += '<span class="t3-icon t3-icon-flags t3-icon-flags-'+String.escape(lang.flag)+' t3-icon-'+String.escape(lang.flag)+'"></span>';
 					ret += '&nbsp;';
 				}
 
 				// Label
-				ret += lang.label;
+				ret += String.escape(lang.label);
+				qtip = String.escape(lang.label);
 
 			} else {
 				ret = value;
 			}
 
-			return ret;
+			return '<div ext:qtip="' + qtip +'">' + ret + '</div>';
+		}
+
+
+		var rendererUrl = function(value, metaData, record, rowIndex, colIndex, store) {
+			value = String.escape(value);
+
+			var qtip = String.escape(value);
+
+			return '<div ext:qtip="' + qtip +'">' + value + '</div>';
 		}
 
 		/****************************************************
@@ -232,7 +247,8 @@ TQSeo.sitemap.grid = {
 					header   : TQSeo.sitemap.conf.lang.sitemap_page_url,
 					width    : 'auto',
 					sortable : true,
-					dataIndex: 'page_url'
+					dataIndex: 'page_url',
+					renderer : rendererUrl
 				},{
 					id       : 'page_depth',
 					header   : TQSeo.sitemap.conf.lang.sitemap_page_depth,

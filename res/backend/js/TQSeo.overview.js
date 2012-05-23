@@ -74,10 +74,12 @@ TQSeo.overview.grid = {
 				break;
 
 			case 'searchengines':
+				this._fullCellHighlight = false;
 				this._cellEditMode = true;
 				break;
 
 			case 'sitemap':
+				this._fullCellHighlight = false;
 				this._cellEditMode = true;
 				break;
 
