@@ -549,8 +549,8 @@ TQSeo.overview.grid = {
 								'label'
 							],
 							data: [
-								[0, TQSeo.overview.conf.lang.page_searchengine_is_exclude_disabled],
-								[1, TQSeo.overview.conf.lang.page_searchengine_is_exclude_enabled]
+								[0, TQSeo.overview.conf.lang.searchengine_is_exclude_disabled],
+								[1, TQSeo.overview.conf.lang.searchengine_is_exclude_enabled]
 							]
 						}),
 						valueField: 'id',
@@ -580,6 +580,12 @@ TQSeo.overview.grid = {
 					}
 
 					return ret;
+				}
+
+				var fieldRendererUrlSimulate = function(value, metaData, record, rowIndex, colIndex, store) {
+					var qtip = Ext.util.Format.htmlEncode(TQSeo.overview.conf.lang.qtip_url_simulate);
+
+					return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.info+'</div>';
 				}
 
 
@@ -687,6 +693,39 @@ TQSeo.overview.grid = {
 							}),
 							valueField: 'id',
 							displayField: 'label'
+						}
+					},{
+						id       : 'url_simulated',
+						header   : '',
+						width    : 50,
+						sortable : false,
+						renderer : fieldRendererUrlSimulate,
+						tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+							me.grid.loadMask.show();
+
+							var callbackFinish = function(response) {
+								var response = Ext.decode(response.responseText);
+
+								me.grid.loadMask.hide();
+
+								if( response && response.error ) {
+									TYPO3.Flashmessage.display(TYPO3.Severity.error, '', Ext.util.Format.htmlEncode(response.error) );
+								}
+
+								if( response && response.url ) {
+									TYPO3.Flashmessage.display(TYPO3.Severity.information, '', Ext.util.Format.htmlEncode(response.url) );
+								}
+							};
+
+							Ext.Ajax.request({
+								url: TQSeo.overview.conf.ajaxController + '&cmd=generateSimulatedUrl',
+								params: {
+									pid:   Ext.encode(record.get('uid'))
+								},
+								success: callbackFinish,
+								failure: callbackFinish
+							});
+
 						}
 					});
 				}

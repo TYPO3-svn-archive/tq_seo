@@ -278,9 +278,16 @@ class tx_tqseo_tools {
 	 * @return	string
 	 */
 	public static function fullUrl($url) {
+		global $TSFE;
+
 		if( !preg_match('/^https?:\/\//i', $url ) ) {
 			$url = t3lib_div::locationHeaderUrl($url);
 		}
+
+		// Fallback
+	//	if( !empty($TSFE) && !preg_match('/^https?:\/\//i', $url ) ) {
+	//		$url = $TSFE->baseUrlWrap($url);
+	//	}
 
 		return $url;
 	}

@@ -12,7 +12,7 @@
 			<label index="function_pagetitle">Pagetitle</label>
 			<label index="function_searchengines">SearchEngines</label>
 			<label index="function_url">URL Handling</label>
-			<label index="function_pagetitle_simulator">Pagetitle (Simulator)</label>
+			<label index="function_pagetitle_simulator">Pagetitle Simulator (Slow!)</label>
 
 			<label index="title_overview">SEO Overview</label>
 
@@ -68,6 +68,7 @@
 			<label index="message_no_valid_page">Please select a page from the left tree.</label>
 
 			<label index="qtip_pagetitle_simulate">Show simulated pagetitle</label>
+			<label index="qtip_url_simulate">Show simulated url</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="title">SEO</label>
@@ -76,7 +77,7 @@
 			<label index="function_pagetitle">Seitentitel</label>
 			<label index="function_searchengines">Suchmaschinen</label>
 			<label index="function_url">URL Konfiguration</label>
-			<label index="function_pagetitle_simulator">Seitentitel (Simulator)</label>
+			<label index="function_pagetitle_simulator">Seitentitel Simulator (Langsam!)</label>
 
 			<label index="title_overview">SEO Übersicht</label>
 
@@ -131,6 +132,7 @@
 			<label index="message_no_valid_page">Bitte wählen Sie aus dem linken Seitenbaum eine Seite.</label>+
 
 			<label index="qtip_pagetitle_simulate">Zeige simulierten Seitentitel an</label>
+			<label index="qtip_url_simulate">Zeige simulierten URL an</label>
 		</languageKey>
 	</data>
 </T3locallang>

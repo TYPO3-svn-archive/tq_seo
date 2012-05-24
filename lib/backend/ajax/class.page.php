@@ -170,22 +170,77 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( !empty($pid) ) {
 			$page = t3lib_BEfunc::getRecord('pages', $pid);
 
-			// Load TYPO3 classes
-			// TODO: check if this is needed anymore with autoloading
-			require_once PATH_t3lib.'class.t3lib_page.php';
-			require_once PATH_t3lib.'class.t3lib_tstemplate.php';
-			require_once PATH_t3lib.'class.t3lib_tsparser_ext.php';
-			require_once dirname(__FILE__).'/../../class.pagetitle.php';
+			if( !empty($page) ) {
+				// Load TYPO3 classes
+				// TODO: check if this is needed anymore with autoloading
+				require_once PATH_t3lib.'class.t3lib_page.php';
+				require_once PATH_t3lib.'class.t3lib_tstemplate.php';
+				require_once PATH_t3lib.'class.t3lib_tsparser_ext.php';
+				require_once dirname(__FILE__).'/../../class.pagetitle.php';
 
-			$this->_initTsfe($page, null, $page, null);
+				$this->_initTsfe($page, null, $page, null);
 
-			$pagetitle = new user_tqseo_pagetitle();
-			$ret = $pagetitle->main($page['title']);
+				$pagetitle = new user_tqseo_pagetitle();
+				$ret = $pagetitle->main($page['title']);
+			}
 		}
 
 		$ret = array(
 			'title' => $ret,
 		);
+
+		return $ret;
+	}
+
+	/**
+	 * Generate simulated title for one page
+	 *
+	 * @return	string
+	 */
+	protected function _executeGenerateSimulatedUrl() {
+		global $TYPO3_DB, $BE_USER, $TSFE, $TYPO3_CONF_VARS, $LANG;
+
+		// Init
+		$ret = '';
+
+		$pid = (int)$this->_postVar['pid'];
+
+		if( !empty($pid) ) {
+			$page = t3lib_BEfunc::getRecord('pages', $pid);
+
+			if( !empty($page) ) {
+
+				if( t3lib_extMgm::isLoaded('realurl') ) {
+					// Disable caching for url
+					$TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
+					$TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
+					$TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['disablePathCache'] = 1;
+				}
+
+				// TODO: check if this is needed anymore with autoloading
+				require_once PATH_t3lib.'class.t3lib_page.php';
+				require_once PATH_t3lib.'class.t3lib_tstemplate.php';
+				require_once PATH_t3lib.'class.t3lib_tsparser_ext.php';
+
+				$this->_initTsfe($page, null, $page, null);
+
+				$ret = $TSFE->cObj->typolink_URL( array('parameter' => $page['uid']) );
+
+				if( !empty($ret) ) {
+					$ret = tx_tqseo_tools::fullUrl($ret);
+				}
+			}
+		}
+
+		if( !empty($ret) ) {
+			$ret = array(
+				'url' => $ret,
+			);
+		} else {
+			$ret = array(
+				'error' => $LANG->getLL('error_url_generation_failed'),
+			);
+		}
 
 		return $ret;
 	}
@@ -364,10 +419,18 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 	 * @return	void
 	 */
 	protected function _initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null) {
+		global $TYPO3_CONF_VARS;
+
 		static $cacheTSFE		= array();
 		static $lastTsSetupPid	= null;
 
 		$pageUid = (int)$page['uid'];
+
+		// create time tracker if needed
+		if( empty($GLOBALS['TT']) ) {
+			$GLOBALS['TT'] = t3lib_div::makeInstance('t3lib_timeTrack');
+			$GLOBALS['TT']->start();
+		}
 
 		if($rootLine === null) {
 			$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
@@ -407,7 +470,15 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 				$TSObj->runThroughTemplates($rootLine);
 				$TSObj->generateConfig();
 
+				$_GET['id'] = $page['uid'];
+				$TSFE->initFEuser();
+				$TSFE->determineId();
+
 				$TSFE->tmpl->setup = $TSObj->setup;
+				$TSFE->initTemplate();
+				$TSFE->getConfigArray();
+
+				$TSFE->baseUrl = $TSFE->config['config']['baseURL'];
 
 				$cacheTSFE[$pageUid] = $TSFE;
 			}
@@ -453,7 +524,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( !$BE_USER->check('tables_modify','pages') ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied'),
 			);
 		}
 
@@ -461,7 +532,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( !$BE_USER->check('non_exclude_fields', 'pages:'.$fieldName) ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied'),
 			);
 		}
 
@@ -471,7 +542,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( empty($page) || !$BE_USER->doesUserHaveAccess($pageRec,2) ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied'),
 			);
 		}
 

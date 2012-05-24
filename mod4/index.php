@@ -191,6 +191,7 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				page_url_realurl_exclude		: '. json_encode( $LANG->getLL('header_url_realurl_exclude') ) .',
 
 				qtip_pagetitle_simulate			: '. json_encode( $LANG->getLL('qtip_pagetitle_simulate') ) .',
+				qtip_url_simulate				: '. json_encode( $LANG->getLL('qtip_url_simulate') ) .',
 
 				value_default					: '. json_encode( $LANG->getLL('value_default') ) .'
 			};
