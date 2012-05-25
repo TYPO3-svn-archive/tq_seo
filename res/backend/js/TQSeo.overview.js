@@ -236,6 +236,8 @@ TQSeo.overview.grid = {
 						buttons: [
 							{
 								text: 'Save',
+								itemId: 'form-button-save',
+								disabled: true,
 								handler: function(cmp, e) {
 									grid.loadMask.show();
 
@@ -274,6 +276,19 @@ TQSeo.overview.grid = {
 						]
 					});
 					editWindow.show();
+
+					var formField		= editWindow.getComponent('form-field');
+					var formButtonSave	= editWindow.getFooterToolbar().getComponent('form-button-save');
+
+					// add listeners
+					formField.on('valid', function() {
+						formButtonSave.setDisabled(false);
+					});
+
+					formField.on('invalid', function() {
+						formButtonSave.setDisabled(true);
+					});
+
 
 				}
 			});

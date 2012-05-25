@@ -55,7 +55,7 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 		$pageCount		= ceil($pageItems/$pageLimit);
 
 		$linkConf = array(
-			'parameter'			=> tx_tqseo_tools::getCurrentPid(),
+			'parameter'			=> tx_tqseo_tools::getCurrentPid().','.$TSFE->type,
 			'additionalParams'	=> '',
 			'useCacheHash'		=> 1,
 		);
@@ -65,7 +65,7 @@ class tx_tqseo_sitemap_builder_xml extends tx_tqseo_sitemap_builder_base {
 				$link = str_replace('###PAGE###', $i, $this->indexPathTemplate);
 				$sitemaps[] = $link;
 			} else {
-				$linkConf['additionalParams'] = '&type='.$TSFE->type.'&page='.($i+1);
+				$linkConf['additionalParams'] = '&page='.($i+1);
 				$sitemaps[] = tx_tqseo_tools::fullUrl( $TSFE->cObj->typoLink_URL($linkConf) );
 			}
 		}

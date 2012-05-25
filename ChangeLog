@@ -1,16 +1,18 @@
-2011-05-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+2011-05-25 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Release of 5.0.0
 	* Added SEO backend page-module
 	* Fixed severy bugs/issues
 	* Added several improvements
+	* Fixed some Simulate Static URLs issues
 
 2011-02-03 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Release of 4.0.1
 	* Fixed typo in ext_emconf
 
 2011-12-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added browser title (Thanks to Jochen Weiland)
 
 2011-12-22 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
-	* Release of 4.0.1
 	* Fixed tt_news support (Thanks to Tobias Arendt)
 	* Fixed TYPO3 4.6 support  (still need fix for http://forge.typo3.org/issues/31333)
 

@@ -284,6 +284,9 @@ class tx_tqseo_tools {
 			$url = t3lib_div::locationHeaderUrl($url);
 		}
 
+		// Fix url stuff
+		$url = str_replace('?&', '?', $url);
+
 		// Fallback
 	//	if( !empty($TSFE) && !preg_match('/^https?:\/\//i', $url ) ) {
 	//		$url = $TSFE->baseUrlWrap($url);

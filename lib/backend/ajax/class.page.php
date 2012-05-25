@@ -524,7 +524,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( !$BE_USER->check('tables_modify','pages') ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('error_access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied').' [0x4FBF3BE2]',
 			);
 		}
 
@@ -532,17 +532,17 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 		if( !$BE_USER->check('non_exclude_fields', 'pages:'.$fieldName) ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('error_access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied').' [0x4FBF3BD9]',
 			);
 		}
 
 		$page = t3lib_BEfunc::getRecord('pages', $pid);
 
 		// check if page exists and user can edit this specific record
-		if( empty($page) || !$BE_USER->doesUserHaveAccess($pageRec,2) ) {
+		if( empty($page) || !$BE_USER->doesUserHaveAccess($page,2) ) {
 			// No access
 			return array(
-				'error'	=> $LANG->getLL('error_access_denied'),
+				'error'	=> $LANG->getLL('error_access_denied').' [0x4FBF3BCF]',
 			);
 		}
 

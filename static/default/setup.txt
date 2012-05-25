@@ -371,7 +371,7 @@ Sitemap: %sitemap%
 			sitemap {
 				typolink {
 					parameter.data = leveluid:0
-					additionalParams = &type=841132
+					parameter.wrap = |,841132
 					returnLast = url
 				}
 			}
