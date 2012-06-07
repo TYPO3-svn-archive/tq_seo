@@ -83,6 +83,26 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 			'page_rootpid'
 		);
 
+		// Fetch domain name
+		$res = $TYPO3_DB->exec_SELECTquery(
+			'pid, domainName, forced',
+			'sys_domain',
+			'hidden = 0',
+			'',
+			'forced DESC, sorting'
+		);
+
+		$domainList = array();
+		while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+			$pid = $row['pid'];
+
+			if( !empty($row['forced']) ) {
+				$domainList[$pid] = $row['domainName'];
+			} elseif( empty($domainList[$pid]) ) {
+				$domainList[$pid] = $row['domainName'];
+			}
+		}
+
 		###############################
 		# Build rows
 		###############################
@@ -97,23 +117,10 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 				'sum_xml_pages'	=> 0,
 			);
 
-			// Fetch domain name
-			$res = $TYPO3_DB->exec_SELECTquery(
-				'domainName, forced',
-				'sys_domain',
-				'pid = '.(int)$pageId.' AND hidden = 0',
-				'',
-				'forced DESC, sorting'
-			);
-
+			// Get domain
 			$domain = null;
-			while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-				if( !empty($row['forced']) ) {
-					$domain = $row['domainName'];
-					break;
-				} else {
-					$domain = $row['domainName'];
-				}
+			if( !empty($domainList[$pageId]) ) {
+				$domain = $domainList[$pageId];
 			}
 
 			// Setting row

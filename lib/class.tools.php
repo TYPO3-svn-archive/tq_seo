@@ -113,12 +113,17 @@ class tx_tqseo_tools {
 	 * @return	integer
 	 */
 	public static function getRootLine($uid = null) {
+		static $cache = array();
 		$ret = array();
 
 		if( $uid === null ) {
 			$ret = (int)$TSFE->rootLine;
 		} else {
-			$ret = self::_getSysPageObj()->getRootLine($uid);
+			if( !isset($cache[$uid]) ) {
+				$cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
+			}
+
+			$ret = $cache[$uid];
 		}
 
 		return $ret;

@@ -80,6 +80,29 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
 
 
+
+		// Fetch domain name
+		$res = $TYPO3_DB->exec_SELECTquery(
+			'pid, domainName, forced',
+			'sys_domain',
+			'hidden = 0',
+			'',
+			'forced DESC, sorting'
+		);
+
+		$domainList = array();
+		while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+			$pid = $row['pid'];
+
+			if( !empty($row['forced']) ) {
+				$domainName = '<strong>'.htmlspecialchars($row['domainName']).'</strong>';
+			} else {
+				$domainName = htmlspecialchars($row['domainName']);
+			}
+
+			$domainList[$pid][] = '<div style="white-space: nowrap">'.$domainName.'</div>';
+		}
+
 		$tableRowList = array();
 		$i = 0;
 		foreach($rootPageList as $pageId => $page) {
@@ -104,25 +127,11 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 				$settingsLink = $this->_moduleLinkOnClick('createSettingForPage', $args);
 			}
 
-			$res = $TYPO3_DB->exec_SELECTquery(
-				'domainName, forced',
-				'sys_domain',
-				'pid = '.(int)$pageId.' AND hidden = 0',
-				'',
-				'forced DESC, sorting'
-			);
-			$domainList = array();
-			while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-				if( !empty($row['forced']) ) {
-					$domainName = '<strong>'.htmlspecialchars($row['domainName']).'</strong>';
-				} else {
-					$domainName = htmlspecialchars($row['domainName']);
-				}
-
-				$domainList[] = '<div style="white-space: nowrap">'.$domainName.'</div>';
+			// Domain cell
+			$domainCell = '';
+			if( !empty($domainList[$pageId]) ) {
+				$domainCell = implode('', $domainList[$pageId]);
 			}
-			$domainCell = implode('', $domainList);
-
 
 			// Sitemap support
 			if( !empty($settingRow['is_sitemap']) ) {

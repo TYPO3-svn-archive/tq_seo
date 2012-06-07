@@ -1,6 +1,8 @@
 2011-06-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added geo positioning into pages meta tags
 	* Added link to sitemal.xml index page into sitemap backend module
+	* Added tq_seo class for external metatag manipulations for 3rd party extensions
+	* Added better caching of sql queries (sitemap link indexer)
 
 2011-05-25 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Release of 5.0.0
