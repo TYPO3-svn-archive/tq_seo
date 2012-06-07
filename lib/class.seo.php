@@ -42,7 +42,8 @@ class tx_tqseo {
 	 * @var array
 	 */
 	protected static $_store = array(
-		'meta'	=> array(),
+		'meta'		=> array(),
+		'custom'	=> array(),
 	);
 
 

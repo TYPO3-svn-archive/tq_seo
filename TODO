@@ -1,3 +1,7 @@
+* tx_tqseo
+	-> Page title
+	-> Geo position
+	-> Hooks
 * Backend module for page-seo
 	-> settings
 * Better Security/Permission checks in backend
