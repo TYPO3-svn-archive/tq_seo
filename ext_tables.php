@@ -171,6 +171,55 @@ $tempColumns = array (
 			'maxitems'      => 1
 		)
 	),
+
+	'tx_tqseo_geo_lat' => array (
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_geo_lat',
+		'exclude' => 1,
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+
+	'tx_tqseo_geo_long' => array (
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_geo_long',
+		'exclude' => 1,
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+
+	'tx_tqseo_geo_place' => array (
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_geo_place',
+		'exclude' => 1,
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+
+	'tx_tqseo_geo_region' => array (
+		'label' => 'LLL:EXT:tq_seo/locallang_db.xml:pages.tx_tqseo_geo_region',
+		'exclude' => 1,
+		'config' => array (
+			'type' => 'input',
+			'size' => '30',
+			'max' => '255',
+			'checkbox' => '',
+			'eval' => 'trim',
+		)
+	),
+
 );
 
 
@@ -193,11 +242,16 @@ $TCA['pages']['palettes']['tx_tqseo_sitemap'] = array(
 	'canNotCollapse'	=> 1
 );
 
+$TCA['pages']['palettes']['tx_tqseo_geo'] = array(
+	'showitem'			=> 'tx_tqseo_geo_lat,--linebreak--,tx_tqseo_geo_long,--linebreak--,tx_tqseo_geo_place,--linebreak--,tx_tqseo_geo_region',
+	'canNotCollapse'	=> 1
+);
+
 
 t3lib_extMgm::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '1,4,7,3', 'after:title');
 
 // Put it for standard page
-t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '1,4,7,3', 'after:author_email');
+t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.geo;tx_tqseo_geo,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '1,4,7,3', 'after:author_email');
 
 ###################
 # Page overlay (lang)

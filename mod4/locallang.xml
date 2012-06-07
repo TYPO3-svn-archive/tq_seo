@@ -9,6 +9,7 @@
 			<label index="title">SEO</label>
 			<label index="title_content">TEQneers SEO Settings</label>
 			<label index="function_metadata">Metatags</label>
+			<label index="function_geo">Geo position</label>
 			<label index="function_pagetitle">Pagetitle</label>
 			<label index="function_searchengines">SearchEngines</label>
 			<label index="function_url">URL Handling</label>
@@ -35,6 +36,11 @@
 			<label index="header_sitemap_page_author">Author Name</label>
 			<label index="header_sitemap_page_author_email">Author E-Mail</label>
 			<label index="header_sitemap_page_lastupdated">Last updated</label>
+
+			<label index="header_sitemap_page_geo_lat">Latitude</label>
+			<label index="header_sitemap_page_geo_long">Longitude</label>
+			<label index="header_sitemap_page_geo_place">City/Place</label>
+			<label index="header_sitemap_page_geo_region">Region</label>
 
 			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title (Absolute)</label>
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_rel">Browsertitle</label>
@@ -74,6 +80,7 @@
 			<label index="title">SEO</label>
 			<label index="title_content">TEQneers SEO Einstellungen</label>
 			<label index="function_metadata">Metatags</label>
+			<label index="function_geo">Geo Position</label>
 			<label index="function_pagetitle">Seitentitel</label>
 			<label index="function_searchengines">Suchmaschinen</label>
 			<label index="function_url">URL Konfiguration</label>
@@ -100,6 +107,11 @@
 			<label index="header_sitemap_page_author">Autorenname</label>
 			<label index="header_sitemap_page_author_email">Author E-Mail</label>
 			<label index="header_sitemap_page_lastupdated">Letzte Aktualisierung</label>
+
+			<label index="header_sitemap_page_geo_lat">Breitengrad</label>
+			<label index="header_sitemap_page_geo_long">Längengrad</label>
+			<label index="header_sitemap_page_geo_place">Stadt/Standort</label>
+			<label index="header_sitemap_page_geo_region">Region</label>
 
 			<label index="header_sitemap_page_tx_tqseo_pagetitle">Titel (Absolut)</label>
 			<label index="header_sitemap_page_tx_tqseo_pagetitle_rel">Browsertitel</label>

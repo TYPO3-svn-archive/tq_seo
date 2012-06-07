@@ -58,6 +58,7 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		$this->MOD_MENU = Array (
 			'function' => Array (
 				'metadata'		=> $LANG->getLL('function_metadata'),
+				'geo'			=> $LANG->getLL('function_geo'),
 				'searchengines'	=> $LANG->getLL('function_searchengines'),
 				'url'			=> $LANG->getLL('function_url'),
 				'pagetitle'		=> $LANG->getLL('function_pagetitle'),
@@ -71,9 +72,12 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		return $this->executeMetadata();
 	}
 
-
 	public function executeMetadata() {
 		return $this->_handleList('metadata');
+	}
+
+	public function executeGeo() {
+		return $this->_handleList('geo');
 	}
 
 	public function executeSearchengines() {
@@ -166,6 +170,11 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 				page_author				: '. json_encode( $LANG->getLL('header_sitemap_page_author') ) .',
 				page_author_email		: '. json_encode( $LANG->getLL('header_sitemap_page_author_email') ) .',
 				page_lastupdated		: '. json_encode( $LANG->getLL('header_sitemap_page_lastupdated') ) .',
+
+				page_geo_lat			: '. json_encode( $LANG->getLL('header_sitemap_page_geo_lat') ) .',
+				page_geo_long			: '. json_encode( $LANG->getLL('header_sitemap_page_geo_long') ) .',
+				page_geo_place			: '. json_encode( $LANG->getLL('header_sitemap_page_geo_place') ) .',
+				page_geo_region			: '. json_encode( $LANG->getLL('header_sitemap_page_geo_region') ) .',
 
 				page_tx_tqseo_pagetitle			: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle') ) .',
 				page_tx_tqseo_pagetitle_rel		: '. json_encode( $LANG->getLL('header_sitemap_page_tx_tqseo_pagetitle_rel') ) .',

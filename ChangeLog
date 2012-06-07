@@ -1,3 +1,7 @@
+2011-06-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Added geo positioning into pages meta tags
+	* Added link to sitemal.xml index page into sitemap backend module
+
 2011-05-25 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Release of 5.0.0
 	* Added SEO backend page-module

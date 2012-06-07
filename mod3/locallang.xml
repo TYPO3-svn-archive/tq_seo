@@ -13,6 +13,7 @@
 			<label index="header_rootpage">Root Website</label>
 			<label index="header_sitemap_pages">Pages</label>
 			<label index="header_sitemap_total">Pages (with virtual pages/extensions)</label>
+			<label index="header_sitemap_xml_pages">Sitemap.xml pages</label>
 			<label index="header_sitemap_page_uid">ID</label>
 			<label index="header_sitemap_page_uid">PID</label>
 			<label index="header_sitemap_page_url">URL</label>
@@ -20,6 +21,10 @@
 			<label index="header_sitemap_page_depth">Depth</label>
 			<label index="header_sitemap_crdate">Created</label>
 			<label index="header_sitemap_tstamp">Last indexed</label>
+
+			<label index="hint_link_sitemap_xml">Goto sitemap.xml INDEX page</label>
+			<label index="hint_link_sitemap_list">Goto sitemap list</label>
+			<label index="text_sum_xml_pages">&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</label>
 
 			<label index="title_sitemap_list">Sitemap list for "%s" (UID:%s)</label>
 			<label index="pager_desc">Page %s of %s</label>
@@ -62,6 +67,7 @@
 			<label index="header_rootpage">Website</label>
 			<label index="header_sitemap_pages">Seiten</label>
 			<label index="header_sitemap_total">Seiten (mit virtuellen Seiten/Erweiterungen)</label>
+			<label index="header_sitemap_xml_pages">Sitemap.xml Seiten</label>
 			<label index="header_sitemap_page_uid">ID</label>
 			<label index="header_sitemap_page_uid">PID</label>
 			<label index="header_sitemap_page_url">URL</label>
@@ -69,6 +75,10 @@
 			<label index="header_sitemap_page_depth">Tiefe</label>
 			<label index="header_sitemap_crdate">Erstellt am</label>
 			<label index="header_sitemap_tstamp">Zuletzt indiziert am</label>
+
+			<label index="hint_link_sitemap_xml">Zur Sitemap.xml INDEX-Seite</label>
+			<label index="hint_link_sitemap_list">Zur Sitemap-Liste</label>
+			<label index="text_sum_xml_pages">&lt;b&gt;Eine&lt;/b&gt; Sitemap.xml INDEX-Seite mit &lt;b&gt;%s&lt;/b&gt; Sitemap-Unterseite(n)</label>
 
 			<label index="title_sitemap_list">Sitemap liste von "%s" (UID:%s)</label>
 			<label index="pager_desc">Seite %s von %s</label>

@@ -67,7 +67,8 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 		global $LANG, $TYPO3_DB;
 
 		// Init
-		$rootPageList = tx_tqseo_backend_tools::getRootPageList();
+		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
+		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
 
 		###############################
 		# Fetch
@@ -91,10 +92,38 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 			$rowClass = $i % 2 ? 'db_list_alt' : 'db_list_normal';
 
 			$stats = array(
-				'sum_pages'	=> 0,
-				'sum_total' => 0,
+				'sum_pages'		=> 0,
+				'sum_total' 	=> 0,
+				'sum_xml_pages'	=> 0,
 			);
 
+			// Fetch domain name
+			$res = $TYPO3_DB->exec_SELECTquery(
+				'domainName, forced',
+				'sys_domain',
+				'pid = '.(int)$pageId.' AND hidden = 0',
+				'',
+				'forced DESC, sorting'
+			);
+
+			$domain = null;
+			while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+				if( !empty($row['forced']) ) {
+					$domain = $row['domainName'];
+					break;
+				} else {
+					$domain = $row['domainName'];
+				}
+			}
+
+			// Setting row
+			$settingRow = array();
+			if( !empty($rootSettingList[$pageId]) ) {
+				$settingRow = $rootSettingList[$pageId];
+			}
+
+
+			// Calc stats
 			foreach($statsList as $statsKey => $statsTmpList) {
 				if( !empty($statsTmpList[$pageId]) ) {
 					$stats[$statsKey] = $statsTmpList[$pageId]['count'];
@@ -114,8 +143,19 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 			$args = array(
 				'rootPid'	=> $pageId
 			);
-			$showLink = $this->_moduleLinkOnClick('sitemapList', $args);
+			$listLink = $this->_moduleLinkOnClick('sitemapList', $args);
 
+
+			$pagesPerXmlSitemap = 1000;
+			if( !empty($settingRow['sitemap_page_limit']) ) {
+				$pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
+			}
+			$sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
+			$stats['sum_xml_pages'] = sprintf($LANG->getLL('text_sum_xml_pages'), $sumXmlPages);
+
+			#################
+			# Title
+			#################
 
 			$tmpRow = '
 				<tr class="'.$rowClass.'" onclick="'.htmlspecialchars($showLink).'">
@@ -123,14 +163,35 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 						'.htmlspecialchars($page['title']).'
 					</td>';
 
+
+			#################
+			# Stats
+			#################
+
 			foreach($stats as $key => $value) {
 				$tmpRow .= '<td>'.$value.'</td>';
 			}
 
+			#################
+			# Toolbar
+			#################
+
+
+			if( !empty($domain) ) {
+				$sitemapFrontendLink = 'http://'.$domain.'/index.php?id='.$pageId.'&type=841132';
+			} else {
+				$sitemapFrontendLink = '../index.php?id='.$pageId.'&type=841132';
+			}
+
+			$hintLinkSitemapXml		= htmlspecialchars($LANG->getLL('hint_link_sitemap_xml',1));
+			$hintLinkSitemapList	= htmlspecialchars($LANG->getLL('hint_link_sitemap_list',1));
+
+			$linkList = array();
+			$linkList[] = '<a href="'.htmlspecialchars($sitemapFrontendLink).'" target="_blank" alt="'.$hintLinkSitemapXml.'" title="'.$hintLinkSitemapXml.'">'.t3lib_iconWorks::getSpriteIcon('actions-document-view').'</a>';
+			$linkList[] = '<a href="#" onclick="'.htmlspecialchars($listLink).'" alt="'.$hintLinkSitemapList.'" title="'.$hintLinkSitemapList.'">'.t3lib_iconWorks::getSpriteIcon('actions-system-list-open').'</a>';
+
 			$tmpRow .= '
-					<td>
-						<a href="#" onclick="'.htmlspecialchars($showLink).'">'.t3lib_iconWorks::getSpriteIcon('actions-system-list-open').'</a>
-					</td>
+					<td style="white-space:nowrap;">'.implode('',$linkList).'</td>
 				</tr>';
 
 			$tableRowList[] = $tmpRow;
@@ -149,6 +210,7 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 					<col width="*" />
 					<col width="150" />
 					<col width="150" />
+					<col width="180" />
 					<col width="20" />
 				</colgroup>
 				<thead>
@@ -156,6 +218,7 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 						<td class="t3-row-header"><strong>'.$LANG->getLL('header_rootpage',1).'</strong></td>
 						<td class="t3-row-header"><strong>'.$LANG->getLL('header_sitemap_pages',1).'</strong></td>
 						<td class="t3-row-header"><strong>'.$LANG->getLL('header_sitemap_total',1).'</strong></td>
+						<td class="t3-row-header"><strong>'.$LANG->getLL('header_sitemap_xml_pages',1).'</strong></td>
 						<td class="t3-row-header"></td>
 					</tr>
 				</thead>
@@ -351,7 +414,6 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 
 		return $ret;
 	}
-
 }
 
 

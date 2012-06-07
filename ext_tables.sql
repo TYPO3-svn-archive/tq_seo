@@ -10,7 +10,11 @@ CREATE TABLE pages (
 	tx_tqseo_inheritance int(11) DEFAULT '0' NOT NULL,
 	tx_tqseo_canonicalurl varchar(255) DEFAULT '' NOT NULL,
 	tx_tqseo_priority int(11) DEFAULT '0' NOT NULL,
-	tx_tqseo_change_frequency int(4) DEFAULT '0' NOT NULL
+	tx_tqseo_change_frequency int(4) DEFAULT '0' NOT NULL,
+	tx_tqseo_geo_lat varchar(255) DEFAULT '' NOT NULL,
+	tx_tqseo_geo_long varchar(255) DEFAULT '' NOT NULL,
+	tx_tqseo_geo_place varchar(255) DEFAULT '' NOT NULL,
+	tx_tqseo_geo_region varchar(255) DEFAULT '' NOT NULL
 );
 
 #

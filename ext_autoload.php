@@ -2,6 +2,8 @@
 $extensionPath = t3lib_extMgm::extPath('tq_seo');
 
 return array(
+	'tx_tqseo'								=> $extensionPath.'lib/class.seo.php',
+
 	'tx_tqseo_cache'						=> $extensionPath.'lib/class.cache.php',
 	'tx_tqseo_tools'						=> $extensionPath.'lib/class.tools.php',
 	'tx_tqseo_robots_txt'					=> $extensionPath.'lib/class.robots_txt.php',

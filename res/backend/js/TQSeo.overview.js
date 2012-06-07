@@ -64,6 +64,10 @@ TQSeo.overview.grid = {
 				this._cellEditMode = true;
 				break;
 
+			case 'geo':
+				this._cellEditMode = true;
+				break;
+
 			case 'searchengines':
 				this._fullCellHighlight = false;
 				this._cellEditMode = true;
@@ -318,6 +322,15 @@ TQSeo.overview.grid = {
 				);
 				break;
 
+			case 'geo':
+				gridDsColumns.push(
+					{name: 'tx_tqseo_geo_lat', type: 'string'},
+					{name: 'tx_tqseo_geo_long', type: 'string'},
+					{name: 'tx_tqseo_geo_place', type: 'string'},
+					{name: 'tx_tqseo_geo_region', type: 'string'}
+				);
+				break;
+
 			case 'searchengines':
 				gridDsColumns.push(
 					{name: 'tx_tqseo_canonicalurl', type: 'string'},
@@ -507,11 +520,54 @@ TQSeo.overview.grid = {
 						format: 'Y-m-d'
 					}
 				});
-
 				break;
 
-			case 'searchengines':
+			case 'geo':
+				columnModel.push({
+					id			: 'tx_tqseo_geo_lat',
+					header		: TQSeo.overview.conf.lang.page_geo_lat,
+					width		: 'auto',
+					sortable	: false,
+					dataIndex	: 'tx_tqseo_geo_lat',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				},{
+					id			: 'tx_tqseo_geo_long',
+					header		: TQSeo.overview.conf.lang.page_geo_long,
+					width		: 'auto',
+					sortable	: false,
+					dataIndex	: 'tx_tqseo_geo_long',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				},{
+					id			: 'tx_tqseo_geo_place',
+					header		: TQSeo.overview.conf.lang.page_geo_place,
+					width		: 'auto',
+					sortable	: false,
+					dataIndex	: 'tx_tqseo_geo_place',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				},{
+					id			: 'tx_tqseo_geo_region',
+					header		: TQSeo.overview.conf.lang.page_geo_region,
+					width		: 'auto',
+					sortable	: false,
+					dataIndex	: 'tx_tqseo_geo_region',
+					renderer	: fieldRenderer,
+					tqSeoEditor	: {
+						xtype: 'textfield'
+					}
+				});
+				break;
 
+
+			case 'searchengines':
 				var fieldRendererSitemapPriority = function(value, metaData, record, rowIndex, colIndex, store) {
 					var qtip = value;
 

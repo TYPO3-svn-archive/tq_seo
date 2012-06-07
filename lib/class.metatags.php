@@ -53,6 +53,8 @@ class user_tqseo_metatags {
 		$pageMeta		= array();
 		$tsfePage		= $TSFE->page;
 
+		$customMetaTagList	= array();
+
 		$enableMetaDc	= true;
 
 		if(!empty($tsSetup['plugin.']['tq_seo.']['metaTags.'])) {
@@ -70,6 +72,11 @@ class user_tqseo_metatags {
 			#####################################
 			# FETCH METADATA FROM PAGE
 			#####################################
+
+			#################
+			# Page meta
+			#################
+
 			// description
 			$tmp = $cObj->stdWrap( $tsSetupSeo['conf.']['description_page'], $tsSetupSeo['conf.']['description_page.'] );
 			if( !empty($tmp) ) {
@@ -106,11 +113,47 @@ class user_tqseo_metatags {
 				$pageMeta['lastUpdate'] = $tmp;
 			}
 
+			#################
+			# Geo
+			#################
+
+			// tx_tqseo_geo_lat
+			$tmp = $cObj->stdWrap( $tsSetupSeo['conf.']['tx_tqseo_geo_lat'], $tsSetupSeo['conf.']['tx_tqseo_geo_lat.'] );
+			if( !empty($tmp) ) {
+				$pageMeta['geoPositionLatitude'] = $tmp;
+			}
+
+			// tx_tqseo_geo_long
+			$tmp = $cObj->stdWrap( $tsSetupSeo['conf.']['tx_tqseo_geo_long'], $tsSetupSeo['conf.']['tx_tqseo_geo_long.'] );
+			if( !empty($tmp) ) {
+				$pageMeta['geoPositionLongitude'] = $tmp;
+			}
+
+			// tx_tqseo_geo_place
+			$tmp = $cObj->stdWrap( $tsSetupSeo['conf.']['tx_tqseo_geo_place'], $tsSetupSeo['conf.']['tx_tqseo_geo_place.'] );
+			if( !empty($tmp) ) {
+				$pageMeta['geoRegion'] = $tmp;
+			}
+
+			// tx_tqseo_geo_region
+			$tmp = $cObj->stdWrap( $tsSetupSeo['conf.']['tx_tqseo_geo_region'], $tsSetupSeo['conf.']['tx_tqseo_geo_region.'] );
+			if( !empty($tmp) ) {
+				$pageMeta['geoPlacename'] = $tmp;
+			}
+
+			#################
+			# Misc
+			#################
+
 			// language
 			if( !empty($tsSetupSeo['useDetectLanguage'])
 				&& !empty( $tsSetup['config.']['language'] ) ) {
 				$pageMeta['language'] = $tsSetup['config.']['language'];
 			}
+
+			#################
+			# Process meta tags
+			#################
 
 			// process page meta data
 			foreach($pageMeta as $metaKey => $metaValue) {
@@ -118,6 +161,35 @@ class user_tqseo_metatags {
 
 				if( !empty($metaValue) ) {
 					$tsSetupSeo[$metaKey] = $metaValue;
+				}
+			}
+
+			#################
+			# Process meta tags from access point
+			#################
+			$storeMeta = tx_tqseo::getStore();
+
+			// Std meta tags
+			foreach($storeMeta['meta'] as $metaKey => $metaValue) {
+				$metaValue = trim($metaValue);
+
+				if( $metaValue === null ) {
+					// Remove meta
+					unset( $tsSetupSeo[$metaKey] );
+				} elseif( !empty($metaValue) ) {
+					$tsSetupSeo[$metaKey] = $metaValue;
+				}
+			}
+
+			// Custom meta tags
+			foreach($storeMeta['custom'] as $metaKey => $metaValue) {
+				$metaValue = trim($metaValue);
+
+				if( $metaValue === null ) {
+					// Remove meta
+					unset( $customMetaTagList[$metaKey] );
+				} elseif( !empty($metaValue) ) {
+					$customMetaTagList[$metaKey] = $metaValue;
 				}
 			}
 
@@ -410,9 +482,11 @@ class user_tqseo_metatags {
 			}
 
 			#####################################
-			# OTHERS (generated tags)
+			# Custom meta tags
 			#####################################
-			// TODO
+			foreach($customMetaTagList as $metaKey => $metaValue) {
+				$ret['custom.'.$metaKey] = '<meta name="'.htmlspecialchars($metaKey).'" content="'.htmlspecialchars($metaValue).'" />';
+			}
 		}
 
 		#####################################

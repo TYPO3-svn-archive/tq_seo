@@ -97,7 +97,17 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 						}
 					}
 					unset($row);
+					break;
 
+				case 'geo':
+					$fieldList = array_merge($fieldList, array(
+						'tx_tqseo_geo_lat',
+						'tx_tqseo_geo_long',
+						'tx_tqseo_geo_place',
+						'tx_tqseo_geo_region'
+					));
+
+					$list = $this->_listDefaultTree($page, $depth, $fieldList);
 					break;
 
 				case 'searchengines':
