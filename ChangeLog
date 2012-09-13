@@ -1,17 +1,21 @@
-2011-06-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+2012-09-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed typo in manual
+
+
+2012-06-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added geo positioning into pages meta tags
 	* Added link to sitemal.xml index page into sitemap backend module
 	* Added tq_seo class for external metatag manipulations for 3rd party extensions
 	* Added better caching of sql queries (sitemap link indexer)
 
-2011-05-25 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+2012-05-25 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Release of 5.0.0
 	* Added SEO backend page-module
 	* Fixed severy bugs/issues
 	* Added several improvements
 	* Fixed some Simulate Static URLs issues
 
-2011-02-03 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+2012-02-03 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Release of 4.0.1
 	* Fixed typo in ext_emconf
 
