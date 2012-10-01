@@ -58,13 +58,20 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
 		$rootIdList			= array_keys($rootPageList);
 
+		$rootPidCondition = null;
+		if( !empty($rootIdList) ) {
+			$rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
+		} else {
+			$rootPidCondition = '1=0';
+		}
+
 		// check which root lages have no root settings
 		$query = 'SELECT p.uid
 					FROM pages p
 						 LEFT JOIN tx_tqseo_setting_root seosr
 							ON   seosr.pid = p.uid
 							 AND seosr.deleted = 0
-					WHERE p.uid IN ('.implode(',', $rootIdList).')
+					WHERE '.$rootPidCondition.'
 					  AND seosr.uid IS NULL';
 		$res = $TYPO3_DB->sql_query($query);
 		while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
@@ -78,7 +85,6 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 		}
 
 		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
-
 
 
 		// Fetch domain name
