@@ -49,9 +49,14 @@ class user_tqseo_pagetitle {
 		$rootLine			= $TSFE->rootLine;
 		$currentPid			= $TSFE->id;
 		$skipPrefixSuffix	= false;
-		$applySitetitle		= false;
+		$applySitetitle		= true;
+
+		$pageTitelPrefix	= false;
+		$pageTitelSuffix	= false;
 
 		$stdWrapList		= array();
+
+		$sitetitle			= $tsSetup['sitetitle'];
 
 		// get configuration
 		if( !empty($tsSetup['plugin.']['tq_seo.']) ) {
@@ -83,21 +88,18 @@ class user_tqseo_pagetitle {
 			$ret = $TSFE->page['tx_tqseo_pagetitle'];
 
 			// Add template prefix/suffix
-			if(!empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-				$applySitetitle = true;
+			if( empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle']) ) {
+				$applySitetitle	= false;
 			}
 
-			$skipPrefixSuffix = true;
+			$skipPrefixSuffix	= true;
 		}
 
 
 		#######################################################################
 		# PAGE TITEL PREFIX/SUFFIX
 		#######################################################################
-		 if(!$skipPrefixSuffix) {
-			$pageTitelPrefix = false;
-			$pageTitelSuffix = false;
-
+		if(!$skipPrefixSuffix) {
 			foreach($rootLine as $page) {
 				switch( (int)$page['tx_tqseo_inheritance'] ) {
 					case 0:
@@ -140,6 +142,41 @@ class user_tqseo_pagetitle {
 				}
 			}
 
+			#################
+			# Process settings from access point
+			#################
+			$store = tx_tqseo::getStore('pagetitle');
+
+			if( !empty($store) ) {
+				if( isset($store['pagetitle.title']) ) {
+					$rawTitel = $store['pagetitle.title'];
+			 	}
+
+				if( isset($store['pagetitle.prefix']) ) {
+					$pageTitelPrefix = $store['pagetitle.prefix'];
+				}
+
+				if( isset($store['pagetitle.suffix']) ) {
+					$pageTitelSuffix = $store['pagetitle.suffix'];
+				}
+
+				if( isset($store['pagetitle.absolute']) ) {
+					$ret		= $store['pagetitle.absolute'];
+					$rawTitel	= $store['pagetitle.absolute'];
+
+					$pageTitelPrefix = FALSE;
+					$pageTitelSuffix = FALSE;
+
+					if( empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle']) ) {
+						$applySitetitle	= false;
+					}
+				}
+
+				if( isset($store['pagetitle.sitetitle']) ) {
+					$sitetitle = $store['pagetitle.sitetitle'];
+				}
+			}
+
 			// Apply prefix and suffix
 			if($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
 				$ret = $rawTitel;
@@ -157,7 +194,6 @@ class user_tqseo_pagetitle {
 				}
 			} else {
 				$ret = $rawTitel;
-				$applySitetitle = true;
 			}
 		}
 
@@ -168,7 +204,6 @@ class user_tqseo_pagetitle {
 			$pageTitleGlue		= ':';
 			$glueSpacerBefore	= '';
 			$glueSpacerAfter	= '';
-			$sitetitle = $tsSetup['sitetitle'];
 
 			// Overwrite sitetitle with the one from ts-setup (if available)
 			if( !empty($tsSeoSetup['pageTitle.']['sitetitle']) ) {

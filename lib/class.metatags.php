@@ -194,7 +194,7 @@ class user_tqseo_metatags {
 			}
 
 			#####################################
-			# StdWrap List
+			# Process StdWrap List
 			#####################################
 			$stdWrapItemList = array(
 				'title',
@@ -217,7 +217,7 @@ class user_tqseo_metatags {
 			tx_tqseo_tools::callHook('metatag-setup', $this, $tsSetupSeo);
 
 			#####################################
-			# PAGE META
+			# Generate MetaTags
 			#####################################
 
 			// title
@@ -305,9 +305,9 @@ class user_tqseo_metatags {
 				$ret['meta.expire'] = '<meta name="googlebot" content="unavailable_after: '.date('d-M-Y H:i:s T', $tsfePage['endtime']).'" /> ';
 			}
 
-			#####################################
+			#################
 			# CRAWLER ORDERS
-			#####################################
+			#################
 
 			// robots
 			$crawlerOrder = array();
@@ -346,9 +346,9 @@ class user_tqseo_metatags {
 				$ret['crawler.revisit'] = '<meta name="revisit-after" content="'.htmlspecialchars($tsSetupSeo['revisit']).'" />';
 			}
 
-			#####################################
+			#################
 			# GEO POSITION
-			#####################################
+			#################
 
 			// Geo-Position
 			if( !empty($tsSetupSeo['geoPositionLatitude']) && !empty($tsSetupSeo['geoPositionLongitude']) ) {
@@ -366,9 +366,9 @@ class user_tqseo_metatags {
 				$ret['geo.placename'] = '<meta name="geo.placename" content="'.htmlspecialchars($tsSetupSeo['geoPlacename']).'" />';
 			}
 
-			#####################################
+			#################
 			# MISC (Vendor specific)
-			#####################################
+			#################
 
 			// Google Verification
 			if( !empty($tsSetupSeo['googleVerification']) ) {
@@ -396,9 +396,9 @@ class user_tqseo_metatags {
 				$ret['service.pics'] = '<meta http-equiv="PICS-Label" content="'.htmlspecialchars($tsSetupSeo['picsLabel']).'" />';
 			}
 
-			#####################################
+			#################
 			# UserAgent
-			#####################################
+			#################
 
 			// IE compatibility mode
 			if( !empty($tsSetupSeo['ieCompatibilityMode']) ) {
@@ -409,9 +409,9 @@ class user_tqseo_metatags {
 				}
 			}
 
-			#####################################
+			#################
 			# Link-Tags
-			#####################################
+			#################
 			if( !empty($tsSetupSeo['linkGeneration']) ) {
 				$rootLine = $TSFE->rootLine;
 				ksort($rootLine);
@@ -481,17 +481,17 @@ class user_tqseo_metatags {
 				}
 			}
 
-			#####################################
+			#################
 			# Custom meta tags
-			#####################################
+			#################
 			foreach($customMetaTagList as $metaKey => $metaValue) {
 				$ret['custom.'.$metaKey] = '<meta name="'.htmlspecialchars($metaKey).'" content="'.htmlspecialchars($metaValue).'" />';
 			}
 		}
 
-		#####################################
+		#################
 		# SOCIAL
-		#####################################
+		#################
 		if( !empty($tsSetup['plugin.']['tq_seo.']['social.']) ) {
 			$tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['social.'];
 
@@ -616,6 +616,7 @@ class user_tqseo_metatags {
 	 */
 	protected function _applyStdWrap($key, $value) {
 		$key .= '.';
+
 		if( empty($this->_stdWrapList[$key]) ) {
 			return $value;
 		}
