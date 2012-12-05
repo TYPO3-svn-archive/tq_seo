@@ -145,7 +145,8 @@ class user_tqseo_pagetitle {
 			#################
 			# Process settings from access point
 			#################
-			$store = tx_tqseo::getStore('pagetitle');
+			$connector = t3lib_div::makeInstance('tx_tqseo');
+			$store = $connector->getStore('pagetitle');
 
 			if( !empty($store) ) {
 				if( isset($store['pagetitle.title']) ) {

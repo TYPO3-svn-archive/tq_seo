@@ -1,6 +1,8 @@
+2012-12-05 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+	* Fixed TYPO3 6.0 issue
+
 2012-09-13 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Fixed typo in manual
-
 
 2012-06-07 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* Added geo positioning into pages meta tags

@@ -167,7 +167,8 @@ class user_tqseo_metatags {
 			#################
 			# Process meta tags from access point
 			#################
-			$storeMeta = tx_tqseo::getStore();
+			$connector = t3lib_div::makeInstance('tx_tqseo');
+			$storeMeta = $connector->getStore();
 
 			// Std meta tags
 			foreach($storeMeta['meta'] as $metaKey => $metaValue) {
