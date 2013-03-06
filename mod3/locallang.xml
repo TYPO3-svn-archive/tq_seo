@@ -18,6 +18,7 @@
 			<label index="header_sitemap_page_uid">PID</label>
 			<label index="header_sitemap_page_url">URL</label>
 			<label index="header_sitemap_page_language">Language</label>
+			<label index="header_sitemap_page_is_blacklisted">Blacklisted</label>
 			<label index="header_sitemap_page_depth">Depth</label>
 			<label index="header_sitemap_crdate">Created</label>
 			<label index="header_sitemap_tstamp">Last indexed</label>
@@ -44,6 +45,11 @@
 
 			<label index="label_search_page_depth">Depth</label>
 			<label index="empty_search_page_depth">-- All --</label>
+
+			<label index="label_search_is_blacklisted">Blacklist</label>
+
+			<label index="label_yes">Yes</label>
+			<label index="label_no">No</label>
 
 			<label index="button_yes">Yes</label>
 			<label index="button_no">No</label>
@@ -72,6 +78,7 @@
 			<label index="header_sitemap_page_uid">PID</label>
 			<label index="header_sitemap_page_url">URL</label>
 			<label index="header_sitemap_page_language">Sprache</label>
+			<label index="header_sitemap_page_is_blacklisted">Blacklisted</label>
 			<label index="header_sitemap_page_depth">Tiefe</label>
 			<label index="header_sitemap_crdate">Erstellt am</label>
 			<label index="header_sitemap_tstamp">Zuletzt indiziert am</label>
@@ -98,6 +105,11 @@
 
 			<label index="label_search_page_depth">Tiefe</label>
 			<label index="empty_search_page_depth">-- Alle --</label>
+
+			<label index="label_search_is_blacklisted">Blacklist</label>
+
+			<label index="label_yes">Ja</label>
+			<label index="label_no">Nein</label>
 
 			<label index="button_yes">Ja</label>
 			<label index="button_no">Nein</label>

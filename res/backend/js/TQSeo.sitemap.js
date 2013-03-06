@@ -53,7 +53,8 @@ TQSeo.sitemap.grid = {
 					{name: 'page_language', type: 'int' },
 					{name: 'page_change_frequency', type: 'int' },
 					{name: 'tstamp', type: 'string' },
-					{name: 'crdate', type: 'string' }
+					{name: 'crdate', type: 'string' },
+					{name: 'is_blacklisted', type: 'bool' }
 				]
 			),
 			sortInfo: {
@@ -69,7 +70,9 @@ TQSeo.sitemap.grid = {
 				criteriaFulltext		: Ext.encode( TQSeo.sitemap.conf.criteriaFulltext ),
 				criteriaPageUid			: Ext.encode( TQSeo.sitemap.conf.criteriaPageUid ),
 				criteriaPageLanguage	: Ext.encode( TQSeo.sitemap.conf.criteriaPageLanguage ),
-				criteriaPageDepth		: Ext.encode( TQSeo.sitemap.conf.criteriaPageDepth )
+				criteriaPageDepth		: Ext.encode( TQSeo.sitemap.conf.criteriaPageDepth ),
+				criteriaIsBlacklisted	: Ext.encode( TQSeo.sitemap.conf.criteriaIsBlacklisted ),
+                sessionToken			: Ext.encode( TQSeo.sitemap.conf.sessionToken )
 			},
 			listeners: {
 				beforeload: function() {
@@ -78,6 +81,7 @@ TQSeo.sitemap.grid = {
 					this.baseParams.criteriaPageUid			= Ext.encode( TQSeo.sitemap.conf.criteriaPageUid );
 					this.baseParams.criteriaPageLanguage	= Ext.encode( TQSeo.sitemap.conf.criteriaPageLanguage );
 					this.baseParams.criteriaPageDepth		= Ext.encode( TQSeo.sitemap.conf.criteriaPageDepth );
+					this.baseParams.criteriaIsBlacklisted	= Ext.encode( TQSeo.sitemap.conf.criteriaIsBlacklisted );
 					this.removeAll();
 				}
 			}
@@ -88,10 +92,15 @@ TQSeo.sitemap.grid = {
 		};
 
  		var filterAction = function(ob, cmd) {
- 			TQSeo.sitemap.conf.criteriaFulltext		= Ext.getCmp('searchFulltext').getValue();
-			TQSeo.sitemap.conf.criteriaPageUid		= Ext.getCmp('searchPageUid').getValue();
-			TQSeo.sitemap.conf.criteriaPageLanguage	= Ext.getCmp('searchPageLanguage').getValue();
-			TQSeo.sitemap.conf.criteriaPageDepth	= Ext.getCmp('searchPageDepth').getValue();
+ 			TQSeo.sitemap.conf.criteriaFulltext			= Ext.getCmp('searchFulltext').getValue();
+			TQSeo.sitemap.conf.criteriaPageUid			= Ext.getCmp('searchPageUid').getValue();
+			TQSeo.sitemap.conf.criteriaPageLanguage		= Ext.getCmp('searchPageLanguage').getValue();
+			TQSeo.sitemap.conf.criteriaPageDepth		= Ext.getCmp('searchPageDepth').getValue();
+			if( Ext.getCmp('searchIsBlacklisted').checked == true ) {
+				TQSeo.sitemap.conf.criteriaIsBlacklisted = 1;
+			} else {
+				TQSeo.sitemap.conf.criteriaIsBlacklisted = 0;
+			}
 
  			gridDs.reload();
 		};
@@ -135,8 +144,9 @@ TQSeo.sitemap.grid = {
 										}
 									},
 									params: {
-										'uidList': Ext.encode(uidList),
-										'pid': TQSeo.sitemap.conf.pid
+										'uidList'		: Ext.encode(uidList),
+										'pid'			: TQSeo.sitemap.conf.pid,
+										sessionToken	: Ext.encode( TQSeo.sitemap.conf.sessionToken )
 									}
 								});
 
@@ -223,6 +233,18 @@ TQSeo.sitemap.grid = {
 			return '<div ext:qtip="' + qtip +'">' + value + '</div>';
 		}
 
+		var rendererBoolean = function(value, metaData, record, rowIndex, colIndex, store) {
+			var ret;
+
+			if( value ) {
+				ret = "<b>"+TQSeo.sitemap.conf.lang.labelYes+"</b>";
+			} else {
+				ret = TQSeo.sitemap.conf.lang.labelNo;
+			}
+
+			return ret;
+		}
+
 		/****************************************************
 		 * grid panel
 		 ****************************************************/
@@ -256,7 +278,6 @@ TQSeo.sitemap.grid = {
 					sortable : true,
 					dataIndex: 'page_depth',
 					css      : 'text-align: right;padding-right: 10px;'
-
 				},{
 					id       : 'page_language',
 					header   : TQSeo.sitemap.conf.lang.sitemap_page_language,
@@ -264,6 +285,13 @@ TQSeo.sitemap.grid = {
 					sortable : true,
 					dataIndex: 'page_language',
 					renderer : rendererLanguage
+				},{
+					id       : 'is_blacklisted',
+					header   : TQSeo.sitemap.conf.lang.sitemap_page_is_blacklisted,
+					width    : 10,
+					sortable : true,
+					dataIndex: 'is_blacklisted',
+					renderer : rendererBoolean
 				},{
 					id       : 'crdate',
 					header   : TQSeo.sitemap.conf.lang.sitemap_crdate,
@@ -389,6 +417,17 @@ TQSeo.sitemap.grid = {
 					valueField: 'id',
 					displayField: 'label'
 		    	},
+				{xtype: 'tbspacer', width: 10},
+				TQSeo.sitemap.conf.lang.labelSearchIsBlacklisted,
+				{
+					xtype: 'checkbox',
+					id: 'searchIsBlacklisted',
+					listeners: {
+						check: function(f,e){
+							function_filter(this);
+						}
+					}
+				},
 				{xtype: 'tbspacer', width: 10},
 				{
 					xtype: 'button',

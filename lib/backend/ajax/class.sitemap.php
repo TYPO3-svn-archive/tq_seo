@@ -56,6 +56,7 @@ class tx_tqseo_backend_ajax_sitemap extends tx_tqseo_backend_ajax_base {
 		$searchPageUid			= trim( (int)$this->_postVar['criteriaPageUid'] );
 		$searchPageLanguage		= trim( (string)$this->_postVar['criteriaPageLanguage'] );
 		$searchPageDepth		= trim( (string)$this->_postVar['criteriaPageDepth'] );
+		$searchIsBlacklisted	= (bool)trim( (string)$this->_postVar['criteriaIsBlacklisted'] );
 
 		###############################
 		# Critera
@@ -83,6 +84,10 @@ class tx_tqseo_backend_ajax_sitemap extends tx_tqseo_backend_ajax_base {
 		// Depth
 		if( $searchPageDepth != -1 && strlen($searchPageDepth) >= 1 ) {
 			$where[] = 'page_depth = '.(int)$searchPageDepth;
+		}
+
+		if( $searchIsBlacklisted ) {
+			$where[] = 'is_blacklisted = 1';
 		}
 
 		// Build where
@@ -122,6 +127,7 @@ class tx_tqseo_backend_ajax_sitemap extends tx_tqseo_backend_ajax_base {
 			 page_language,
 			 page_url,
 			 page_depth,
+			 is_blacklisted,
 			 FROM_UNIXTIME(tstamp) as tstamp,
 			 FROM_UNIXTIME(crdate) as crdate',
 			'tx_tqseo_sitemap',

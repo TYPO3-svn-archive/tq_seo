@@ -52,7 +52,7 @@ abstract class tx_tqseo_sitemap_output_base {
 			$this->showError('Sitemap is not available, please check your configuration [control-center]');
 		}
 
-		$ret .= $this->_build();
+		$ret = $this->_build();
 
 		return $ret;
 	}

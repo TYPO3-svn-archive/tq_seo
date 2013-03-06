@@ -39,7 +39,7 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
  * @package		TYPO3
  * @subpackage	tx_seo
  */
-class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
+class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 	###########################################################################
 	# Attributes
 	###########################################################################
@@ -350,8 +350,9 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 			'Ext.namespace("TQSeo.sitemap");
 
 			TQSeo.sitemap.conf = {
-				ajaxController			: '. json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::sitemap').',
-				pid						: '. (int)$rootPid .',
+				sessionToken			: '.json_encode($this->_sessionToken('tx_tqseo_backend_ajax_sitemap')).',
+				ajaxController			: '.json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::sitemap').',
+				pid						: '.(int)$rootPid .',
 				renderTo				: "tx-tqseo-sitemap-grid",
 
 				pagingSize				: 50,
@@ -368,6 +369,7 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 				criteriaPageUid			: "",
 				criteriaPageLanguage	: "",
 				criteriaPageDepth		: "",
+				criteriaIsBlacklisted	: 0,
 
 				languageFullList		: '. json_encode($languageFullList) .',
 			};
@@ -381,6 +383,7 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 				sitemap_page_url		: '. json_encode( $LANG->getLL('header_sitemap_page_url') ) .',
 				sitemap_page_depth		: '. json_encode( $LANG->getLL('header_sitemap_page_depth') ) .',
 				sitemap_page_language	: '. json_encode( $LANG->getLL('header_sitemap_page_language') ) .',
+				sitemap_page_is_blacklisted : '. json_encode( $LANG->getLL('header_sitemap_page_is_blacklisted') ) .',
 				sitemap_tstamp			: '. json_encode( $LANG->getLL('header_sitemap_tstamp') ) .',
 				sitemap_crdate			: '. json_encode( $LANG->getLL('header_sitemap_crdate') ) .',
 
@@ -396,9 +399,13 @@ class  tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 				labelSearchPageDepth	: '. json_encode( $LANG->getLL('label_search_page_depth') ) .',
 				emptySearchPageDepth	: '. json_encode( $LANG->getLL('empty_search_page_depth') ) .',
 
+				labelSearchIsBlacklisted : '. json_encode( $LANG->getLL('label_search_is_blacklisted') ) .',
+
+				labelYes				: '. json_encode( $LANG->getLL('label_yes') ) .',
+				labelNo					: '. json_encode( $LANG->getLL('label_no') ) .',
+
 				buttonYes				: '. json_encode( $LANG->getLL('button_yes') ) .',
 				buttonNo				: '. json_encode( $LANG->getLL('button_no') ) .',
-
 
 				buttonDelete			: '. json_encode( $LANG->getLL('button_delete') ) .',
 				buttonDeleteHint		: '. json_encode( $LANG->getLL('button_delete_hint') ) .',

@@ -121,6 +121,7 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 			'Ext.namespace("TQSeo.overview");
 
 			TQSeo.overview.conf = {
+				sessionToken			: '.json_encode($this->_sessionToken('tx_tqseo_backend_ajax_page')).',
 				ajaxController			: '. json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::page').',
 				pid						: '. (int)$pageId .',
 				renderTo				: "tx-tqseo-sitemap-grid",

@@ -261,9 +261,10 @@ TQSeo.overview.grid = {
 									Ext.Ajax.request({
 										url: TQSeo.overview.conf.ajaxController + '&cmd=updatePageField',
 										params: {
-											pid:   Ext.encode(pid),
-											field: Ext.encode(fieldName),
-											value: Ext.encode(fieldValue)
+											pid				: Ext.encode(pid),
+											field			: Ext.encode(fieldName),
+											value			: Ext.encode(fieldValue),
+											sessionToken	: Ext.encode( TQSeo.overview.conf.sessionToken )
 										},
 										success: callbackFinish,
 										failure: callbackFinish
@@ -391,7 +392,8 @@ TQSeo.overview.grid = {
 				pagingSize				: Ext.encode( TQSeo.overview.conf.pagingSize ),
 				sortField				: Ext.encode( TQSeo.overview.conf.sortField ),
 				depth					: Ext.encode( TQSeo.overview.conf.depth ),
-				listType				: Ext.encode( TQSeo.overview.conf.listType )
+				listType				: Ext.encode( TQSeo.overview.conf.listType ),
+				sessionToken			: Ext.encode( TQSeo.overview.conf.sessionToken )
 			},
 			listeners: {
 				beforeload: function() {
@@ -791,7 +793,8 @@ TQSeo.overview.grid = {
 							Ext.Ajax.request({
 								url: TQSeo.overview.conf.ajaxController + '&cmd=generateSimulatedUrl',
 								params: {
-									pid:   Ext.encode(record.get('uid'))
+									pid				: Ext.encode(record.get('uid')),
+									sessionToken	: Ext.encode( TQSeo.overview.conf.sessionToken )
 								},
 								success: callbackFinish,
 								failure: callbackFinish
@@ -877,7 +880,8 @@ TQSeo.overview.grid = {
 						Ext.Ajax.request({
 							url: TQSeo.overview.conf.ajaxController + '&cmd=generateSimulatedTitle',
 							params: {
-								pid:   Ext.encode(record.get('uid'))
+								pid				: Ext.encode(record.get('uid')),
+								sessionToken	: Ext.encode( TQSeo.overview.conf.sessionToken )
 							},
 							success: callbackFinish,
 							failure: callbackFinish

@@ -57,11 +57,15 @@ CREATE TABLE tx_tqseo_sitemap (
 	page_hash varchar(32) DEFAULT '' NOT NULL,
 	page_depth int(4) DEFAULT '0' NOT NULL,
 	page_change_frequency int(4) DEFAULT '0' NOT NULL,
+
+	is_blacklisted int(1) DEFAULT '0' NOT NULL,
+
 	PRIMARY KEY (uid),
 
 	UNIQUE page_identification (page_uid,page_language,page_hash),
 	KEY language_path (page_rootpid,page_language,page_depth),
-	KEY page_depth (page_depth)
+	KEY page_depth (page_depth),
+	KEY blacklisted (is_blacklisted)
 ) ENGINE=InnoDB;
 
 

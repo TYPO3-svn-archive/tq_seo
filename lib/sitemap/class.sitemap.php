@@ -119,7 +119,9 @@ class tx_tqseo_sitemap {
 
 		$tstamp = time() - $expireDays*24*60*60;
 
-		$query = 'DELETE FROM tx_tqseo_sitemap WHERE tstamp <= '.(int)$tstamp;
+		$query = 'DELETE FROM tx_tqseo_sitemap
+						WHERE tstamp <= '.(int)$tstamp.'
+						  AND is_blacklisted = 0';
 		$res = $TYPO3_DB->sql_query($query);
 
 		#####################
@@ -146,7 +148,9 @@ class tx_tqseo_sitemap {
 
 		// delete pages
 		if(!empty($deletedSitemapPages)) {
-			$query = 'DELETE FROM tx_tqseo_sitemap WHERE uid IN ('.implode(',', $deletedSitemapPages).')';
+			$query = 'DELETE FROM tx_tqseo_sitemap
+							WHERE uid IN ('.implode(',', $deletedSitemapPages).')
+							  AND is_blacklisted = 0';
 			$TYPO3_DB->sql_query($query);
 		}
 	}
@@ -175,7 +179,8 @@ class tx_tqseo_sitemap {
 								AND	p.deleted = 0
 								AND	p.hidden = 0
 								AND	p.tx_tqseo_is_exclude = 0
-				   WHERE ts.page_rootpid = '.(int)$rootPid;
+				   WHERE ts.page_rootpid = '.(int)$rootPid.'
+				     AND ts.is_blacklisted = 0';
 
 		if( $languageId !== null ) {
 			$query .= ' AND ts.page_language = '.(int)$languageId;

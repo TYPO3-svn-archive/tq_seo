@@ -67,7 +67,13 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 	 * @var	string
 	 */
 	protected $_moduleUrl = null;
-
+	
+	/**
+	 * Backend Form Protection object
+	 * 
+	 * @var t3lib_formprotection_BackendFormProtection
+	 */
+	protected $_formProtection = null;
 
 	###########################################################################
 	# Public methods
@@ -89,6 +95,9 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 		if( !empty($_GET[ $MCONF['name'] ]) ) {
 			$this->_moduleArgs = (array)$_GET[ $MCONF['name'] ];
 		}
+		
+		// Init form protection instance
+		$this->_formProtection = t3lib_div::makeInstance('t3lib_formprotection_BackendFormProtection');
 	}
 
 
@@ -284,6 +293,17 @@ class  tx_tqseo_module_base extends t3lib_SCbase {
 		return $GLOBALS['LANG']->getLL('title');
 	}
 
+	/**
+	 * Create session token
+	 * 
+	 * @param	string	$formName	Form name/Session token name
+	 * @return	string
+	 */
+	protected function _sessionToken($formName) {
+		$token = $this->_formProtection->generateToken($formName);
+		return $token;
+	}
+	
 }
 
 ?>

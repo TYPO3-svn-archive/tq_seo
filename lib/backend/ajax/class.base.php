@@ -65,7 +65,14 @@ class tx_tqseo_backend_ajax_base {
 	 * @var t3lib_TCEmain
 	 */
 	protected $_tce = null;
-
+	
+	/**
+	 * Backend Form Protection object
+	 * 
+	 * @var t3lib_formprotection_BackendFormProtection
+	 */
+	protected $_formProtection = null;
+	
 	###########################################################################
 	# Methods
 	###########################################################################
@@ -93,14 +100,13 @@ class tx_tqseo_backend_ajax_base {
 			$method = '_execute'.$function;
 			$call	= array($this, $method);
 
-
-
 			if(	is_callable($call) ) {
 				$this->_fetchParams();
 
 				$this->_init();
-
-				$ret = $this->$method();
+				if( $this->_checkSessionToken() ) {
+					$ret = $this->$method();
+				}
 			}
 		}
 
@@ -119,6 +125,9 @@ class tx_tqseo_backend_ajax_base {
 
 		// Include ajax local lang
 		$LANG->includeLLFile('EXT:tq_seo/locallang_ajax.xml');
+		
+		// Init form protection instance
+		$this->_formProtection = t3lib_div::makeInstance('t3lib_formprotection_BackendFormProtection');
 	}
 
 	/**
@@ -173,6 +182,37 @@ class tx_tqseo_backend_ajax_base {
 		}
 
 		return $this->_tce;
+	}
+	
+	/**
+	 * Create session token
+	 * 
+	 * @param	string	$formName	Form name/Session token name
+	 * @return	string
+	 */
+	protected function _sessionToken($formName) {
+		$token = $this->_formProtection->generateToken($formName);
+		return $token;
+	}
+	
+	/**
+	 * Check session token
+	 * 
+	 * @return	boolean
+	 */
+	protected function _checkSessionToken() {
+		if( empty($this->_postVar['sessionToken']) ) {
+			// No session token exists
+			return false;
+		}
+		
+		$sessionToken = $this->_sessionToken( get_class($this) );
+		
+		if( $this->_postVar['sessionToken'] === $sessionToken ) {
+			return true;
+		}
+		
+		return false;
 	}
 
 }
