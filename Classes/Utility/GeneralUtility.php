@@ -1,36 +1,38 @@
 <?php
+namespace TQ\TqSeo\Utility;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2012 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * Tools
  *
  * @author		Blaschke, Markus <blaschke@teqneers.de>
  * @package 	tq_seo
- * @subpackage	lib
+ * @subpackage	Utility
  * @version		$Id$
  */
-class tx_tqseo_tools {
+class GeneralUtility {
 
 	###########################################################################
 	# Attributes
@@ -144,7 +146,7 @@ class tx_tqseo_tools {
 
 		$ret = array();
 
-		$host		= t3lib_div::getIndpEnv('HTTP_HOST');
+		$host		= \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
 		$rootPid	= self::getRootPid();
 
 		$res = $TYPO3_DB->exec_SELECTquery(
@@ -268,7 +270,7 @@ class tx_tqseo_tools {
 		if( !empty($hookConf[$name]) && is_array($hookConf[$name]) ) {
 			foreach($hookConf[$name] as $_funcRef) {
 				if ($_funcRef) {
-					t3lib_div::callUserFunction($_funcRef, $args, $obj);
+                    \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $args, $obj);
 				}
 			}
 		}
@@ -286,7 +288,7 @@ class tx_tqseo_tools {
 		global $TSFE;
 
 		if( !preg_match('/^https?:\/\//i', $url ) ) {
-			$url = t3lib_div::locationHeaderUrl($url);
+			$url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url);
 		}
 
 		// Fix url stuff
@@ -311,14 +313,10 @@ class tx_tqseo_tools {
 	 */
 	protected static function _getSysPageObj() {
 		if(self::$sysPageObj === null) {
-			self::$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+			self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_pageSelect');
 		}
 		return self::$sysPageObj;
 	}
 
 }
 
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/class.tools.php']) {
-	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/lib/class.tools.php']);
-}
-?>

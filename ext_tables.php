@@ -3,8 +3,8 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$extPath = t3lib_extMgm::extPath($_EXTKEY);
-$extRelPath = t3lib_extMgm::extRelPath($_EXTKEY);
+$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY);
+$extRelPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY);
 
 ###############################################################################
 # TABLES
@@ -223,8 +223,7 @@ $tempColumns = array (
 );
 
 
-t3lib_div::loadTCA('pages');
-t3lib_extMgm::addTCAcolumns('pages',$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages',$tempColumns,1);
 
 // TCA Palettes
 $TCA['pages']['palettes']['tx_tqseo_pagetitle'] = array(
@@ -248,10 +247,10 @@ $TCA['pages']['palettes']['tx_tqseo_geo'] = array(
 );
 
 
-t3lib_extMgm::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '1,4,7,3', 'after:title');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages','tx_tqseo_pagetitle_rel', '1,4,7,3', 'after:title');
 
 // Put it for standard page
-t3lib_extMgm::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.geo;tx_tqseo_geo,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '1,4,7,3', 'after:author_email');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.geo;tx_tqseo_geo,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.sitemap;tx_tqseo_sitemap', '1,4,7,3', 'after:author_email');
 
 ###################
 # Page overlay (lang)
@@ -329,8 +328,7 @@ $tempColumns = array (
 	),
 );
 
-t3lib_div::loadTCA('pages_language_overlay');
-t3lib_extMgm::addTCAcolumns('pages_language_overlay',$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('pages_language_overlay',$tempColumns,1);
 
 // TCA Palettes
 $TCA['pages_language_overlay']['palettes']['tx_tqseo_pagetitle'] = array(
@@ -343,10 +341,10 @@ $TCA['pages_language_overlay']['palettes']['tx_tqseo_crawler'] = array(
 	'canNotCollapse'	=> 1
 );
 
-t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','tx_tqseo_pagetitle_rel', '', 'after:title');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages_language_overlay','tx_tqseo_pagetitle_rel', '', 'after:title');
 
 // Put it for standard page overlay
-t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler', '', 'after:author_email');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/locallang_tca.xml:pages.tab.seo;,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.pagetitle;tx_tqseo_pagetitle,--palette--;LLL:EXT:tq_seo/locallang_tca.xml:pages.palette.crawler;tx_tqseo_crawler', '', 'after:author_email');
 
 ###################
 # Domains
@@ -356,15 +354,14 @@ t3lib_extMgm::addToAllTCAtypes('pages_language_overlay','--div--;LLL:EXT:tq_seo/
 $tempColumns = array (
 );
 
-t3lib_div::loadTCA('sys_domain');
-t3lib_extMgm::addTCAcolumns('sys_domain',$tempColumns,1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_domain',$tempColumns,1);
 */
 
 ###################
 # Settings Root
 ###################
-//t3lib_extMgm::addToInsertRecords('tx_tqseo_setting_root');
-//t3lib_extMgm::allowTableOnStandardPages('tx_tqseo_setting_root');
+//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToInsertRecords('tx_tqseo_setting_root');
+//\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_tqseo_setting_root');
 
 $TCA['tx_tqseo_setting_root'] = array(
 	'ctrl' => array(
@@ -383,7 +380,7 @@ $TCA['tx_tqseo_setting_root'] = array(
 	),
 );
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_tqseo_setting_root','EXT:tq_seo/locallang_csh_setting_root.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_tqseo_setting_root','EXT:tq_seo/locallang_csh_setting_root.xml');
 
 /*
 $TCA['tx_tqseo_setting_page'] = array(
@@ -421,19 +418,19 @@ if (TYPO3_MODE == 'BE') {
 		$TBE_MODULES = $temp_TBE_MODULES;
 	}
 
-	t3lib_extMgm::addModule('tqseo', '', '', $extPath.'mod1/');
-	t3lib_extMgm::addModule('tqseo', 'txtqseoM2', 'bottom', $extPath . 'mod2/');
-	t3lib_extMgm::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', '', '', $extPath.'mod1/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', 'txtqseoM2', 'bottom', $extPath . 'mod2/');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
 
 
-    t3lib_extMgm::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
-    t3lib_extMgm::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
 }
 
 ###############################################################################
 # CONFIGURATION
 ###############################################################################
 
-t3lib_extMgm::addStaticFile($_EXTKEY,'static/default/', 'TEQneers SEO');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY,'static/default/', 'TEQneers SEO');
 
 ?>

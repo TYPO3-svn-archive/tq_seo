@@ -5,29 +5,20 @@
 #
 ###
 
-## include libs
-includeLibs.tx_tqseo_pagetitle = EXT:tq_seo/lib/class.pagetitle.php
-includeLibs.tx_tqseo_metatags = EXT:tq_seo/lib/class.metatags.php
-includeLibs.tx_tqseo_pagefooter = EXT:tq_seo/lib/class.pagefooter.php
-includeLibs.tx_tqseo_http = EXT:tq_seo/lib/class.http.php
-
-includeLibs.tx_tqseo_sitemap_output_txt = EXT:tq_seo_sitemap/lib/sitemap/output/class.txt.php
-includeLibs.tx_tqseo_sitemap_output_xml = EXT:tq_seo_sitemap/lib/sitemap/output/class.xml.php
-
-
 ## title tag changer
-config.titleTagFunction = user_tqseo_pagetitle->main
+config.titleTagFunction = TQ\TqSeo\Page\Part\PagetitlePart->main
 
-## metatags
 page {
+	# TQ Seo: Metatags
 	headerData.84113002 = USER
 	headerData.84113002 {
-		userFunc = user_tqseo_metatags->main
+		userFunc = TQ\TqSeo\Page\Part\MetatagPart->main
 	}
 
+	# TQ Seo: Pager Footer
 	84113002 = USER
 	84113002 {
-		userFunc = user_tqseo_pagefooter->main
+		userFunc = TQ\TqSeo\Page\Part\FooterPart->main
 	}
 }
 
@@ -391,7 +382,7 @@ tqSeoSitemapTxt {
 
 	10 = USER
 	10 {
-		userFunc = tx_tqseo_sitemap_output_txt->main
+		userFunc = TQ\TqSeo\Page\SitemapTxtPage->main
 	}
 
 	config {
@@ -426,7 +417,7 @@ tqSeoSitemapXml {
 
 	10 = USER
 	10 {
-		userFunc = tx_tqseo_sitemap_output_xml->main
+		userFunc = TQ\TqSeo\Page\SitemapXmlPage->main
 	}
 
 	config {
@@ -460,7 +451,7 @@ tqSeoRobotsTxt {
 
 	10 = USER
 	10 {
-		userFunc = tx_tqseo_robots_txt->main
+		userFunc = TQ\TqSeo\Page\RobotsTxtPage->main
 	}
 
 	config {

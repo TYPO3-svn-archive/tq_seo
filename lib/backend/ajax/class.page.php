@@ -237,7 +237,7 @@ class tx_tqseo_backend_ajax_page extends tx_tqseo_backend_ajax_base {
 				$ret = $TSFE->cObj->typolink_URL( array('parameter' => $page['uid']) );
 
 				if( !empty($ret) ) {
-					$ret = tx_tqseo_tools::fullUrl($ret);
+					$ret = \TQ\TqSeo\Utility\GeneralUtility::fullUrl($ret);
 				}
 			}
 		}

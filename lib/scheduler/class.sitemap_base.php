@@ -78,7 +78,7 @@ abstract class tx_tqseo_scheduler_task_sitemap_base extends tx_scheduler_task {
 			$this->_initRootPage($uid);
 
 
-			if( tx_tqseo_tools::getRootSettingValue('is_sitemap_language_lock', false, $uid) ) {
+			if( \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid) ) {
 				foreach($this->_languageIdList as $languageId) {
 					$this->_setRootPageLanguage($languageId);
 					$this->_buildSitemap($uid, $languageId);
