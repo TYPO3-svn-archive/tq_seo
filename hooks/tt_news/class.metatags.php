@@ -32,51 +32,51 @@
  */
 class tx_tqseo_hook_ttnews_metatags {
 
-	/**
-	 * Extra item marker hook for metatag fetching
-	 *
-	 * @param	array	$markerArray		Marker array
-	 * @param	array	$row				Current tt_news row
-	 * @param	array	$lConf				Local configuration
-	 * @param	object	$ttnewsObj			Pi-object from tt_news
-	 * @return	array						Marker array (not changed)
-	 */
-	public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
-		global $TSFE;
+    /**
+     * Extra item marker hook for metatag fetching
+     *
+     * @param	array	$markerArray		Marker array
+     * @param	array	$row				Current tt_news row
+     * @param	array	$lConf				Local configuration
+     * @param	object	$ttnewsObj			Pi-object from tt_news
+     * @return	array						Marker array (not changed)
+     */
+    public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
+        global $TSFE;
 
-		$theCode = (string)strtoupper(trim($ttnewsObj->theCode));
+        $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-		switch($theCode) {
-			case 'SINGLE':
-			case 'SINGLE2':
-				// Keywords
-				if( !empty($row['keywords']) ) {
-					$TSFE->page['keywords']			= $row['keywords'];
-					$TSFE->cObj->data['keywords']	= $row['keywords'];
-				}
+        switch($theCode) {
+            case 'SINGLE':
+            case 'SINGLE2':
+                // Keywords
+                if( !empty($row['keywords']) ) {
+                    $TSFE->page['keywords']			= $row['keywords'];
+                    $TSFE->cObj->data['keywords']	= $row['keywords'];
+                }
 
-				// Short/Description
-				if( !empty($row['short']) ) {
-					$TSFE->page['description']			= $row['short'];
-					$TSFE->cObj->data['description']	= $row['short'];
-				}
+                // Short/Description
+                if( !empty($row['short']) ) {
+                    $TSFE->page['description']			= $row['short'];
+                    $TSFE->cObj->data['description']	= $row['short'];
+                }
 
-				// Author
-				if( !empty($row['author']) ) {
-					$TSFE->page['author']		= $row['author'];
-					$TSFE->cObj->data['author']	= $row['author'];
-				}
+                // Author
+                if( !empty($row['author']) ) {
+                    $TSFE->page['author']		= $row['author'];
+                    $TSFE->cObj->data['author']	= $row['author'];
+                }
 
-				// E-Mail
-				if( !empty($row['author_email']) ) {
-					$TSFE->page['email']		= $row['author_email'];
-					$TSFE->cObj->data['email']	= $row['author_email'];
-				}
-				break;
-		}
+                // E-Mail
+                if( !empty($row['author_email']) ) {
+                    $TSFE->page['email']		= $row['author_email'];
+                    $TSFE->cObj->data['email']	= $row['author_email'];
+                }
+                break;
+        }
 
-		return $markerArray;
-	}
+        return $markerArray;
+    }
 
 }
 

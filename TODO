@@ -1,16 +1,8 @@
-Update
-------
-* Update scheduler tasks
-
-
-
-
 
 * tx_tqseo
 	-> Hooks?
 * Backend module for page-seo
 	-> settings
-* Better Security/Permission checks in backend
 * Piwik auto keywords
 * Sitemap url type (page, news etc)
 * Finishing accessor class
