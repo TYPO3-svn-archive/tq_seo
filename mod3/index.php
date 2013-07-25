@@ -28,7 +28,6 @@
  */
 
 $LANG->includeLLFile('EXT:tq_seo/mod3/locallang.xml');
-require_once t3lib_extMgm::extPath('tq_seo').'lib/backend/class.base.php';
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 
@@ -39,7 +38,7 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
  * @package		TYPO3
  * @subpackage	tx_seo
  */
-class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
+class tx_tqseo_module_sitemap extends \TQ\TqSeo\Backend\Module\StandardModule {
 	###########################################################################
 	# Attributes
 	###########################################################################
@@ -67,8 +66,8 @@ class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 		global $LANG, $TYPO3_DB;
 
 		// Init
-		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
-		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
+		$rootPageList		= \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
+		$rootSettingList	= \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
 		###############################
 		# Fetch
@@ -251,7 +250,7 @@ class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 
 		$this->_menuBackLink = $this->_moduleLink('sitemap');
 
-		$rootPageList = tx_tqseo_backend_tools::getRootPageList();
+		$rootPageList = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
 
 		$rootPid	= (int)$this->_moduleArgs['rootPid'];
 		$rootPage	= $rootPageList[$rootPid];
@@ -259,7 +258,7 @@ class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 		###############################
 		# Fetch
 		###############################
-		$pageTsConf = t3lib_BEfunc::getPagesTSconfig($rootPid);
+		$pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
 
 		$languageFullList = array(
 			0 => array(
@@ -340,8 +339,8 @@ class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 		# HTML
 		###############################
 
-		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
-		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/TQSeo.sitemap.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/TQSeo.sitemap.js');
 
 		// Include Ext JS inline code
 		$this->pageRenderer->addJsInlineCode(
@@ -350,7 +349,7 @@ class tx_tqseo_module_sitemap extends tx_tqseo_module_standalone {
 			'Ext.namespace("TQSeo.sitemap");
 
 			TQSeo.sitemap.conf = {
-				sessionToken			: '.json_encode($this->_sessionToken('tx_tqseo_backend_ajax_sitemap')).',
+				sessionToken			: '.json_encode($this->_sessionToken('tq_tqseo_backend_ajax_sitemapajax')).',
 				ajaxController			: '.json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::sitemap').',
 				pid						: '.(int)$rootPid .',
 				renderTo				: "tx-tqseo-sitemap-grid",
@@ -437,7 +436,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_tqseo_module_sitemap');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_tqseo_module_sitemap');
 $SOBE->init();
 
 // Include files?

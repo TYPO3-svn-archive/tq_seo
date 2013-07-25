@@ -38,7 +38,7 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
  * @package		TYPO3
  * @subpackage	tx_seo
  */
-class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
+class tx_tqseo_module_controlcenter extends \TQ\TqSeo\Backend\Module\StandardModule {
 	###########################################################################
 	# Attributes
 	###########################################################################
@@ -55,7 +55,7 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 	public function executeMain() {
 		global $TYPO3_DB, $LANG, $BE_USER;
 
-		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
+		$rootPageList		= \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
 		$rootIdList			= array_keys($rootPageList);
 
 		$rootPidCondition = null;
@@ -84,7 +84,7 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 			$TYPO3_DB->sql_query($query);
 		}
 
-		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
+		$rootSettingList	= \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
 
 		// Fetch domain name
@@ -125,7 +125,7 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 
 			// Settings available
 			if( !empty($settingRow) ) {
-				$settingsLink = t3lib_BEfunc::editOnClick('&edit[tx_tqseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
+				$settingsLink = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_tqseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
 			} else {
 				$args = array(
 					'pid'	=> $pageId,
@@ -211,8 +211,8 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 		global $BE_USER;
 		global $TYPO3_DB;
 
-		$rootPageList		= tx_tqseo_backend_tools::getRootPageList();
-		$rootSettingList	= tx_tqseo_backend_tools::getRootPageSettingList();
+		$rootPageList		= \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
+		$rootSettingList	= \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
 		$pid = null;
 		if( !empty($this->_moduleArgs['pid']) ) {
@@ -237,7 +237,7 @@ class tx_tqseo_module_controlcenter extends tx_tqseo_module_standalone {
 		}
 
 		// Maybe there is a better solution than this js-redirect!?
-		$link = t3lib_BEfunc::editOnClick('&edit[tx_tqseo_setting_root]['.$uid.']=edit',$this->doc->backPath);
+		$link = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_tqseo_setting_root]['.$uid.']=edit',$this->doc->backPath);
 		return '<script type="text/javascript">
 			function tq_redirect() {
 				'.$link.'
@@ -255,7 +255,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_tqseo_module_controlcenter');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_tqseo_module_controlcenter');
 $SOBE->init();
 
 // Include files?

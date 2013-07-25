@@ -28,7 +28,6 @@
  */
 
 $LANG->includeLLFile('EXT:tq_seo/mod4/locallang.xml');
-require_once t3lib_extMgm::extPath('tq_seo').'lib/backend/class.base.php';
 $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the users has no permission for entry.
 // DEFAULT initialization of a module [END]
 
@@ -39,7 +38,7 @@ $BE_USER->modAccess($MCONF,1);    // This checks permissions and exits if the us
  * @package		TYPO3
  * @subpackage	tx_seo
  */
-class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
+class  tx_tqseo_module_overview extends \TQ\TqSeo\Backend\Module\TreeModule {
 	###########################################################################
 	# Attributes
 	###########################################################################
@@ -109,10 +108,10 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 		# HTML
 		###############################
 
-		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
-		$this->pageRenderer->addJsFile($BACK_PATH . t3lib_extMgm::extRelPath('tq_seo') . 'res/backend/js/TQSeo.overview.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/TQSeo.overview.js');
 
-		$realUrlAvailable = t3lib_extMgm::isLoaded('realurl');
+		$realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
 
 			// Include Ext JS inline code
 		$this->pageRenderer->addJsInlineCode(
@@ -121,9 +120,9 @@ class  tx_tqseo_module_overview extends tx_tqseo_module_tree {
 			'Ext.namespace("TQSeo.overview");
 
 			TQSeo.overview.conf = {
-				sessionToken			: '.json_encode($this->_sessionToken('tx_tqseo_backend_ajax_page')).',
-				ajaxController			: '. json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::page').',
-				pid						: '. (int)$pageId .',
+				sessionToken			: '.json_encode($this->_sessionToken('tq_tqseo_backend_ajax_pageajax')).',
+				ajaxController			: '.json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::page').',
+				pid						: '.(int)$pageId .',
 				renderTo				: "tx-tqseo-sitemap-grid",
 
 				pagingSize				: 50,
@@ -224,7 +223,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/tq_seo/
 }
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_tqseo_module_overview');
+$SOBE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_tqseo_module_overview');
 $SOBE->init();
 
 // Include files?

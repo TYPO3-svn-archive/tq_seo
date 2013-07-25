@@ -52,7 +52,7 @@ class CacheUtility {
                       AND cache_identifier = '.$TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache');
         $res = $TYPO3_DB->sql_query($query);
 
-        if( $row = $TYPO3_DB->sql_fetch_assoc($result) ) {
+        if( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
             $ret = $row['cache_content'];
         }
 

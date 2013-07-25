@@ -121,7 +121,7 @@ class SitemapIndexHook {
         \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-page', null, $pageData);
 
         if( !empty($pageData) ) {
-            tx_tqseo_sitemap::index($pageData, 'page');
+            \TQ\TqSeo\Utility\SitemapUtility::index($pageData, 'page');
         }
 
         return true;
@@ -174,7 +174,7 @@ class SitemapIndexHook {
 
             $clearCacheChance = ceil(mt_rand(0, $possibility));
             if( $clearCacheChance == 1 ) {
-                tx_tqseo_sitemap::expire();
+                \TQ\TqSeo\Utility\SitemapUtility::expire();
             }
         }
     }
@@ -322,7 +322,7 @@ class SitemapIndexHook {
         \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-link', null, $pageData);
 
         if( !empty($pageData) ) {
-            tx_tqseo_sitemap::index($pageData, 'link');
+            \TQ\TqSeo\Utility\SitemapUtility::index($pageData, 'link');
         }
 
         return true;
