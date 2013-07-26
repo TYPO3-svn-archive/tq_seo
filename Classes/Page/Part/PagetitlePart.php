@@ -45,7 +45,7 @@ class PagetitlePart {
 
         // INIT
         $ret              = $title;
-        $rawTitel         = $TSFE->page['title'];
+        $rawTitel         = !empty($TSFE->altPageTitle) ? $TSFE->altPageTitle : $TSFE->page['title'];
         $tsSetup          = $TSFE->tmpl->setup;
         $tsSeoSetup       = array();
         $rootLine         = $TSFE->rootLine;

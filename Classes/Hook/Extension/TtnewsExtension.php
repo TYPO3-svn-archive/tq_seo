@@ -53,6 +53,16 @@ class TtnewsExtension {
         switch ($theCode) {
             case 'SINGLE':
             case 'SINGLE2':
+                // Title
+                if (!empty($row['title'])) {
+                    ConnectUtility::setMetaTag('title', $row['title']);
+                }
+
+                // Description
+                if (!empty($row['short'])) {
+                    ConnectUtility::setMetaTag('description', $row['short']);
+                }
+
                 // Keywords
                 if (!empty($row['keywords'])) {
                     ConnectUtility::setMetaTag('keywords', $row['keywords']);
