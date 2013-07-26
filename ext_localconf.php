@@ -49,7 +49,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndex
 #################################################
 if( !empty($confArr['enableIntegrationTTNews']) ) {
     // Metatag fetch hook
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook']['tqseo'] = 'TQ\\TqSeo\\Hook\Extension\\Ttnews\\MetatagTtnews';
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook']['tqseo'] = 'TQ\\TqSeo\\Hook\\Extension\\TtnewsExtension';
 }
 
 #################################################

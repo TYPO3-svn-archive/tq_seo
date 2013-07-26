@@ -248,7 +248,6 @@ class PagetitlePart {
             }
         }
 
-
         // Apply stdWrap after
         if (!empty($stdWrapList['after.'])) {
             $ret = $this->cObj->stdWrap($ret, $stdWrapList['after.']);

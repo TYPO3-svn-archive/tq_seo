@@ -1,5 +1,5 @@
 <?php
-namespace TQ\TqSeo\Hook\Extension\Ttnews;
+namespace TQ\TqSeo\Hook\Extension;
 
 use \TQ\TqSeo\Utility\ConnectUtility;
 
@@ -34,7 +34,7 @@ use \TQ\TqSeo\Utility\ConnectUtility;
  * @subpackage    lib
  * @version        $Id$
  */
-class MetatagTtnews {
+class TtnewsExtension {
 
     /**
      * Extra item marker hook for metatag fetching

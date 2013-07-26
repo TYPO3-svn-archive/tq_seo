@@ -477,3 +477,11 @@ tqSeoRobotsTxt {
 		message_preview = #
 	}
 }
+
+
+
+#####
+# Ext: news
+####
+
+plugin.tx_news.settings.detail.registerProperties := addToList(keywords,title,teaser,authoremail)

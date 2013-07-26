@@ -56,8 +56,10 @@ class MetatagPart {
         $tsfePage = $TSFE->page;
 
         $customMetaTagList = array();
+        $enableMetaDc      = true;
 
-        $enableMetaDc = true;
+        // Init News extension
+        $this->_initExtensionSupport();
 
         if (!empty($tsSetup['plugin.']['tq_seo.']['metaTags.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['metaTags.'];
@@ -179,6 +181,8 @@ class MetatagPart {
             #################
             # Process meta tags from access point
             #################
+
+            /** @var \TQ\TqSeo\Utility\ConnectUtility $connector */
             $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\TqSeo\Utility\ConnectUtility');
             $storeMeta = $connector->getStore();
 
@@ -587,12 +591,65 @@ class MetatagPart {
         return $separator . implode($separator, $ret) . $separator;
     }
 
+
+    /**
+     * Init extension support
+     */
+    protected function _initExtensionSupport() {
+
+        // Extension: news
+        if( \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('news') ) {
+            $this->_initExtensionSupportNews();
+        }
+
+    }
+
+
+    /**
+     * Init extension support for "news" extension
+     */
+    protected function _initExtensionSupportNews() {
+        global $TSFE;
+
+        if( empty($TSFE->register) ) {
+            return;
+        }
+
+        /** @var \TQ\TqSeo\Utility\ConnectUtility $connector */
+        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\TqSeo\Utility\ConnectUtility');
+
+        if( isset($TSFE->register['newsTitle']) ) {
+            $connector->setMetaTag('title', $TSFE->register['newsTitle']);
+        }
+
+        if( isset($TSFE->register['newsAuthor']) ) {
+            $connector->setMetaTag('author', $TSFE->register['newsAuthor']);
+        }
+
+        if( isset($TSFE->register['newsAuthoremail']) ) {
+            $connector->setMetaTag('email', $TSFE->register['newsAuthoremail']);
+        }
+
+        if( isset($TSFE->register['newsAuthorEmail']) ) {
+            $connector->setMetaTag('email', $TSFE->register['newsAuthorEmail']);
+        }
+
+        if( isset($TSFE->register['newsKeywords']) ) {
+            $connector->setMetaTag('keywords', $TSFE->register['newsKeywords']);
+        }
+
+        if( isset($TSFE->register['newsTeaser']) ) {
+            $connector->setMetaTag('description', $TSFE->register['newsTeaser']);
+        }
+    }
+
+
     /**
      * Generate a link via TYPO3-Api
      *
      * @param    integer|string $url    URL (id or string)
-     * @param    array|null $conf    URL configuration
-     * @return    string                    URL
+     * @param    array|null     $conf   URL configuration
+     * @return   string                 URL
      */
     protected function _generateLink($url, $conf = null) {
         global $TSFE;
@@ -691,8 +748,8 @@ class MetatagPart {
      * Process stdWrap from stdWrap list
      *
      * @param    string $key    StdWrap-List key
-     * @param    string $value    Value
-     * @return    string
+     * @param    string $value  Value
+     * @return   string
      */
     protected function _applyStdWrap($key, $value) {
         $key .= '.';
