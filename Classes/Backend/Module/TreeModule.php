@@ -41,7 +41,7 @@ class TreeModule extends \TQ\TqSeo\Backend\Module\AbstractModule {
      *
      * @var string
      */
-    protected $_docTemplate = 'tree';
+    protected $_docTemplate = 'Tree';
 
     ###########################################################################
     # Public methods
@@ -64,7 +64,7 @@ class TreeModule extends \TQ\TqSeo\Backend\Module\AbstractModule {
         if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))    {
             // Page template
             $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
-            $this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tq_seo') . 'res/backend/template/'.$this->_docTemplate.'.html');
+            $this->doc->setModuleTemplate(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('tq_seo') . 'Resources/Private/Templates/Backend/'.$this->_docTemplate.'.html');
             $this->doc->backPath = $BACK_PATH;
             $this->pageRenderer = $this->doc->getPageRenderer();
 
@@ -76,10 +76,10 @@ class TreeModule extends \TQ\TqSeo\Backend\Module\AbstractModule {
             //$this->pageRenderer->enableExtJsDebug();
 
             // Std javascript
-            $this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/TQSeo.js');
+            $this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.js');
 
             // CSS
-            $this->pageRenderer->addCssFile( $BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') .  'res/backend/css/tqseo_backend.css' );
+            $this->pageRenderer->addCssFile( $BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') .  'Resources/Public/Backend/Css/Default.css' );
 
 
             // Set the form

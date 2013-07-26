@@ -1,8 +1,7 @@
-
-* tx_tqseo
-	-> Hooks?
+* Backend module with Extbase
 * Backend module for page-seo
 	-> settings
 * Piwik auto keywords
 * Sitemap url type (page, news etc)
+* Sitemap with blacklist (WIP)
 * Finishing accessor class

@@ -144,7 +144,7 @@ body .x-panel {
 	color: #fff;
 }
 
-.icon-grid { background-image:url('../img/icon_del.gif') !important; }
+.icon-grid { background-image:url('../Icons/Delete.gif') !important; }
 
 #button-grid .x-panel-body {
 	border:1px solid #99bbe8;
@@ -164,7 +164,7 @@ body .x-panel {
 	color: #444;
 }
 
-.delete { background-image: url('../img/icon_del.gif') !important; }
+.delete { background-image: url('../Icons/Delete.gif') !important; }
 
 .deletedPath { color: #ff0000; font-weight: bold; }
 

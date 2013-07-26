@@ -236,7 +236,7 @@ plugin.tq_seo {
 			anonymizeIp = {$plugin.tq_seo.services.googleAnalytics.anonymizeIp}
 			domainName = {$plugin.tq_seo.services.googleAnalytics.domainName}
 			trackDownloads = {$plugin.tq_seo.services.googleAnalytics.trackDownloads}
-			trackDownloadsScript = EXT:tq_seo/res/ga-track-download.js
+			trackDownloadsScript = EXT:tq_seo/Resources/Public/Frontend/JavaScript/GoogleAnalyticsTrackDownload.js
 			customizationCode =
 
 
@@ -247,7 +247,7 @@ plugin.tq_seo {
 			template {
 				10 = FLUIDTEMPLATE
 				10 {
-					file = EXT:tq_seo/res/templates/service-ga.html
+					file = EXT:tq_seo/Resources/Private/Templates/PageParts/ServiceGoogleAnalytics.html
 					variables {
 						gaCode = TEXT
 						gaCode.field = gaCode
@@ -284,7 +284,7 @@ plugin.tq_seo {
 			template {
 				10 = FLUIDTEMPLATE
 				10 {
-					file = EXT:tq_seo/res/templates/service-piwik.html
+					file = EXT:tq_seo/Resources/Private/Templates/PageParts/ServicePiwik.html
 					variables {
 						piwikUrl = TEXT
 						piwikUrl.field = piwikUrl

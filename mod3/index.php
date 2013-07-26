@@ -339,8 +339,8 @@ class tx_tqseo_module_sitemap extends \TQ\TqSeo\Backend\Module\StandardModule {
 		# HTML
 		###############################
 
-		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/Ext.ux.plugin.FitToParent.js');
-		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'res/backend/js/TQSeo.sitemap.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
+		$this->pageRenderer->addJsFile($BACK_PATH . \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.sitemap.js');
 
 		// Include Ext JS inline code
 		$this->pageRenderer->addJsInlineCode(
