@@ -1,7 +1,6 @@
 2013-xx-xx Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* [!!!] Requires TYPO3 6.0
-	* Added namespace support
-	* Fixed xclass support
+	* Refactored tq_seo for TYPO3 6.0 (namespaces and better xclass support)
 	* Added update script
 
 2012-12-05 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>

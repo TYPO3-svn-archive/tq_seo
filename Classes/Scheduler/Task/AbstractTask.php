@@ -4,7 +4,7 @@ namespace TQ\TqSeo\Scheduler\Task;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2012 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -41,14 +41,14 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     /**
      * Language lock
      *
-     * @var	integer
+     * @var integer
      */
     protected $_languageLock = false;
 
     /**
      * Language list
      *
-     * @var	array
+     * @var array
      */
     protected $_languageIdList = null;
 
@@ -59,7 +59,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     /**
      * Get list of root pages in current typo3
      *
-     * @return	array
+     * @return  array
      */
     protected function _getRootPages() {
         global $TYPO3_DB;
@@ -84,7 +84,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     /**
      * Get list of root pages in current typo3
      *
-     * @return	array
+     * @return  array
      */
     protected function _initLanguages() {
         global $TYPO3_DB;
@@ -104,7 +104,6 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
     /**
      * Set root page language
-     *
      */
     protected function _setRootPageLanguage($languageId) {
         global $TSFE;
@@ -116,7 +115,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     /**
      * Initalize root page (TSFE and stuff)
      *
-     * @param	integer	$rootPageId	$rootPageId
+     * @param   integer $rootPageId $rootPageId
      */
     protected function _initRootPage($rootPageId) {
         global $TT, $TSFE;
@@ -147,8 +146,8 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
     /**
      * Write content to file
      *
-     * @param	string	$file		Filename/path
-     * @param	string	$content	Content
+     * @param   string  $file       Filename/path
+     * @param   string  $content    Content
      */
     protected function _writeToFile($file, $content) {
         if( !function_exists('gzopen') ) {

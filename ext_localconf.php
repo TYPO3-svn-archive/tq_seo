@@ -1,7 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) {
- 	die ('Access denied.');
-}
+if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tq_seo']);
 
@@ -51,7 +49,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['pageIndex
 #################################################
 if( !empty($confArr['enableIntegrationTTNews']) ) {
     // Metatag fetch hook
-    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook']['tqseo'] = 'EXT:tq_seo/hooks/tt_news/class.metatags.php:&tx_tqseo_hook_ttnews_metatags';
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tt_news']['extraItemMarkerHook']['tqseo'] = 'TQ\\TqSeo\\Hook\Extension\\Ttnews\\MetatagTtnews';
 }
 
 #################################################

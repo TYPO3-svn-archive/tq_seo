@@ -36,6 +36,8 @@ class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
     /**
      * Execute task
+     *
+     * @return  boolean
      */
     public function execute() {
 

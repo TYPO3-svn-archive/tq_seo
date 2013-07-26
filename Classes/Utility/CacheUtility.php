@@ -2,30 +2,30 @@
 namespace TQ\TqSeo\Utility;
 
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * Cache access
+ * Cache utility
  *
  * @author      Blaschke, Markus <blaschke@teqneers.de>
  * @package     tq_seo
@@ -37,10 +37,10 @@ class CacheUtility {
     /**
      * Get cache entry
      *
-     * @param	integer		$pageId		Page UID
-     * @param	string		$section	Cache section
-     * @param	string		$identifier	Cache identifier
-     * @return	string
+     * @param   integer $pageId     Page UID
+     * @param   string  $section    Cache section
+     * @param   string  $identifier Cache identifier
+     * @return  string
      */
     static public function get($pageId, $section, $identifier) {
         global $TYPO3_DB;
@@ -62,11 +62,11 @@ class CacheUtility {
     /**
      * Set cache entry
      *
-     * @param	integer		$pageId		Page UID
-     * @param	string		$section	Cache section
-     * @param	string		$identifier	Cache identifier
-     * @param	string		$value		Cache content
-     * @return	boolean					Success
+     * @param   integer     $pageId     Page UID
+     * @param   string      $section    Cache section
+     * @param   string      $identifier Cache identifier
+     * @param   string      $value      Cache content
+     * @return  boolean
      */
     static public function set($pageId, $section, $identifier, $value) {
         global $TYPO3_DB;
@@ -90,9 +90,9 @@ class CacheUtility {
     /**
      * Get cache list
      *
-     * @param	string		$section		Cache section
-     * @param	string		$identifier		Cache identifier
-     * @return	array
+     * @param   string  $section    Cache section
+     * @param   string  $identifier Cache identifier
+     * @return  array
      */
     static public function getList($section, $identifier) {
         global $TYPO3_DB;
@@ -113,10 +113,10 @@ class CacheUtility {
     /**
      * Clear cache entry
      *
-     * @param	integer		$pageId		Page UID
-     * @param	string		$section	Cache section
-     * @param	string		$identifier	Cache identifier
-     * @return	boolean					Success
+     * @param   integer     $pageId	    Page UID
+     * @param   string      $section    Cache section
+     * @param   string      $identifier Cache identifier
+     * @return  boolean
      */
     static public function remove($pageId, $section, $identifier) {
         global $TYPO3_DB;
@@ -141,8 +141,8 @@ class CacheUtility {
     /**
      * Clear cache by page
      *
-     * @param	integer		$pageId		Page UID
-     * @return	boolean				Success
+     * @param   integer $pageId Page UID
+     * @return  boolean
      */
     static public function clearByPage($pageId) {
         global $TYPO3_DB;
@@ -161,8 +161,8 @@ class CacheUtility {
     /**
      * Clear cache by section
      *
-     * @param	string		$section	Cache section
-     * @return	boolean					Success
+     * @param   string  $section    Cache section
+     * @return  boolean
      */
     static public function clearBySection($section) {
         global $TYPO3_DB;
@@ -181,7 +181,7 @@ class CacheUtility {
     /**
      * Clear all cache
      *
-     * @return	boolean		Success
+     * @return boolean
      */
     static public function clearAll() {
         global $TYPO3_DB;

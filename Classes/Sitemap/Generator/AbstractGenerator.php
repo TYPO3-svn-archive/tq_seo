@@ -2,30 +2,30 @@
 namespace TQ\TqSeo\Sitemap\Generator;
 
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
- * Sitemap Base
+ * Sitemap abstract generator
  *
  * @author		Blaschke, Markus <blaschke@teqneers.de>
  * @package 	tq_seo
@@ -42,35 +42,35 @@ abstract class AbstractGenerator {
      *
      * @var integer
      */
-    public $rootPid		= NULL;
+    public $rootPid = NULL;
 
     /**
      * Sitemap pages
      *
      * @var array
      */
-    public $sitemapPages	= array();
+    public $sitemapPages = array();
 
     /**
      * Page lookups
      *
      * @var array
      */
-    public $pages		= array();
+    public $pages = array();
 
     /**
      * Extension configuration
      *
      * @var array
      */
-    protected $extConf		= array();
+    protected $extConf = array();
 
     /**
      * Extension setup configuration
      *
      * @var array
      */
-    public $tsSetup		= array();
+    public $tsSetup = array();
 
     /**
      * Page change frequency definition list
@@ -130,7 +130,7 @@ abstract class AbstractGenerator {
     /**
      * Return page count
      *
-     * @return	integer
+     * @return integer
      */
     public function pageCount() {
         $pageLimit = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
@@ -152,15 +152,15 @@ abstract class AbstractGenerator {
     /**
      * Create sitemap index
      *
-     * @return	string
+     * @return string
      */
     abstract public function sitemapIndex();
 
     /**
      * Create sitemap (for page)
      *
-     * @param	integer	$page	Page
-     * @return	string
+     * @param   integer $page   Page
+     * @return  string
      */
     abstract public function sitemap($page = null);
 

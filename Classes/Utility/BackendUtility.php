@@ -37,7 +37,7 @@ class BackendUtility {
     /**
      * Fetch list of root pages (is_siteroot) in TYPO3 (cached)
      *
-     * @return	array
+     * @return  array
      */
     public static function getRootPageList() {
         global $TYPO3_DB;
@@ -65,7 +65,7 @@ class BackendUtility {
     /**
      * Fetch list of setting entries
      *
-     * @return	array
+     * @return  array
      */
     public static function getRootPageSettingList() {
         global $TYPO3_DB;

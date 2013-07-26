@@ -30,83 +30,83 @@
 
 class user_tqseo_hook {
 
-	public function hook_metatagSetup(&$args, $obj) {
-		// Hook for metatag setup
-	}
+    public function hook_metatagSetup(&$args, $obj) {
+        // Hook for metatag setup
+    }
 
-	public function hook_metatagOutput(&$args, $obj) {
-		// Hook for metatag output
-	}
+    public function hook_metatagOutput(&$args, $obj) {
+        // Hook for metatag output
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_pagetitleSetup(&$args, $obj) {
-		// Hook for pagetitle setup
-	}
+    public function hook_pagetitleSetup(&$args, $obj) {
+        // Hook for pagetitle setup
+    }
 
-	public function hook_pagetitleOutput(&$args, $obj) {
-		// Hook for pagetitle output
-	}
+    public function hook_pagetitleOutput(&$args, $obj) {
+        // Hook for pagetitle output
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_pagefooterSetup(&$args, $obj) {
-		// Hook for page footer setup
-	}
+    public function hook_pagefooterSetup(&$args, $obj) {
+        // Hook for page footer setup
+    }
 
-	public function hook_pagefooterOutput(&$args, $obj) {
-		// Hook for page footer output
-	}
+    public function hook_pagefooterOutput(&$args, $obj) {
+        // Hook for page footer output
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_sitemapIndexPage(&$args) {
-		// Hook for sitemap page indexer
-	}
+    public function hook_sitemapIndexPage(&$args) {
+        // Hook for sitemap page indexer
+    }
 
-	public function hook_sitemapIndexLink(&$args) {
-		// Hook for sitemap link indexer
-	}
+    public function hook_sitemapIndexLink(&$args) {
+        // Hook for sitemap link indexer
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_sitemapSetup(&$args, $obj) {
-		// Hook for sitemap setup
-	}
+    public function hook_sitemapSetup(&$args, $obj) {
+        // Hook for sitemap setup
+    }
 
-	public function hook_sitemapTextOutput(&$args, $obj) {
-		// Hook for xml text output
-	}
+    public function hook_sitemapTextOutput(&$args, $obj) {
+        // Hook for xml text output
+    }
 
-	public function hook_sitemapXmlIndexOutput(&$args, $obj) {
-		// Hook for xml index-page output
-	}
+    public function hook_sitemapXmlIndexOutput(&$args, $obj) {
+        // Hook for xml index-page output
+    }
 
-	public function hook_sitemapXmlPageOutput(&$args, $obj) {
-		// Hook for xml page output
-	}
+    public function hook_sitemapXmlPageOutput(&$args, $obj) {
+        // Hook for xml page output
+    }
 
-	public function hook_sitemapClear(&$args, $obj) {
-		// Hook for sitemap clearing (truncating via clear-cache hook)
-	}
+    public function hook_sitemapClear(&$args, $obj) {
+        // Hook for sitemap clearing (truncating via clear-cache hook)
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_robotsTxtMarker(&$args, $obj) {
-		// Hook for robots.txt marker list
-	}
+    public function hook_robotsTxtMarker(&$args, $obj) {
+        // Hook for robots.txt marker list
+    }
 
-	public function hook_robotsTxtOutput(&$args, $obj) {
-		// Hook for robots.txt output
-	}
+    public function hook_robotsTxtOutput(&$args, $obj) {
+        // Hook for robots.txt output
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	public function hook_httpHeaderOutput($args, $obj) {
-		// Hook for http header output
-	}
+    public function hook_httpHeaderOutput($args, $obj) {
+        // Hook for http header output
+    }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 }
 
 ?>
