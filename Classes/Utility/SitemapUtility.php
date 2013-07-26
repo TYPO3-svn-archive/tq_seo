@@ -137,9 +137,10 @@ class SitemapUtility {
                     FROM
                         tx_tqseo_sitemap ts
                         LEFT JOIN pages p
-                            ON		p.uid = ts.page_uid
-                                AND	p.deleted = 0
-                                AND p.hidden = 0
+                            ON p.uid = ts.page_uid
+                           AND p.deleted = 0
+                           AND p.hidden = 0
+                           AND p.tx_tqseo_is_exclude = 0
                     WHERE
                         p.uid IS NULL';
         $res   = $TYPO3_DB->sql_query($query);
