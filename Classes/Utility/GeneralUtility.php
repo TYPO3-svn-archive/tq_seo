@@ -1,36 +1,36 @@
 <?php
 namespace TQ\TqSeo\Utility;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
  * General utility
  *
- * @author		Blaschke, Markus <blaschke@teqneers.de>
- * @package 	tq_seo
- * @subpackage	Utility
- * @version		$Id$
+ * @author        Blaschke, Markus <blaschke@teqneers.de>
+ * @package    tq_seo
+ * @subpackage    Utility
+ * @version        $Id$
  */
 class GeneralUtility {
 
@@ -60,7 +60,7 @@ class GeneralUtility {
 
         $ret = 0;
 
-        if( !empty($TSFE->tmpl->setup['config.']['sys_language_uid']) ) {
+        if (!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
             $ret = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
         }
 
@@ -78,15 +78,15 @@ class GeneralUtility {
         static $cache = array();
         $ret = null;
 
-        if( $uid === null ) {
+        if ($uid === null) {
             $ret = (int)$TSFE->rootLine[0]['uid'];
         } else {
 
-            if( !isset($cache[$uid]) ) {
+            if (!isset($cache[$uid])) {
                 $cache[$uid] = null;
-                $rootline = self::getRootLine($uid);
+                $rootline    = self::getRootLine($uid);
 
-                if( !empty($rootline[0]) ) {
+                if (!empty($rootline[0])) {
                     $cache[$uid] = $rootline[0]['uid'];
                 }
             }
@@ -118,10 +118,10 @@ class GeneralUtility {
         static $cache = array();
         $ret = array();
 
-        if( $uid === null ) {
+        if ($uid === null) {
             $ret = (int)$TSFE->rootLine;
         } else {
-            if( !isset($cache[$uid]) ) {
+            if (!isset($cache[$uid])) {
                 $cache[$uid] = self::_getSysPageObj()->getRootLine($uid);
             }
 
@@ -140,22 +140,25 @@ class GeneralUtility {
         global $TSFE, $TYPO3_DB;
         static $ret = null;
 
-        if( $ret !== null ) {
+        if ($ret !== null) {
             return $ret;
         }
 
         $ret = array();
 
-        $host		= \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
-        $rootPid	= self::getRootPid();
+        $host = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
+        $rootPid = self::getRootPid();
 
         $res = $TYPO3_DB->exec_SELECTquery(
             '*',
             'sys_domain',
-            'pid = '.(int)$rootPid.' AND domainName = '.$TYPO3_DB->fullQuoteStr($host, 'sys_domain'). ' AND hidden = 0'
+            'pid = ' . (int)$rootPid . ' AND domainName = ' . $TYPO3_DB->fullQuoteStr(
+                $host,
+                'sys_domain'
+            ) . ' AND hidden = 0'
         );
 
-        if( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
             $ret = $row;
         }
 
@@ -172,26 +175,26 @@ class GeneralUtility {
         global $TSFE, $TYPO3_DB;
         static $ret = null;
 
-        if( $ret !== null ) {
+        if ($ret !== null) {
             return $ret;
         }
 
         $ret = array();
 
-        if( $rootPid === null ) {
-            $rootPid	= self::getRootPid();
+        if ($rootPid === null) {
+            $rootPid = self::getRootPid();
         }
 
         $res = $TYPO3_DB->exec_SELECTquery(
             '*',
             'tx_tqseo_setting_root',
-            'pid = '.(int)$rootPid,
+            'pid = ' . (int)$rootPid,
             '',
             '',
             1
         );
 
-        if( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
             $ret = $row;
         }
 
@@ -201,15 +204,15 @@ class GeneralUtility {
     /**
      * Get root setting value
      *
-     * @param   string  $name           Name of configuration
-     * @param   mixed   $defaultValue   Default value
+     * @param   string $name           Name of configuration
+     * @param   mixed $defaultValue   Default value
      * @param   integer $rootPid        Root Page Id
      * @return  array
      */
-    public static function getRootSettingValue($name, $defaultValue = null,$rootPid = null) {
+    public static function getRootSettingValue($name, $defaultValue = null, $rootPid = null) {
         $setting = self::getRootSetting($rootPid);
 
-        if( isset($setting[$name]) ) {
+        if (isset($setting[$name])) {
             $ret = $setting[$name];
         } else {
             $ret = $defaultValue;
@@ -221,7 +224,7 @@ class GeneralUtility {
     /**
      * Get extension configuration
      *
-     * @param   string  $name       Name of config
+     * @param   string $name       Name of config
      * @param   boolean $default    Default value
      * @return  mixed
      */
@@ -230,15 +233,15 @@ class GeneralUtility {
         static $conf = null;
         $ret = $default;
 
-        if( $conf === null ) {
-        // Load ext conf
-            $conf= unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tq_seo']);
-            if(!is_array($conf)) {
+        if ($conf === null) {
+            // Load ext conf
+            $conf = unserialize($TYPO3_CONF_VARS['EXT']['extConf']['tq_seo']);
+            if (!is_array($conf)) {
                 $conf = array();
             }
         }
 
-        if( isset($conf[$name]) ) {
+        if (isset($conf[$name])) {
             $ret = $conf[$name];
         }
 
@@ -249,7 +252,7 @@ class GeneralUtility {
     /**
      * Call hook
      *
-     * @param   string  $name   Name of hook
+     * @param   string $name   Name of hook
      * @param   boolean $obj    Object
      * @param   boolean $args   Args
      * @return  mixed
@@ -258,17 +261,18 @@ class GeneralUtility {
         static $hookConf = null;
 
         // Fetch hooks config for tq_seo, minimize array lookups
-        if( $hookConf === null ) {
+        if ($hookConf === null) {
             $hookConf = array();
-            if( 	isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'])
-                &&	is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks']) ) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'])
+                && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'])
+            ) {
                 $hookConf = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['tq_seo']['hooks'];
             }
         }
 
         // Call hooks
-        if( !empty($hookConf[$name]) && is_array($hookConf[$name]) ) {
-            foreach($hookConf[$name] as $_funcRef) {
+        if (!empty($hookConf[$name]) && is_array($hookConf[$name])) {
+            foreach ($hookConf[$name] as $_funcRef) {
                 if ($_funcRef) {
                     \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($_funcRef, $args, $obj);
                 }
@@ -281,13 +285,13 @@ class GeneralUtility {
      *
      * Make sure the url is absolute (http://....)
      *
-     * @param   string  $url    URL
+     * @param   string $url    URL
      * @return  string
      */
     public static function fullUrl($url) {
         global $TSFE;
 
-        if( !preg_match('/^https?:\/\//i', $url ) ) {
+        if (!preg_match('/^https?:\/\//i', $url)) {
             $url = \TYPO3\CMS\Core\Utility\GeneralUtility::locationHeaderUrl($url);
         }
 
@@ -295,9 +299,9 @@ class GeneralUtility {
         $url = str_replace('?&', '?', $url);
 
         // Fallback
-    //	if( !empty($TSFE) && !preg_match('/^https?:\/\//i', $url ) ) {
-    //		$url = $TSFE->baseUrlWrap($url);
-    //	}
+        //	if( !empty($TSFE) && !preg_match('/^https?:\/\//i', $url ) ) {
+        //		$url = $TSFE->baseUrlWrap($url);
+        //	}
 
         return $url;
     }
@@ -312,8 +316,10 @@ class GeneralUtility {
      * @return  \TYPO3\CMS\Frontend\Page\PageRepository
      */
     protected static function _getSysPageObj() {
-        if(self::$sysPageObj === null) {
-            self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        if (self::$sysPageObj === null) {
+            self::$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
+            );
         }
         return self::$sysPageObj;
     }

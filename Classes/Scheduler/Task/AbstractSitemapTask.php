@@ -1,36 +1,36 @@
 <?php
 namespace TQ\TqSeo\Scheduler\Task;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
  * Scheduler Task Sitemap Base
  *
- * @author		Blaschke, Markus <blaschke@teqneers.de>
- * @package 	tq_seo
- * @subpackage	Sitemap
- * @version		$Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
+ * @author        Blaschke, Markus <blaschke@teqneers.de>
+ * @package    tq_seo
+ * @subpackage    Sitemap
+ * @version        $Id: class.sitemap_base.php 78237 2013-07-23 14:50:31Z mblaschke $
  */
 abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask {
 
@@ -62,12 +62,12 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
         $this->_initLanguages();
 
 
-        foreach($rootPageList as $uid => $page) {
+        foreach ($rootPageList as $uid => $page) {
             $this->_initRootPage($uid);
 
 
-            if( \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid) ) {
-                foreach($this->_languageIdList as $languageId) {
+            if (\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
+                foreach ($this->_languageIdList as $languageId) {
                     $this->_setRootPageLanguage($languageId);
                     $this->_buildSitemap($uid, $languageId);
                 }
@@ -83,20 +83,20 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
      * Cleanup sitemap directory
      */
     protected function _cleanupDirectory() {
-        if( empty($this->_sitemapDir) ) {
+        if (empty($this->_sitemapDir)) {
             throw new \Exception('Basedir not set');
         }
 
-        $fullPath = PATH_site.'/'.$this->_sitemapDir;
+        $fullPath = PATH_site . '/' . $this->_sitemapDir;
 
-        if( !is_dir($fullPath) ) {
+        if (!is_dir($fullPath)) {
             \TYPO3\CMS\Core\Utility\GeneralUtility::mkdir($fullPath);
         }
 
-        foreach( new \DirectoryIterator($fullPath) as $file) {
-            if( $file->isFile() && !$file->isDot() ) {
+        foreach (new \DirectoryIterator($fullPath) as $file) {
+            if ($file->isFile() && !$file->isDot()) {
                 $fileName = $file->getFilename();
-                unlink( $fullPath.'/'.$fileName );
+                unlink($fullPath . '/' . $fileName);
             }
         }
     }
@@ -104,8 +104,8 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
     /**
      * Generate sitemap link template
      *
-     * @param	string	$template	File link template
-     * @return	string
+     * @param    string $template    File link template
+     * @return    string
      */
     protected function _generateSitemapLinkTemplate($template) {
         global $TSFE;
@@ -114,12 +114,12 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
 
         // Set link template for index file
         $linkConf = array(
-            'parameter' => $this->_sitemapDir.'/'.$template,
+            'parameter' => $this->_sitemapDir . '/' . $template,
         );
-        if( strlen($TSFE->baseUrl) > 1 ) {
-            $ret = $TSFE->baseUrlWrap( $TSFE->cObj->typoLink_URL($linkConf) );
-        } elseif( strlen($TSFE->absRefPrefix) > 1 ) {
-            $ret = $TSFE->absRefPrefix.$TSFE->cObj->typoLink_URL($linkConf);
+        if (strlen($TSFE->baseUrl) > 1) {
+            $ret = $TSFE->baseUrlWrap($TSFE->cObj->typoLink_URL($linkConf));
+        } elseif (strlen($TSFE->absRefPrefix) > 1) {
+            $ret = $TSFE->absRefPrefix . $TSFE->cObj->typoLink_URL($linkConf);
         } else {
             $ret = $TSFE->cObj->typoLink_URL($linkConf);
         }
@@ -135,8 +135,8 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
     /**
      * Build sitemap
      *
-     * @param	integer	$rootPageId	Root page id
-     * @param	integer	$languageId	Language id
+     * @param    integer $rootPageId    Root page id
+     * @param    integer $languageId    Language id
      */
     abstract protected function _buildSitemap($rootPageId, $languageId);
 

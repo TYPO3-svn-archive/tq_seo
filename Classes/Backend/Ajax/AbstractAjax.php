@@ -1,35 +1,35 @@
 <?php
 namespace TQ\TqSeo\Backend\Ajax;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
  * TYPO3 Backend ajax module base
  *
- * @author		TEQneers GmbH & Co. KG <info@teqneers.de>
- * @package		TYPO3
- * @subpackage	tq_seo
+ * @author        TEQneers GmbH & Co. KG <info@teqneers.de>
+ * @package        TYPO3
+ * @subpackage    tq_seo
  */
 abstract class AbstractAjax {
 
@@ -54,7 +54,7 @@ abstract class AbstractAjax {
      *
      * @var string
      */
-    protected $_sortDir	= null;
+    protected $_sortDir = null;
 
     /**
      * TCE
@@ -83,25 +83,25 @@ abstract class AbstractAjax {
 
         // Try to find method
         $function = '';
-        if( !empty($_GET['cmd']) ) {
+        if (!empty($_GET['cmd'])) {
             // GET-param
             $function = (string)$_GET['cmd'];
 
             // security
-            $function = strtolower( trim($function) );
-            $function = preg_replace('[^a-z]', '' , $function);
+            $function = strtolower(trim($function));
+            $function = preg_replace('[^a-z]', '', $function);
         }
 
         // Call function
-        if( !empty($function) ) {
-            $method = '_execute'.$function;
-            $call	= array($this, $method);
+        if (!empty($function)) {
+            $method = '_execute' . $function;
+            $call   = array($this, $method);
 
-            if(	is_callable($call) ) {
+            if (is_callable($call)) {
                 $this->_fetchParams();
 
                 $this->_init();
-                if( $this->_checkSessionToken() ) {
+                if ($this->_checkSessionToken()) {
                     $ret = $this->$method();
 
                 }
@@ -125,7 +125,9 @@ abstract class AbstractAjax {
         $LANG->includeLLFile('EXT:tq_seo/locallang_ajax.xml');
 
         // Init form protection instance
-        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
+        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
+        );
     }
 
     /**
@@ -133,17 +135,17 @@ abstract class AbstractAjax {
      */
     protected function _fetchParams() {
         $rawPostVarList = \TYPO3\CMS\Core\Utility\GeneralUtility::_POST();
-        foreach($rawPostVarList as $key => $value) {
+        foreach ($rawPostVarList as $key => $value) {
             $this->_postVar[$key] = json_decode($value);
         }
 
         // Sorting data
-        if( !empty($rawPostVarList['sort']) ) {
-            $this->_sortField = $this->_escapeSortField( (string)$rawPostVarList['sort'] );
+        if (!empty($rawPostVarList['sort'])) {
+            $this->_sortField = $this->_escapeSortField((string)$rawPostVarList['sort']);
         }
 
-        if( !empty($rawPostVarList['dir']) ) {
-            switch( strtoupper($rawPostVarList['dir']) ) {
+        if (!empty($rawPostVarList['dir'])) {
+            switch (strtoupper($rawPostVarList['dir'])) {
                 case 'ASC':
                     $this->_sortDir = 'ASC';
                     break;
@@ -159,8 +161,8 @@ abstract class AbstractAjax {
     /**
      * Escape for sql sort fields
      *
-     * @param	string	$value	Sort value
-     * @return	string
+     * @param    string $value    Sort value
+     * @return    string
      */
     protected function _escapeSortField($value) {
         return preg_replace('[^_a-zA-Z]', '', $value);
@@ -173,8 +175,10 @@ abstract class AbstractAjax {
      */
     protected function _tce() {
 
-        if( $this->_tce === null ) {
-            $this->_tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance ('TYPO3\\CMS\\Core\\DataHandling\\DataHandler');
+        if ($this->_tce === null) {
+            $this->_tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
+            );
             $this->_tce->start();
         }
 
@@ -184,8 +188,8 @@ abstract class AbstractAjax {
     /**
      * Create session token
      *
-     * @param	string	$formName	Form name/Session token name
-     * @return	string
+     * @param    string $formName    Form name/Session token name
+     * @return    string
      */
     protected function _sessionToken($formName) {
         $token = $this->_formProtection->generateToken($formName);
@@ -195,20 +199,20 @@ abstract class AbstractAjax {
     /**
      * Check session token
      *
-     * @return	boolean
+     * @return    boolean
      */
     protected function _checkSessionToken() {
 
-        if( empty($this->_postVar['sessionToken']) ) {
+        if (empty($this->_postVar['sessionToken'])) {
             // No session token exists
             return false;
         }
 
-        $className = strtolower( str_replace('\\', '_', get_class($this) ) );
+        $className = strtolower(str_replace('\\', '_', get_class($this)));
 
         $sessionToken = $this->_sessionToken($className);
 
-        if( $this->_postVar['sessionToken'] === $sessionToken ) {
+        if ($this->_postVar['sessionToken'] === $sessionToken) {
             return true;
         }
 

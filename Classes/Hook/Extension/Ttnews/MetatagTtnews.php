@@ -29,47 +29,47 @@ use \TQ\TqSeo\Utility\ConnectUtility;
 /**
  * TT_NEWS hook for metatags
  *
- * @author		Blaschke, Markus <blaschke@teqneers.de>
- * @package 	tq_seo
- * @subpackage	lib
- * @version		$Id$
+ * @author        Blaschke, Markus <blaschke@teqneers.de>
+ * @package    tq_seo
+ * @subpackage    lib
+ * @version        $Id$
  */
 class MetatagTtnews {
 
     /**
      * Extra item marker hook for metatag fetching
      *
-     * @param	array	$markerArray		Marker array
-     * @param	array	$row				Current tt_news row
-     * @param	array	$lConf				Local configuration
-     * @param	object	$ttnewsObj			Pi-object from tt_news
-     * @return	array						Marker array (not changed)
+     * @param    array $markerArray        Marker array
+     * @param    array $row                Current tt_news row
+     * @param    array $lConf                Local configuration
+     * @param    object $ttnewsObj            Pi-object from tt_news
+     * @return    array                        Marker array (not changed)
      */
     public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
         global $TSFE;
 
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
-        switch($theCode) {
+        switch ($theCode) {
             case 'SINGLE':
             case 'SINGLE2':
                 // Keywords
-                if( !empty($row['keywords']) ) {
+                if (!empty($row['keywords'])) {
                     ConnectUtility::setMetaTag('keywords', $row['keywords']);
                 }
 
                 // Short/Description
-                if( !empty($row['short']) ) {
+                if (!empty($row['short'])) {
                     ConnectUtility::setMetaTag('description', $row['short']);
                 }
 
                 // Author
-                if( !empty($row['author']) ) {
+                if (!empty($row['author'])) {
                     ConnectUtility::setMetaTag('author', $row['author']);
                 }
 
                 // E-Mail
-                if( !empty($row['author_email']) ) {
+                if (!empty($row['author_email'])) {
                     ConnectUtility::setMetaTag('email', $row['author_email']);
                 }
                 break;

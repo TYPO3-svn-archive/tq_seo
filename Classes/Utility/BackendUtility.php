@@ -1,36 +1,36 @@
 <?php
 namespace TQ\TqSeo\Utility;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
  * Backend utility
  *
- * @author		Blaschke, Markus <blaschke@teqneers.de>
- * @package 	tq_seo
- * @subpackage	lib
- * @version		$Id$
+ * @author        Blaschke, Markus <blaschke@teqneers.de>
+ * @package    tq_seo
+ * @subpackage    lib
+ * @version        $Id$
  */
 class BackendUtility {
 
@@ -44,7 +44,7 @@ class BackendUtility {
 
         static $cache = null;
 
-        if( $cache === null ) {
+        if ($cache === null) {
             $tmp = $TYPO3_DB->exec_SELECTgetRows(
                 'uid, pid, title',
                 'pages',
@@ -52,9 +52,9 @@ class BackendUtility {
             );
 
             $cache = array();
-            if( is_array($tmp) ) {
-                foreach($tmp as $row) {
-                    $cache[ $row['uid'] ] = $row;
+            if (is_array($tmp)) {
+                foreach ($tmp as $row) {
+                    $cache[$row['uid']] = $row;
                 }
             }
         }
@@ -72,7 +72,7 @@ class BackendUtility {
 
         static $cache = null;
 
-        if( $cache === null ) {
+        if ($cache === null) {
             $cache = array();
 
             $query = 'SELECT seosr.*
@@ -82,10 +82,10 @@ class BackendUtility {
                                 AND p.is_siteroot = 1
                                 AND p.deleted = 0
                         WHERE seosr.deleted = 0';
-            $res = $TYPO3_DB->sql_query($query);
+            $res   = $TYPO3_DB->sql_query($query);
 
-            while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-                $cache[ $row['pid'] ] = $row;
+            while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+                $cache[$row['pid']] = $row;
             }
         }
 

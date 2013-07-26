@@ -1,35 +1,35 @@
 <?php
 namespace TQ\TqSeo\Backend\Module;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+    /***************************************************************
+     *  Copyright notice
+     *
+     *  (c) 2013 Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     *  All rights reserved
+     *
+     *  This script is part of the TYPO3 project. The TYPO3 project is
+     *  free software; you can redistribute it and/or modify
+     *  it under the terms of the GNU General Public License as published by
+     *  the Free Software Foundation; either version 3 of the License, or
+     *  (at your option) any later version.
+     *
+     *  The GNU General Public License can be found at
+     *  http://www.gnu.org/copyleft/gpl.html.
+     *
+     *  This script is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     *  GNU General Public License for more details.
+     *
+     *  This copyright notice MUST APPEAR in all copies of the script!
+     ***************************************************************/
 
 /**
  * TYPO3 Backend module base
  *
- * @author		TEQneers GmbH & Co. KG <info@teqneers.de>
- * @package		TYPO3
- * @subpackage	tx_seo
+ * @author        TEQneers GmbH & Co. KG <info@teqneers.de>
+ * @package        TYPO3
+ * @subpackage    tx_seo
  */
 class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     ###########################################################################
@@ -53,14 +53,14 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Menu back link
      *
-     * @var	string
+     * @var    string
      */
     protected $_menuBackLink = null;
 
     /**
      * Module url
      *
-     * @var	string
+     * @var    string
      */
     protected $_moduleUrl = null;
 
@@ -80,20 +80,22 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
      *
      * @return    void
      */
-    public function init()    {
-        global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+    public function init() {
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
         global $MCONF;
 
         parent::init();
 
         // Fetch module args
         $this->_moduleArgs = array();
-        if( !empty($_GET[ $MCONF['name'] ]) ) {
-            $this->_moduleArgs = (array)$_GET[ $MCONF['name'] ];
+        if (!empty($_GET[$MCONF['name']])) {
+            $this->_moduleArgs = (array)$_GET[$MCONF['name']];
         }
 
         // Init form protection instance
-        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection');
+        $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
+        );
     }
 
 
@@ -104,15 +106,17 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
      * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
      */
     public function main() {
-        global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
         // If no access or if ID == zero
-        $this->doc = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate');
+        $this->doc           = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            'TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate'
+        );
         $this->doc->backPath = $BACK_PATH;
 
-        $this->content.=$this->doc->startPage($this->_moduleTitle());
-        $this->content.=$this->doc->header($this->_moduleTitle());
-        $this->content.=$this->doc->spacer(5);
-        $this->content.=$this->doc->spacer(10);
+        $this->content .= $this->doc->startPage($this->_moduleTitle());
+        $this->content .= $this->doc->header($this->_moduleTitle());
+        $this->content .= $this->doc->spacer(5);
+        $this->content .= $this->doc->spacer(10);
     }
 
     /**
@@ -122,31 +126,33 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
      */
     public function moduleContent() {
         $function = '';
-        if( !empty($_GET['SET']['function']) ) {
+        if (!empty($_GET['SET']['function'])) {
             // GET-param
             $function = (string)$_GET['SET']['function'];
-        } else if( !empty($this->MOD_SETTINGS['function']) ) {
-            // Selector
-            $function = (string)$this->MOD_SETTINGS['function'];
         } else {
-            // None
-            $function = 'main';
+            if (!empty($this->MOD_SETTINGS['function'])) {
+                // Selector
+                $function = (string)$this->MOD_SETTINGS['function'];
+            } else {
+                // None
+                $function = 'main';
+            }
         }
 
         // security
-        $function = strtolower( trim($function) );
-        $function = preg_replace('[^a-z]', '' , $function);
+        $function = strtolower(trim($function));
+        $function = preg_replace('[^a-z]', '', $function);
 
-        if( empty($function) ) {
+        if (empty($function)) {
             $function = 'main';
         }
 
-        $method = 'execute'.$function;
-        $call	= array($this, $method);
+        $method = 'execute' . $function;
+        $call   = array($this, $method);
 
-        if( !is_callable($call) ) {
-            $method		= $method = 'executeMain';
-            $function	= 'main';
+        if (!is_callable($call)) {
+            $method   = $method = 'executeMain';
+            $function = 'main';
         }
 
         // set url
@@ -154,7 +160,7 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
 
         $ret = $this->$method();
 
-        if( !empty($ret) ) {
+        if (!empty($ret)) {
             $this->content .= $ret;
         }
     }
@@ -164,8 +170,8 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
      *
      * @return    void
      */
-    public function printContent()    {
-        $this->content.=$this->doc->endPage();
+    public function printContent() {
+        $this->content .= $this->doc->endPage();
         echo $this->content;
     }
 
@@ -173,7 +179,7 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Module help links
      *
-     * @return	string
+     * @return    string
      */
     protected function getModuleHelp() {
 
@@ -182,11 +188,11 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Gets the filled markers that are used in the HTML template
      *
-     * @return	array		The filled marker array
+     * @return    array        The filled marker array
      */
     protected function getTemplateMarkers() {
         $markers = array(
-            'CSH'		=> $this->getModuleHelp(),
+            'CSH'       => $this->getModuleHelp(),
             'FUNC_MENU' => $this->getFunctionMenu(),
             'CONTENT'   => $this->content,
             'TITLE'     => $this->_moduleTitle(),
@@ -198,7 +204,7 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Gets the function menu selector for this backend module
      *
-     * @return	string		The HTML representation of the function menu selector
+     * @return    string        The HTML representation of the function menu selector
      */
     protected function getFunctionMenu() {
         $functionMenu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
@@ -214,19 +220,21 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Gets the buttons that shall be rendered in the docHeader
      *
-     * @return	array		Available buttons for the docHeader
+     * @return    array        Available buttons for the docHeader
      */
     protected function getDocHeaderButtons() {
         $buttons = array(
-            'reload'	=> '',
-            'shortcut'	=> $this->getShortcutButton(),
-            'back'		=> '',
+            'reload'   => '',
+            'shortcut' => $this->getShortcutButton(),
+            'back'     => '',
         );
 
-        if( $this->_menuBackLink) {
-            $buttons['back'] = '<a href="'.htmlspecialchars($this->_menuBackLink).'" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goback', TRUE) . '">' .
+        if ($this->_menuBackLink) {
+            $buttons['back'] = '<a href="' . htmlspecialchars(
+                    $this->_menuBackLink
+                ) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goback', true) . '">' .
                 \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') .
-            '</a>';
+                '</a>';
         }
 
         return $buttons;
@@ -235,7 +243,7 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Gets the button to set a new shortcut in the backend (if current user is allowed to)
      *
-     * @return	string		HTML representiation of the shortcut button
+     * @return    string        HTML representiation of the shortcut button
      */
     protected function getShortcutButton() {
         $result = '';
@@ -250,39 +258,39 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
      * Generate link to module
      *
      *
-     * @param	string	$action	Action
-     * @param	array	$params	Params
-     * @return	string
+     * @param    string $action    Action
+     * @param    array $params    Params
+     * @return    string
      */
     protected function _moduleLink($action, $params = null) {
         global $MCONF;
 
         $args = '';
-        if( !empty($params) ) {
+        if (!empty($params)) {
             $params = array(
                 $MCONF['name'] => $params
             );
 
-            $args = '&'.http_build_query($params);
+            $args = '&' . http_build_query($params);
 
         }
 
         $baseUrl = $MCONF['_'];
 
-        return $baseUrl.'&SET[function]='.rawurlencode($action).$args;;
+        return $baseUrl . '&SET[function]=' . rawurlencode($action) . $args;;
     }
 
     /**
      * Generate link to module (for onclick handler)
      *
      *
-     * @param	string	$action	Action
-     * @param	array	$params	Params
-     * @return	string
+     * @param    string $action    Action
+     * @param    array $params    Params
+     * @return    string
      */
     protected function _moduleLinkOnClick($action, $params = null) {
         $url = $this->_moduleLink($action, $params);
-        return 'window.location.href=\''.$url.'\'; return false;';
+        return 'window.location.href=\'' . $url . '\'; return false;';
     }
 
     protected function _moduleTitle() {
@@ -292,8 +300,8 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     /**
      * Create session token
      *
-     * @param	string	$formName	Form name/Session token name
-     * @return	string
+     * @param    string $formName    Form name/Session token name
+     * @return    string
      */
     protected function _sessionToken($formName) {
         $token = $this->_formProtection->generateToken($formName);
