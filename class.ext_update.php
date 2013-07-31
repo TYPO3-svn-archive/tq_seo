@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 /**
  * Update class for the extension manager.
  *
- * @package TYPO3
+ * @package    TYPO3
  * @subpackage tq_seo
  */
 class ext_update {

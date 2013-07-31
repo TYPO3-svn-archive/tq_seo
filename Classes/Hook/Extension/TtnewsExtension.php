@@ -29,10 +29,10 @@ use \TQ\TqSeo\Utility\ConnectUtility;
 /**
  * TT_NEWS hook for metatags
  *
- * @author        Blaschke, Markus <blaschke@teqneers.de>
- * @package    tq_seo
- * @subpackage    lib
- * @version        $Id$
+ * @author      Blaschke, Markus <blaschke@teqneers.de>
+ * @package     tq_seo
+ * @subpackage  lib
+ * @version     $Id$
  */
 class TtnewsExtension {
 
