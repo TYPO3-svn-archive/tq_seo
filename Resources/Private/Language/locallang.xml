@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+
+			<label index="mlang_tabs_tab">SEO</label>
+			<label index="mlang_labels_tabdescr">WTV Verwaltungsmodul für Artikel</label>
+
+			<label index="message.warning.noRootPage.title">Missing root pages</label>
+			<label index="message.warning.noRootPage.message">In this TYPO3 installation no page is flagged with "Use as root page".</label>
+
+			<label index="table.header.domain">Website-Domain</label>
+		</languageKey>
+	</data>
+</T3locallang>

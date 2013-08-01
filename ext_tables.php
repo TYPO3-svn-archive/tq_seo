@@ -400,6 +400,7 @@ $TCA['tx_tqseo_setting_page'] = array(
 ###############################################################################
 # BACKEND MODULE
 ###############################################################################
+/*
 if (TYPO3_MODE == 'BE') {
     // add module before 'Help'
     if (!isset($TBE_MODULES['tqseo']))	{
@@ -424,6 +425,44 @@ if (TYPO3_MODE == 'BE') {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
 }
+*/
+
+
+
+###############################################################################
+# Backend
+###############################################################################
+
+if (TYPO3_MODE == 'BE') {
+     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', '', '', $extPath.'mod1/');
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TQ.'.$_EXTKEY,                          # Extension - Key
+        'tqseo',                                 # Category
+        'controlcenter',                         # Modulname
+        '',                                      # Position
+        array( 'BackendRootSettings' => 'main'), # Controller array
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:'.$_EXTKEY.'/Resources/Public/Backend/Icons/ModuleIcon.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.rootsettings.xml',
+        )
+    );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TQ.'.$_EXTKEY,                          # Extension - Key
+        'tqseo',                                 # Category
+        'sitemap',                               # Modulname
+        'after:controlcenter',                   # Position
+        array( 'BackendSitemap' => 'main'),      # Controller array
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:'.$_EXTKEY.'/Resources/Public/Backend/Icons/ModuleIcon.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.sitemap.xml',
+        )
+    );
+}
+
 
 ###############################################################################
 # CONFIGURATION

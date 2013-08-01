@@ -31,38 +31,10 @@ namespace TQ\TqSeo\Backend\Module;
  * @package     TYPO3
  * @subpackage  tq_seo
  */
-class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
+abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
     ###########################################################################
     # Attributes
     ###########################################################################
-
-    /**
-     * Page info
-     *
-     * @var array
-     */
-    public $pageinfo = null;
-
-    /**
-     * Module arguments
-     *
-     * @var array
-     */
-    protected $_moduleArgs = array();
-
-    /**
-     * Menu back link
-     *
-     * @var    string
-     */
-    protected $_menuBackLink = null;
-
-    /**
-     * Module url
-     *
-     * @var    string
-     */
-    protected $_moduleUrl = null;
 
     /**
      * Backend Form Protection object
@@ -72,229 +44,39 @@ class AbstractModule extends \TYPO3\CMS\Backend\Module\BaseScriptClass {
     protected $_formProtection = null;
 
     ###########################################################################
-    # Public methods
+    # Methods
     ###########################################################################
 
     /**
-     * Initializes the Module
+     * Initializes the controller before invoking an action method.
      *
-     * @return    void
+     * @return void
      */
-    public function init() {
-        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
-        global $MCONF;
-
-        parent::init();
-
-        // Fetch module args
-        $this->_moduleArgs = array();
-        if (!empty($_GET[$MCONF['name']])) {
-            $this->_moduleArgs = (array)$_GET[$MCONF['name']];
-        }
+    protected function initializeAction() {
 
         // Init form protection instance
         $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Core\\FormProtection\\BackendFormProtection'
         );
-    }
 
-
-    /**
-     * Main function of the module
-     *
-     * Write the content to $this->content
-     * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
-     */
-    public function main() {
-        global $BE_USER, $LANG, $BACK_PATH, $TCA_DESCR, $TCA, $CLIENT, $TYPO3_CONF_VARS;
-        // If no access or if ID == zero
-        $this->doc           = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            'TYPO3\\CMS\\Backend\\Template\\MediumDocumentTemplate'
-        );
-        $this->doc->backPath = $BACK_PATH;
-
-        $this->content .= $this->doc->startPage($this->_moduleTitle());
-        $this->content .= $this->doc->header($this->_moduleTitle());
-        $this->content .= $this->doc->spacer(5);
-        $this->content .= $this->doc->spacer(10);
     }
 
     /**
-     * Generates the module content
+     * Translate key
      *
-     * @return    void
+     * @param   string      $key        Translation key
+     * @param   null|array  $arguments  Arguments (vsprintf)
+     * @return  NULL|string
      */
-    public function moduleContent() {
-        $function = '';
-        if (!empty($_GET['SET']['function'])) {
-            // GET-param
-            $function = (string)$_GET['SET']['function'];
-        } else {
-            if (!empty($this->MOD_SETTINGS['function'])) {
-                // Selector
-                $function = (string)$this->MOD_SETTINGS['function'];
-            } else {
-                // None
-                $function = 'main';
-            }
+    protected function _translate($key, $arguments = null) {
+        $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
+
+        // Not translated handling
+        if( $ret === null ) {
+            $ret = '[-'.$key.'-]';
         }
 
-        // security
-        $function = strtolower(trim($function));
-        $function = preg_replace('[^a-z]', '', $function);
-
-        if (empty($function)) {
-            $function = 'main';
-        }
-
-        $method = 'execute' . $function;
-        $call   = array($this, $method);
-
-        if (!is_callable($call)) {
-            $method   = $method = 'executeMain';
-            $function = 'main';
-        }
-
-        // set url
-        $this->__moduleUrl = $this->_moduleLink($function);
-
-        $ret = $this->$method();
-
-        if (!empty($ret)) {
-            $this->content .= $ret;
-        }
-    }
-
-    /**
-     * Prints out the module HTML
-     *
-     * @return    void
-     */
-    public function printContent() {
-        $this->content .= $this->doc->endPage();
-        echo $this->content;
-    }
-
-
-    /**
-     * Module help links
-     *
-     * @return    string
-     */
-    protected function getModuleHelp() {
-
-    }
-
-    /**
-     * Gets the filled markers that are used in the HTML template
-     *
-     * @return    array        The filled marker array
-     */
-    protected function getTemplateMarkers() {
-        $markers = array(
-            'CSH'       => $this->getModuleHelp(),
-            'FUNC_MENU' => $this->getFunctionMenu(),
-            'CONTENT'   => $this->content,
-            'TITLE'     => $this->_moduleTitle(),
-        );
-
-        return $markers;
-    }
-
-    /**
-     * Gets the function menu selector for this backend module
-     *
-     * @return    string        The HTML representation of the function menu selector
-     */
-    protected function getFunctionMenu() {
-        $functionMenu = \TYPO3\CMS\Backend\Utility\BackendUtility::getFuncMenu(
-            $this->id,
-            'SET[function]',
-            $this->MOD_SETTINGS['function'],
-            $this->MOD_MENU['function']
-        );
-
-        return $functionMenu;
-    }
-
-    /**
-     * Gets the buttons that shall be rendered in the docHeader
-     *
-     * @return    array        Available buttons for the docHeader
-     */
-    protected function getDocHeaderButtons() {
-        $buttons = array(
-            'reload'   => '',
-            'shortcut' => $this->getShortcutButton(),
-            'back'     => '',
-        );
-
-        if ($this->_menuBackLink) {
-            $buttons['back'] = '<a href="' . htmlspecialchars(
-                    $this->_menuBackLink
-                ) . '" title="' . $GLOBALS['LANG']->sL('LLL:EXT:lang/locallang_core.php:labels.goback', true) . '">' .
-                \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-view-go-back') .
-                '</a>';
-        }
-
-        return $buttons;
-    }
-
-    /**
-     * Gets the button to set a new shortcut in the backend (if current user is allowed to)
-     *
-     * @return    string        HTML representiation of the shortcut button
-     */
-    protected function getShortcutButton() {
-        $result = '';
-        if ($GLOBALS['BE_USER']->mayMakeShortcut()) {
-            $result = $this->doc->makeShortcutIcon('', 'function', $this->MCONF['name']);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Generate link to module
-     *
-     *
-     * @param    string $action    Action
-     * @param    array $params    Params
-     * @return    string
-     */
-    protected function _moduleLink($action, $params = null) {
-        global $MCONF;
-
-        $args = '';
-        if (!empty($params)) {
-            $params = array(
-                $MCONF['name'] => $params
-            );
-
-            $args = '&' . http_build_query($params);
-
-        }
-
-        $baseUrl = $MCONF['_'];
-
-        return $baseUrl . '&SET[function]=' . rawurlencode($action) . $args;;
-    }
-
-    /**
-     * Generate link to module (for onclick handler)
-     *
-     *
-     * @param    string $action    Action
-     * @param    array $params    Params
-     * @return    string
-     */
-    protected function _moduleLinkOnClick($action, $params = null) {
-        $url = $this->_moduleLink($action, $params);
-        return 'window.location.href=\'' . $url . '\'; return false;';
-    }
-
-    protected function _moduleTitle() {
-        return $GLOBALS['LANG']->getLL('title');
+        return $ret;
     }
 
     /**
