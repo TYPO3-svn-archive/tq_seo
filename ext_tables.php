@@ -438,6 +438,19 @@ if (TYPO3_MODE == 'BE') {
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TQ.'.$_EXTKEY,                          # Extension - Key
+        'web',                                   # Category
+        'pageseo',                               # Modulname
+        '',                                      # Position
+        array( 'BackendPageSeo' => 'main'),      # Controller array
+        array(
+            'access' => 'user,group',
+            'icon'   => 'EXT:'.$_EXTKEY.'/Resources/Public/Backend/Icons/ModuleIcon.png',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.pageseo.xml',
+        )
+    );
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        'TQ.'.$_EXTKEY,                          # Extension - Key
         'tqseo',                                 # Category
         'controlcenter',                         # Modulname
         '',                                      # Position

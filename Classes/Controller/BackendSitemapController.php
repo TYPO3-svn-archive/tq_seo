@@ -25,13 +25,13 @@ namespace TQ\TqSeo\Controller;
  ***************************************************************/
 
 /**
- * TYPO3 Backend module root settings
+ * TYPO3 Backend module sitemap
  *
  * @author      TEQneers GmbH & Co. KG <info@teqneers.de>
  * @package     TYPO3
  * @subpackage  tq_seo
  */
-class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractStandardModule {
+class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandardModule {
     ###########################################################################
     # Attributes
     ###########################################################################
@@ -44,54 +44,29 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
      * Main action
      */
     public function mainAction() {
-        global $TYPO3_DB, $BE_USER;
+        global $TYPO3_DB;
 
-        #####################
-        # Root page list
-        ####################
 
-        $rootPageList   = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
-        $rootIdList     = array_keys($rootPageList);
+        // Init
+        $rootPageList		= \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
+        $rootSettingList	= \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
-        $rootPidCondition = null;
-        if( !empty($rootIdList) ) {
-            $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
-        } else {
-            $rootPidCondition = '1=0';
-        }
-
-        #####################
-        # Root setting list (w/ automatic creation)
-        ####################
-
-        // check which root lages have no root settings
-        $query = 'SELECT p.uid
-                    FROM pages p
-                         LEFT JOIN tx_tqseo_setting_root seosr
-                            ON   seosr.pid = p.uid
-                             AND seosr.deleted = 0
-                    WHERE '.$rootPidCondition.'
-                      AND seosr.uid IS NULL';
-        $res = $TYPO3_DB->sql_query($query);
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-            $tmpUid = $row['uid'];
-            $query = 'INSERT INTO tx_tqseo_setting_root (pid, tstamp, crdate, cruser_id)
-                            VALUES ('.(int)$tmpUid.',
-                                    '.(int)time().',
-                                    '.(int)time().',
-                                    '.(int)$BE_USER->user['uid'].')';
-            $TYPO3_DB->sql_query($query);
-        }
-
-        $rootSettingList  = \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
-
-        #####################
-        # Domain list
-        ####################
+        ###############################
+        # Fetch
+        ###############################
+        $statsList['sum_total'] = $TYPO3_DB->exec_SELECTgetRows(
+            'page_rootpid, COUNT(*) as count',
+            'tx_tqseo_sitemap',
+            '',
+            'page_rootpid',
+            '',
+            '',
+            'page_rootpid'
+        );
 
         // Fetch domain name
         $res = $TYPO3_DB->exec_SELECTquery(
-            'uid, pid, domainName, forced',
+            'pid, domainName, forced',
             'sys_domain',
             'hidden = 0',
             '',
@@ -100,31 +75,77 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
 
         $domainList = array();
         while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
-            $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
+            $pid = $row['pid'];
+
+            if( !empty($row['forced']) ) {
+                $domainList[$pid] = $row['domainName'];
+            } elseif( empty($domainList[$pid]) ) {
+                $domainList[$pid] = $row['domainName'];
+            }
         }
 
         #####################
         # Build root page list
         ####################
 
+
         unset($page);
         foreach($rootPageList as $pageId => &$page) {
-            // Domain list
-            $page['domainList'] = '';
+            $stats = array(
+                'sum_pages'		=> 0,
+                'sum_total' 	=> 0,
+                'sum_xml_pages'	=> 0,
+            );
+
+            // Get domain
+            $domain = null;
             if( !empty($domainList[$pageId]) ) {
-                $page['domainList'] = $domainList[$pageId];
+                $domain = $domainList[$pageId];
             }
 
-            // Settings
-            $page['rootSettings'] = array();
+            // Setting row
+            $settingRow = array();
             if( !empty($rootSettingList[$pageId]) ) {
-                $page['rootSettings'] = $rootSettingList[$pageId];
+                $settingRow = $rootSettingList[$pageId];
             }
 
-            // Settings available
-            $page['settingsLink'] = \TYPO3\CMS\Backend\Utility\BackendUtility::editOnClick('&edit[tx_tqseo_setting_root]['.$rootSettingList[$pageId]['uid'].']=edit',$this->doc->backPath);
+
+            // Calc stats
+            foreach($statsList as $statsKey => $statsTmpList) {
+                if( !empty($statsTmpList[$pageId]) ) {
+                    $stats[$statsKey] = $statsTmpList[$pageId]['count'];
+                }
+            }
+
+            // Root statistics
+            $tmp = $TYPO3_DB->exec_SELECTgetRows(
+                'DISTINCT page_uid',
+                'tx_tqseo_sitemap',
+                'page_rootpid = '.(int)$pageId
+            );
+            if( !empty($tmp) ) {
+                $stats['sum_pages'] = count($tmp);
+            }
+
+            $args = array(
+                'rootPid'	=> $pageId
+            );
+            // FIXME: fix link
+            #$listLink = $this->_moduleLinkOnClick('sitemapList', $args);
+
+
+            $pagesPerXmlSitemap = 1000;
+            if( !empty($settingRow['sitemap_page_limit']) ) {
+                $pagesPerXmlSitemap = $settingRow['sitemap_page_limit'];
+            }
+            $sumXmlPages = ceil( $stats['sum_total'] / $pagesPerXmlSitemap ) ;
+            $stats['sum_xml_pages'] = sprintf( $this->_translate('sitemap.xml.pages.total'), $sumXmlPages );
+
+
+            $page['stats'] = $stats;
         }
         unset($page);
+
 
         // check if there is any root page
         if( empty($rootPageList) ) {

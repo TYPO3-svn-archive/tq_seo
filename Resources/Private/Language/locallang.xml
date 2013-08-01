@@ -13,7 +13,16 @@
 			<label index="message.warning.noRootPage.title">Missing root pages</label>
 			<label index="message.warning.noRootPage.message">In this TYPO3 installation no page is flagged with "Use as root page".</label>
 
+			<label index="table.header.rootpage">Root-Page</label>
 			<label index="table.header.domain">Website-Domain</label>
+			<label index="table.header.sitemap">Sitemap</label>
+			<label index="table.header.robotstxt">Robots.txt</label>
+
+			<label index="table.header.sitemap.pages">Pages</label>
+			<label index="table.header.sitemap.total">Pages (with virtual pages/extensions)</label>
+			<label index="table.header.sitemap.xmlPages">Sitemap.xml pages</label>
+
+			<label index="sitemap.xml.pages.total">&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</label>
 		</languageKey>
 	</data>
 </T3locallang>
