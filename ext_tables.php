@@ -467,7 +467,7 @@ if (TYPO3_MODE == 'BE') {
         'tqseo',                                 # Category
         'sitemap',                               # Modulname
         'after:controlcenter',                   # Position
-        array( 'BackendSitemap' => 'main'),      # Controller array
+        array( 'BackendSitemap' => 'main,sitemap'),      # Controller array
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:'.$_EXTKEY.'/Resources/Public/Backend/Icons/ModuleIcon.png',

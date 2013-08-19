@@ -127,11 +127,12 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
                 $stats['sum_pages'] = count($tmp);
             }
 
-            $args = array(
-                'rootPid'	=> $pageId
-            );
+
             // FIXME: fix link
-            #$listLink = $this->_moduleLinkOnClick('sitemapList', $args);
+            //$args = array(
+            //    'rootPid'	=> $pageId
+            //);
+            //$listLink = $this->_moduleLinkOnClick('sitemapList', $args);
 
 
             $pagesPerXmlSitemap = 1000;
@@ -159,5 +160,192 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
         $this->view->assign('RootPageList', $rootPageList);
     }
+
+    /**
+     * Sitemap action
+     */
+    public function sitemapAction() {
+        global $TYPO3_DB;
+
+        $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_tqseo_tqseo_tqseositemap');
+        $rootPid = $params['pageId'];
+
+
+        $rootPageList = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
+
+        $rootPage	= $rootPageList[$rootPid];
+
+        ###############################
+        # Fetch
+        ###############################
+        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
+
+        $languageFullList = array(
+            0 => array(
+                'label'	=> $this->_translate('default_language'),
+                'flag'	=> '',
+            ),
+        );
+
+        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+            $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
+        }
+
+        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+            $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+        }
+
+        // Fetch other flags
+        $res = $TYPO3_DB->exec_SELECTquery(
+            'uid, title, flag',
+            'sys_language',
+            'hidden = 0'
+        );
+        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+            $languageFullList[ $row['uid'] ] = array(
+                'label'	=> htmlspecialchars($row['title']),
+                'flag'	=> htmlspecialchars($row['flag']),
+            );
+        }
+
+        // Langauges
+        $languageList = array();
+        $languageList[] =	array(
+            -1,
+            $this->_translate('empty_search_page_language'),
+        );
+
+        foreach($languageFullList as $langId => $langRow) {
+            $flag = '';
+
+            // Flag (if available)
+            if( !empty($langRow['flag']) ) {
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+                $flag .= '&nbsp;';
+            }
+
+            // label
+            $label = $langRow['label'];
+
+            $languageList[] = array(
+                $langId,
+                $label,
+                $flag
+            );
+        }
+
+        // Depth
+        $depthList = array();
+        $depthList[] =	array(
+            -1,
+            $this->_translate('empty_search_page_depth'),
+        );
+
+        $res = $TYPO3_DB->exec_SELECTquery(
+            'DISTINCT page_depth',
+            'tx_tqseo_sitemap',
+            'page_rootpid = '.(int)$rootPid
+        );
+        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+            $depth = $row['page_depth'];
+            $depthList[] = array(
+                $depth,
+                $depth,
+            );
+        }
+
+        ###############################
+        # Page/JS
+        ###############################
+
+        // FIXME: do we really need a template engine here?
+        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $pageRenderer = $this->template->getPageRenderer();
+
+        $basePathJs = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript';
+        $pageRenderer->addJsFile($basePathJs.'/TQSeo.js');
+        $pageRenderer->addJsFile($basePathJs.'/Ext.ux.plugin.FitToParent.js');
+        $pageRenderer->addJsFile($basePathJs.'/TQSeo.sitemap.js');
+
+        // Include Ext JS inline code
+        $pageRenderer->addJsInlineCode(
+            'TQSeo.sitemap',
+
+            'Ext.namespace("TQSeo.sitemap");
+
+            TQSeo.sitemap.conf = {
+                sessionToken			: '.json_encode($this->_sessionToken('tq_tqseo_backend_ajax_sitemapajax')).',
+                ajaxController			: '.json_encode($this->doc->backPath. 'ajax.php?ajaxID=tx_tqseo_backend_ajax::sitemap').',
+                pid						: '.(int)$rootPid .',
+                renderTo				: "tx-tqseo-sitemap-grid",
+
+                pagingSize				: 50,
+
+                sortField				: "crdate",
+                sortDir					: "DESC",
+
+                filterIcon				: '. json_encode(\TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-tree-search-open')) .',
+
+                dataLanguage			: '. json_encode($languageList) .',
+                dataDepth				: '. json_encode($depthList) .',
+
+                criteriaFulltext		: "",
+                criteriaPageUid			: "",
+                criteriaPageLanguage	: "",
+                criteriaPageDepth		: "",
+                criteriaIsBlacklisted	: 0,
+
+                languageFullList		: '. json_encode($languageFullList) .',
+            };
+
+            // Localisation:
+            TQSeo.sitemap.conf.lang = {
+                title					: '. json_encode( sprintf($this->_translate('title_sitemap_list'), $rootPage['title'], $rootPid ) ) .',
+                pagingMessage			: '. json_encode( $this->_translate('pager_results') ) .',
+                pagingEmpty				: '. json_encode( $this->_translate('pager_noresults') ) .',
+                sitemap_page_uid		: '. json_encode( $this->_translate('header_sitemap_page_uid') ) .',
+                sitemap_page_url		: '. json_encode( $this->_translate('header_sitemap_page_url') ) .',
+                sitemap_page_depth		: '. json_encode( $this->_translate('header_sitemap_page_depth') ) .',
+                sitemap_page_language	: '. json_encode( $this->_translate('header_sitemap_page_language') ) .',
+                sitemap_page_is_blacklisted : '. json_encode( $this->_translate('header_sitemap_page_is_blacklisted') ) .',
+                sitemap_tstamp			: '. json_encode( $this->_translate('header_sitemap_tstamp') ) .',
+                sitemap_crdate			: '. json_encode( $this->_translate('header_sitemap_crdate') ) .',
+
+                labelSearchFulltext		: '. json_encode( $this->_translate('label_search_fulltext') ) .',
+                emptySearchFulltext		: '. json_encode( $this->_translate('empty_search_fulltext') ) .',
+
+                labelSearchPageUid		: '. json_encode( $this->_translate('label_search_page_uid') ) .',
+                emptySearchPageUid		: '. json_encode( $this->_translate('empty_search_page_uid') ) .',
+
+                labelSearchPageLanguage	: '. json_encode( $this->_translate('label_search_page_language') ) .',
+                emptySearchPageLanguage	: '. json_encode( $this->_translate('empty_search_page_language') ) .',
+
+                labelSearchPageDepth	: '. json_encode( $this->_translate('label_search_page_depth') ) .',
+                emptySearchPageDepth	: '. json_encode( $this->_translate('empty_search_page_depth') ) .',
+
+                labelSearchIsBlacklisted : '. json_encode( $this->_translate('label_search_is_blacklisted') ) .',
+
+                labelYes				: '. json_encode( $this->_translate('label_yes') ) .',
+                labelNo					: '. json_encode( $this->_translate('label_no') ) .',
+
+                buttonYes				: '. json_encode( $this->_translate('button_yes') ) .',
+                buttonNo				: '. json_encode( $this->_translate('button_no') ) .',
+
+                buttonDelete			: '. json_encode( $this->_translate('button_delete') ) .',
+                buttonDeleteHint		: '. json_encode( $this->_translate('button_delete_hint') ) .',
+
+                messageDeleteTitle			: '. json_encode( $this->_translate('message_delete_title') ) .',
+                messageDeleteQuestion		: '. json_encode( $this->_translate('message_delete_question') ) .',
+                errorDeleteFailedMessage	: '. json_encode( $this->_translate('message_delete_failed_body') ) .',
+
+                errorNoSelectedItemsBody	: '. json_encode( $this->_translate('message_no_selected_items') ) .',
+
+                today						: '. json_encode( $this->_translate('today') ) .',
+                yesterday					: '. json_encode( $this->_translate('yesterday') ) .'
+            };
+        ');
+
+    }
+
 
 }
