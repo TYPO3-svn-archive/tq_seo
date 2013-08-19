@@ -436,6 +436,7 @@ if (TYPO3_MODE == 'BE') {
 if (TYPO3_MODE == 'BE') {
      \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', '', '', $extPath.'mod1/');
 
+
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TQ.'.$_EXTKEY,                          # Extension - Key
         'web',                                   # Category
