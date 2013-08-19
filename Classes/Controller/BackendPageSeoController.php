@@ -47,6 +47,40 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         return $this->_handleSubAction('metadata');
     }
 
+    /**
+     * Geo action
+     */
+    public function geoAction() {
+        return $this->_handleSubAction('geo');
+    }
+
+    /**
+     * searchengines action
+     */
+    public function searchenginesAction() {
+        return $this->_handleSubAction('searchengines');
+    }
+
+    /**
+     * url action
+     */
+    public function urlAction() {
+        return $this->_handleSubAction('url');
+    }
+
+    /**
+     * pagetitle action
+     */
+    public function pagetitleAction() {
+        return $this->_handleSubAction('pagetitle');
+    }
+
+    /**
+     * pagetitle action
+     */
+    public function pagetitlesimAction() {
+        return $this->_handleSubAction('pagetitlesim');
+    }
 
     protected function _handleSubAction($type) {
         global $TYPO3_DB;

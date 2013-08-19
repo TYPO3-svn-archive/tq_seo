@@ -22,6 +22,15 @@
 			<label index="table.header.sitemap.total">Pages (with virtual pages/extensions)</label>
 			<label index="table.header.sitemap.xmlPages">Sitemap.xml pages</label>
 
+
+			<label index="menu.seo.page.metadata">Metadata</label>
+			<label index="menu.seo.page.geo">Geo informations</label>
+			<label index="menu.seo.page.searchengines">Searchengine information</label>
+			<label index="menu.seo.page.url">URL</label>
+			<label index="menu.seo.page.pagetitle">Pagetitle</label>
+			<label index="menu.seo.page.pagetitlesim">Pagetitle Simulator (SLOW!)</label>
+
+
 			<label index="sitemap.xml.pages.total">&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</label>
 		</languageKey>
 	</data>

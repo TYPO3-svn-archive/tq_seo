@@ -441,7 +441,7 @@ if (TYPO3_MODE == 'BE') {
         'web',                                   # Category
         'pageseo',                               # Modulname
         '',                                      # Position
-        array( 'BackendPageSeo' => 'main'),      # Controller array
+        array( 'BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'),      # Controller array
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:'.$_EXTKEY.'/Resources/Public/Backend/Icons/ModuleIcon.png',
