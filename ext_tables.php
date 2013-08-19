@@ -398,38 +398,6 @@ $TCA['tx_tqseo_setting_page'] = array(
 */
 
 ###############################################################################
-# BACKEND MODULE
-###############################################################################
-/*
-if (TYPO3_MODE == 'BE') {
-    // add module before 'Help'
-    if (!isset($TBE_MODULES['tqseo']))	{
-        $temp_TBE_MODULES = array();
-        foreach($TBE_MODULES as $key => $val) {
-            if ($key == 'help') {
-                $temp_TBE_MODULES['tqseo'] = '';
-                $temp_TBE_MODULES[$key] = $val;
-            } else {
-                $temp_TBE_MODULES[$key] = $val;
-            }
-        }
-
-        $TBE_MODULES = $temp_TBE_MODULES;
-    }
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', '', '', $extPath.'mod1/');
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', 'txtqseoM2', 'bottom', $extPath . 'mod2/');
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', 'txtqseoM3', 'bottom', $extPath . 'mod3/');
-
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModulePath('web_txtqseoM4', $extPath . 'mod4/');
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('web', 'txtqseoM4', '', $extPath . 'mod4/');
-}
-*/
-
-
-
-###############################################################################
 # Backend
 ###############################################################################
 
