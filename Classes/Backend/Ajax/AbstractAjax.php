@@ -185,6 +185,20 @@ abstract class AbstractAjax {
         return $this->_tce;
     }
 
+
+    /**
+     * Check if field is in table (TCA)
+     *
+     * @param   string $table  Table
+     * @param   string $field  Field
+     * @return  boolean
+     */
+    protected function _isFieldInTcaTable($table, $field) {
+        global $TCA;
+        return isset($TCA[$table]['columns'][$field]);
+    }
+
+
     /**
      * Create session token
      *

@@ -316,6 +316,12 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
         unset($row);
         foreach ($list as &$row) {
+
+
+            foreach($fieldList as $fieldName) {
+                $row[ '_overlay' ][ $fieldName ] = 1;
+            }
+
             $row['_depth'] = $this->_listCalcDepth($row['uid'], $rootLineRaw);
         }
         unset($row);
@@ -323,14 +329,33 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         ###############################
         # Language overlay
         ###############################
+
         if( !empty($sysLanguage) && !empty($pageIdList) ) {
 
             // Fetch all overlay rows for current page list
+            $overlayFieldList['uid']   = 'uid';
+            $overlayFieldList['pid']   = 'pid';
+            $overlayFieldList['title'] = 'title';
+            foreach($fieldList as $fieldName) {
+                if( $this->_isFieldInTcaTable('pages_language_overlay', $fieldName) ) {
+                    $overlayFieldList[$fieldName] = $fieldName;
+                }
+            }
+
             $res = $TYPO3_DB->exec_SELECTquery(
-                'uid,pid,title,'.implode(',',$fieldList),
+                implode(',',$overlayFieldList),
                 'pages_language_overlay',
                 'pid IN('.implode(',',$pageIdList).')'
             );
+
+            // update overlay field settings
+            unset($row);
+            foreach ($list as &$row) {
+                foreach($fieldList as $fieldName) {
+                    $row[ '_overlay' ][ $fieldName ] = 0;
+                }
+            }
+            unset($row);
 
             while($overlayRow = $TYPO3_DB->sql_fetch_assoc($res)) {
                 $pageOverlayId  = $overlayRow['uid'];
@@ -349,6 +374,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 foreach($fieldList as $fieldName) {
                     if( !empty($overlayRow[$fieldName]) ) {
                         $list[ $pageOriginalId ][ $fieldName ] = $overlayRow[$fieldName];
+                        $list[ $pageOriginalId ][ '_overlay' ][ $fieldName ] = 1;
                     }
                 }
             }
@@ -561,7 +587,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * Update page field
      */
     protected function _executeUpdatePageField() {
-        global $TYPO3_DB, $BE_USER, $LANG;
+        global $TYPO3_DB, $BE_USER, $LANG, $TCA;
 
         if (empty($this->_postVar['pid'])
             || empty($this->_postVar['field'])
@@ -647,24 +673,45 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         ###############################
         # Update
         ###############################
+        $tableName = 'pages';
 
         if( !empty($sysLanguage) ) {
-            // TODO: we have to check if field is in pages_language_overlay or pages
-            //       currently no update possible, sorry
-            return array(
-                'error' => 'currently no update in language possible, sorry',
-            );
-        } else {
-            // Update field in page (also logs update event and clear cache for this page)
-            $this->_tce()->updateDB(
-                'pages',
-                (int)$pid,
-                array(
-                    $fieldName => $fieldValue
-                )
-            );
+            // check if field is in overlay
+            if( $this->_isFieldInTcaTable( 'pages_language_overlay', $fieldName ) ) {
+                // Field is in pages language overlay
+                $tableName = 'pages_language_overlay';
+            }
         }
+
+        switch($tableName) {
+            case 'pages_language_overlay':
+                // Update field in pages overlay (also logs update event and clear cache for this page)
+                $this->_tce()->updateDB(
+                    'pages_language_overlay',
+                    (int)$pid,
+                    array(
+                        $fieldName => $fieldValue
+                    )
+                );
+                break;
+
+            case 'pages':
+                // Update field in page (also logs update event and clear cache for this page)
+                $this->_tce()->updateDB(
+                    'pages',
+                    (int)$pid,
+                    array(
+                        $fieldName => $fieldValue
+                    )
+                );
+                break;
+
+        }
+
+
     }
+
+
 
 }
 

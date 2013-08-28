@@ -19,6 +19,11 @@
 	font-style: italic;
 }
 
+.overlay-default {
+    color: #808080;
+    font-style: italic;
+}
+
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell {
 	position: relative;
 	cursor: pointer;

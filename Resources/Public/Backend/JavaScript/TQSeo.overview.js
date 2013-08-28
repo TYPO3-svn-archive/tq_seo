@@ -341,7 +341,8 @@ TQSeo.overview.grid = {
         var gridDsColumns = [
             {name: 'uid', type: 'int'},
             {name: 'title', type: 'string'},
-            {name: '_depth', type: 'int'}
+            {name: '_depth', type: 'int'},
+            {name: '_overlay', type: 'array'}
         ];
 
         switch( TQSeo.overview.conf.listType ) {
@@ -448,7 +449,18 @@ TQSeo.overview.grid = {
         var me = this;
 
         var fieldRenderer = function(value, metaData, record, rowIndex, colIndex, store) {
-            return me._fieldRenderer(value);
+            var fieldName = me.grid.getColumnModel().getDataIndex(colIndex);
+
+            // check for overlay
+            var html = me._fieldRenderer(value);
+
+            if( record.get('_overlay')[fieldName] == 1 ) {
+                html = '<div class="overlay-current">'+html+'</div>';
+            } else {
+                html = '<div class="overlay-default">'+html+'</div>';
+            }
+
+            return html;
         };
 
         var fieldRendererRaw = function(value, metaData, record, rowIndex, colIndex, store) {
