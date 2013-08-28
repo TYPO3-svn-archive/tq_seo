@@ -182,7 +182,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
         $languageFullList = array(
             0 => array(
-                'label'	=> $this->_translate('default_language'),
+                'label'	=> $this->_translate('default.language'),
                 'flag'	=> '',
             ),
         );
@@ -212,7 +212,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $languageList = array();
         $languageList[] =	array(
             -1,
-            $this->_translate('empty_search_page_language'),
+            $this->_translate('empty.search.page_language'),
         );
 
         foreach($languageFullList as $langId => $langRow) {
@@ -238,7 +238,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $depthList = array();
         $depthList[] =	array(
             -1,
-            $this->_translate('empty_search_page_depth'),
+            $this->_translate('empty.search_page_depth'),
         );
 
         $res = $TYPO3_DB->exec_SELECTquery(
@@ -262,10 +262,13 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();
 
-        $basePathJs = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript';
+        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript';
+        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/Css';
+
         $pageRenderer->addJsFile($basePathJs.'/TQSeo.js');
         $pageRenderer->addJsFile($basePathJs.'/Ext.ux.plugin.FitToParent.js');
         $pageRenderer->addJsFile($basePathJs.'/TQSeo.sitemap.js');
+        $pageRenderer->addCssFile($basePathCss.'/Default.css');
 
         // Include Ext JS inline code
         $pageRenderer->addJsInlineCode(
@@ -300,45 +303,45 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
             // Localisation:
             TQSeo.sitemap.conf.lang = {
-                title					: '. json_encode( sprintf($this->_translate('title_sitemap_list'), $rootPage['title'], $rootPid ) ) .',
-                pagingMessage			: '. json_encode( $this->_translate('pager_results') ) .',
-                pagingEmpty				: '. json_encode( $this->_translate('pager_noresults') ) .',
-                sitemap_page_uid		: '. json_encode( $this->_translate('header_sitemap_page_uid') ) .',
-                sitemap_page_url		: '. json_encode( $this->_translate('header_sitemap_page_url') ) .',
-                sitemap_page_depth		: '. json_encode( $this->_translate('header_sitemap_page_depth') ) .',
-                sitemap_page_language	: '. json_encode( $this->_translate('header_sitemap_page_language') ) .',
-                sitemap_page_is_blacklisted : '. json_encode( $this->_translate('header_sitemap_page_is_blacklisted') ) .',
-                sitemap_tstamp			: '. json_encode( $this->_translate('header_sitemap_tstamp') ) .',
-                sitemap_crdate			: '. json_encode( $this->_translate('header_sitemap_crdate') ) .',
+                title					: '. json_encode( sprintf($this->_translate('title.sitemap.list'), $rootPage['title'], $rootPid ) ) .',
+                pagingMessage			: '. json_encode( $this->_translate('pager.results') ) .',
+                pagingEmpty				: '. json_encode( $this->_translate('pager.noresults') ) .',
+                sitemap_page_uid		: '. json_encode( $this->_translate('header.sitemap.page_uid') ) .',
+                sitemap_page_url		: '. json_encode( $this->_translate('header.sitemap.page_url') ) .',
+                sitemap_page_depth		: '. json_encode( $this->_translate('header.sitemap.page_depth') ) .',
+                sitemap_page_language	: '. json_encode( $this->_translate('header.sitemap.page_language') ) .',
+                sitemap_page_is_blacklisted : '. json_encode( $this->_translate('header.sitemap.page_is_blacklisted') ) .',
+                sitemap_tstamp			: '. json_encode( $this->_translate('header.sitemap.tstamp') ) .',
+                sitemap_crdate			: '. json_encode( $this->_translate('header.sitemap.crdate') ) .',
 
-                labelSearchFulltext		: '. json_encode( $this->_translate('label_search_fulltext') ) .',
-                emptySearchFulltext		: '. json_encode( $this->_translate('empty_search_fulltext') ) .',
+                labelSearchFulltext		: '. json_encode( $this->_translate('label.search.fulltext') ) .',
+                emptySearchFulltext		: '. json_encode( $this->_translate('empty.search.fulltext') ) .',
 
-                labelSearchPageUid		: '. json_encode( $this->_translate('label_search_page_uid') ) .',
-                emptySearchPageUid		: '. json_encode( $this->_translate('empty_search_page_uid') ) .',
+                labelSearchPageUid		: '. json_encode( $this->_translate('label.search.page_uid') ) .',
+                emptySearchPageUid		: '. json_encode( $this->_translate('empty.search.page_uid') ) .',
 
-                labelSearchPageLanguage	: '. json_encode( $this->_translate('label_search_page_language') ) .',
-                emptySearchPageLanguage	: '. json_encode( $this->_translate('empty_search_page_language') ) .',
+                labelSearchPageLanguage	: '. json_encode( $this->_translate('label.search.page_language') ) .',
+                emptySearchPageLanguage	: '. json_encode( $this->_translate('empty.search.page_language') ) .',
 
-                labelSearchPageDepth	: '. json_encode( $this->_translate('label_search_page_depth') ) .',
-                emptySearchPageDepth	: '. json_encode( $this->_translate('empty_search_page_depth') ) .',
+                labelSearchPageDepth	: '. json_encode( $this->_translate('label.search.page_depth') ) .',
+                emptySearchPageDepth	: '. json_encode( $this->_translate('empty.search.page_depth') ) .',
 
-                labelSearchIsBlacklisted : '. json_encode( $this->_translate('label_search_is_blacklisted') ) .',
+                labelSearchIsBlacklisted : '. json_encode( $this->_translate('label.search.is_blacklisted') ) .',
 
-                labelYes				: '. json_encode( $this->_translate('label_yes') ) .',
-                labelNo					: '. json_encode( $this->_translate('label_no') ) .',
+                labelYes				: '. json_encode( $this->_translate('label.yes') ) .',
+                labelNo					: '. json_encode( $this->_translate('label.no') ) .',
 
-                buttonYes				: '. json_encode( $this->_translate('button_yes') ) .',
-                buttonNo				: '. json_encode( $this->_translate('button_no') ) .',
+                buttonYes				: '. json_encode( $this->_translate('button.yes') ) .',
+                buttonNo				: '. json_encode( $this->_translate('button.no') ) .',
 
-                buttonDelete			: '. json_encode( $this->_translate('button_delete') ) .',
-                buttonDeleteHint		: '. json_encode( $this->_translate('button_delete_hint') ) .',
+                buttonDelete			: '. json_encode( $this->_translate('button.delete') ) .',
+                buttonDeleteHint		: '. json_encode( $this->_translate('button.delete.hint') ) .',
 
-                messageDeleteTitle			: '. json_encode( $this->_translate('message_delete_title') ) .',
-                messageDeleteQuestion		: '. json_encode( $this->_translate('message_delete_question') ) .',
-                errorDeleteFailedMessage	: '. json_encode( $this->_translate('message_delete_failed_body') ) .',
+                messageDeleteTitle			: '. json_encode( $this->_translate('message.delete.title') ) .',
+                messageDeleteQuestion		: '. json_encode( $this->_translate('message.delete.question') ) .',
+                errorDeleteFailedMessage	: '. json_encode( $this->_translate('message.delete.failed_body') ) .',
 
-                errorNoSelectedItemsBody	: '. json_encode( $this->_translate('message_no_selected_items') ) .',
+                errorNoSelectedItemsBody	: '. json_encode( $this->_translate('message.no_selected_items') ) .',
 
                 today						: '. json_encode( $this->_translate('today') ) .',
                 yesterday					: '. json_encode( $this->_translate('yesterday') ) .'

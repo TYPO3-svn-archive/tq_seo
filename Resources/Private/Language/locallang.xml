@@ -33,124 +33,127 @@
 
 			<label index="sitemap.xml.pages.total">&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</label>
 
+			<label index="boolean.yes">Yes</label>
+			<label index="boolean.no">No</label>
+
+
+			<label index="pager.desc">Page %s of %s</label>
+			<label index="pager.results">Show rows {0} - {1} of {2}</label>
+			<label index="pager.noresults">There are no entries</label>
+
+			<label index="title.sitemap.list">Sitemap list for "%s" (UID:%s)</label>
 
 
 
 
+			<label index="header.pagetitlesim.title_simulated">Simulated title</label>
 
-			<label index="boolean_yes">Yes</label>
-			<label index="boolean_no">No</label>
 
-			<label index="title_sitemap_list">Sitemap list for "%s"</label>
-			<label index="pager_desc">Page %s of %s</label>
-			<label index="pager_results">Show rows {0} - {1} of {2}</label>
-			<label index="pager_noresults">There are no entries</label>
+			<label index="label.depth">Depth</label>
 
-			<label index="label_depth">Depth</label>
+			<label index="header.sitemap.page_uid">UID</label>
+			<label index="header.sitemap.page_title">Page</label>
 
-			<label index="header_sitemap_page_uid">UID</label>
-			<label index="header_sitemap_page_title">Page</label>
+			<label index="header.sitemap.page_keywords">Keywords</label>
+			<label index="header.sitemap.page_description">Description</label>
+			<label index="header.sitemap.page_abstract">Abstract</label>
+			<label index="header.sitemap.page_author">Author Name</label>
+			<label index="header.sitemap.page_author_email">Author E-Mail</label>
+			<label index="header.sitemap.page_lastupdated">Last updated</label>
 
-			<label index="header_sitemap_page_keywords">Keywords</label>
-			<label index="header_sitemap_page_description">Description</label>
-			<label index="header_sitemap_page_abstract">Abstract</label>
-			<label index="header_sitemap_page_author">Author Name</label>
-			<label index="header_sitemap_page_author_email">Author E-Mail</label>
-			<label index="header_sitemap_page_lastupdated">Last updated</label>
+			<label index="header.sitemap.page_geo_lat">Latitude</label>
+			<label index="header.sitemap.page_geo_long">Longitude</label>
+			<label index="header.sitemap.page_geo_place">City/Place</label>
+			<label index="header.sitemap.page_geo_region">Region</label>
 
-			<label index="header_sitemap_page_geo_lat">Latitude</label>
-			<label index="header_sitemap_page_geo_long">Longitude</label>
-			<label index="header_sitemap_page_geo_place">City/Place</label>
-			<label index="header_sitemap_page_geo_region">Region</label>
+			<label index="header.sitemap.page_tx_tqseo_pagetitle">Title (Absolute)</label>
+			<label index="header.sitemap.page_tx_tqseo_pagetitle_rel">Browsertitle</label>
+			<label index="header.sitemap.page_tx_tqseo_pagetitle_prefix">Prefix</label>
+			<label index="header.sitemap.page_tx_tqseo_pagetitle_suffix">Suffix</label>
 
-			<label index="header_sitemap_page_tx_tqseo_pagetitle">Title (Absolute)</label>
-			<label index="header_sitemap_page_tx_tqseo_pagetitle_rel">Browsertitle</label>
-			<label index="header_sitemap_page_tx_tqseo_pagetitle_prefix">Prefix</label>
-			<label index="header_sitemap_page_tx_tqseo_pagetitle_suffix">Suffix</label>
+			<label index="header.pagetitlesim_title_simulated">Title (Simulated)</label>
 
-			<label index="header_pagetitlesim_title_simulated">Title (Simulated)</label>
+			<label index="header.searchengine_canonicalurl">Canonical URL</label>
+			<label index="header.searchengine_is_excluded">Excluded</label>
+			<label index="searchengine.is_exclude_disabled">No, visible to SearchEngines</label>
+			<label index="searchengine.is_exclude_enabled">Yes, EXCLUDE page from SearchEngines index</label>
 
-			<label index="header_searchengine_canonicalurl">Canonical URL</label>
-			<label index="header_searchengine_is_excluded">Excluded</label>
-			<label index="searchengine_is_exclude_disabled">No, visible to SearchEngines</label>
-			<label index="searchengine_is_exclude_enabled">Yes, EXCLUDE page from SearchEngines index</label>
+			<label index="header.url_scheme">Scheme</label>
+			<label index="page.url_scheme_default">Default</label>
+			<label index="page.url_scheme_http">HTTP</label>
+			<label index="page.url_scheme_https">HTTPS</label>
 
-			<label index="header_url_scheme">Scheme</label>
-			<label index="page_url_scheme_default">Default</label>
-			<label index="page_url_scheme_http">HTTP</label>
-			<label index="page_url_scheme_https">HTTPS</label>
+			<label index="header.url_alias">Alias</label>
+			<label index="header.url_realurl_pathsegment">RealURL Path Segment</label>
+			<label index="header.url_realurl_pathoverride">RealURL Path Override</label>
+			<label index="header.url_realurl_exclude">RealURL Exclude</label>
 
-			<label index="header_url_alias">Alias</label>
-			<label index="header_url_realurl_pathsegment">RealURL Path Segment</label>
-			<label index="header_url_realurl_pathoverride">RealURL Path Override</label>
-			<label index="header_url_realurl_exclude">RealURL Exclude</label>
+			<label index="header.sitemap.priority">Sitemap Priority</label>
 
-			<label index="header_sitemap_priority">Sitemap Priority</label>
-
-			<label index="label_search_fulltext">Search</label>
+			<label index="label.search_fulltext">Search</label>
 			<label index="empty_search_fulltext">Search...</label>
 
 			<label index="value_default">Default</label>
 
 			<label index="message_no_valid_page">Please select a page from the left tree.</label>
 
-			<label index="qtip_pagetitle_simulate">Show simulated pagetitle</label>
-			<label index="qtip_url_simulate">Show simulated url</label>
+			<label index="qtip.pagetitle_simulate">Show simulated pagetitle</label>
+			<label index="qtip.url_simulate">Show simulated url</label>
 
 
 
 
 			<label index="header_rootpage">Root Website</label>
-			<label index="header_sitemap_pages">Pages</label>
-			<label index="header_sitemap_total">Pages (with virtual pages/extensions)</label>
-			<label index="header_sitemap_xml_pages">Sitemap.xml pages</label>
-			<label index="header_sitemap_page_uid">ID</label>
-			<label index="header_sitemap_page_uid">PID</label>
-			<label index="header_sitemap_page_url">URL</label>
-			<label index="header_sitemap_page_language">Language</label>
-			<label index="header_sitemap_page_is_blacklisted">Blacklisted</label>
-			<label index="header_sitemap_page_depth">Depth</label>
-			<label index="header_sitemap_crdate">Created</label>
-			<label index="header_sitemap_tstamp">Last indexed</label>
+			<label index="header.sitemap.pages">Pages</label>
+			<label index="header.sitemap.total">Pages (with virtual pages/extensions)</label>
+			<label index="header.sitemap.xml_pages">Sitemap.xml pages</label>
+			<label index="header.sitemap.page_uid">ID</label>
+			<label index="header.sitemap.page_uid">PID</label>
+			<label index="header.sitemap.page_url">URL</label>
+			<label index="header.sitemap.page_language">Language</label>
+			<label index="header.sitemap.page_is_blacklisted">Blacklisted</label>
+			<label index="header.sitemap.page_depth">Depth</label>
+			<label index="header.sitemap.crdate">Created</label>
+			<label index="header.sitemap.tstamp">Last indexed</label>
 
 			<label index="hint_link_sitemap_xml">Goto sitemap.xml INDEX page</label>
 			<label index="hint_link_sitemap_list">Goto sitemap list</label>
 			<label index="text_sum_xml_pages">&lt;b&gt;One&lt;/b&gt; Sitemap.xml INDEX page with &lt;b&gt;%s&lt;/b&gt; sitemap sub-page(s)</label>
 
-			<label index="title_sitemap_list">Sitemap list for "%s" (UID:%s)</label>
 			<label index="pager_desc">Page %s of %s</label>
 			<label index="pager_results">Show rows {0} - {1} of {2}</label>
 			<label index="pager_noresults">There are no entries</label>
 
-			<label index="default_language">Default</label>
+			<label index="default.language">Default</label>
 
-			<label index="label_search_fulltext">Search</label>
-			<label index="empty_search_fulltext">Search...</label>
+			<label index="label.search.fulltext">Search</label>
+			<label index="empty.search.fulltext">Search...</label>
 
-			<label index="label_search_page_uid">PID</label>
-			<label index="empty_search_page_uid">ID</label>
+			<label index="label.search.page_uid">PID</label>
+			<label index="empty.search.page_uid">ID</label>
 
-			<label index="label_search_page_language">Language</label>
-			<label index="empty_search_page_language">-- All --</label>
+			<label index="label.search.page_language">Language</label>
+			<label index="empty.search.page_language">-- All --</label>
+			<label index="default.search.page_language">-- Default --</label>
 
-			<label index="label_search_page_depth">Depth</label>
-			<label index="empty_search_page_depth">-- All --</label>
+			<label index="label.search.page_depth">Depth</label>
+			<label index="empty.search.page_depth">-- All --</label>
 
-			<label index="label_search_is_blacklisted">Blacklist</label>
+			<label index="label.search.is_blacklisted">Blacklist</label>
 
-			<label index="label_yes">Yes</label>
-			<label index="label_no">No</label>
+			<label index="label.yes">Yes</label>
+			<label index="label.no">No</label>
 
-			<label index="button_yes">Yes</label>
-			<label index="button_no">No</label>
+			<label index="button.yes">Yes</label>
+			<label index="button.no">No</label>
 
-			<label index="button_delete">Delete</label>
-			<label index="button_delete_hint">Delete all selected sitemap entries</label>
+			<label index="button.delete">Delete</label>
+			<label index="button.delete.hint">Delete all selected sitemap entries</label>
 
-			<label index="message_delete_title">Delete entries</label>
-			<label index="message_delete_question">Do you really want to delete these sitemap entries?</label>
+			<label index="message.delete.title">Delete entries</label>
+			<label index="message.delete.question">Do you really want to delete these sitemap entries?</label>
 
-			<label index="message_no_selected_items">You must select at least one sitemap entry.</label>
+			<label index="message.no_selected_items">You must select at least one sitemap entry.</label>
 
 			<label index="today">Today</label>
 			<label index="yesterday">Yesterday</label>

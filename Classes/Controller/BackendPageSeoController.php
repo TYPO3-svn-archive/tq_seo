@@ -88,7 +88,57 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if( empty($pageId) ) {
-            return '<div class="typo3-message message-warning">'.htmlspecialchars($this->_translate('message_no_valid_page')).'</div>';
+            return '<div class="typo3-message message-warning">'.htmlspecialchars($this->_translate('message.no_valid_page')).'</div>';
+        }
+
+        $languageFullList = array(
+            0 => array(
+                'label'	=> $this->_translate('default.language'),
+                'flag'	=> '',
+            ),
+        );
+
+        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageFlag']) ) {
+            $languageFullList[0]['flag'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageFlag'];
+        }
+
+        if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
+            $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+        }
+
+        // Fetch other flags
+        $res = $TYPO3_DB->exec_SELECTquery(
+            'uid, title, flag',
+            'sys_language',
+            'hidden = 0'
+        );
+        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+            $languageFullList[ $row['uid'] ] = array(
+                'label'	=> htmlspecialchars($row['title']),
+                'flag'	=> htmlspecialchars($row['flag']),
+            );
+        }
+
+        // Langauges
+        $languageList = array();
+
+        foreach($languageFullList as $langId => $langRow) {
+            $flag = '';
+
+            // Flag (if available)
+            if( !empty($langRow['flag']) ) {
+                $flag .= '<span class="t3-icon t3-icon-flags t3-icon-flags-'.$langRow['flag'].' t3-icon-'.$langRow['flag'].'"></span>';
+                $flag .= '&nbsp;';
+            }
+
+            // label
+            $label = $langRow['label'];
+
+            $languageList[] = array(
+                $langId,
+                $label,
+                $flag
+            );
         }
 
         ###############################
@@ -101,6 +151,7 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.js');
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.overview.js');
+        $pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/Css/Default.css');
 
         $realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
 
@@ -125,7 +176,7 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
                 depth					: 2,
 
-                languageFullList		: '. json_encode($languageFullList) .',
+                dataLanguage			: '. json_encode($languageList) .',
 
                 listType				: '. json_encode($type) .',
 
@@ -142,56 +193,59 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             // Localisation:
             TQSeo.overview.conf.lang = {
                 title					: '. json_encode( '' ) .',
-                pagingMessage			: '. json_encode( $this->_translate('pager_results') ) .',
-                pagingEmpty				: '. json_encode( $this->_translate('pager_noresults') ) .',
+                pagingMessage			: '. json_encode( $this->_translate('pager.results') ) .',
+                pagingEmpty				: '. json_encode( $this->_translate('pager.noresults') ) .',
 
-                boolean_yes				: '. json_encode( $this->_translate('boolean_yes') ) .',
-                boolean_no				: '. json_encode( $this->_translate('boolean_no') ) .',
+                boolean_yes				: '. json_encode( $this->_translate('boolean.yes') ) .',
+                boolean_no				: '. json_encode( $this->_translate('boolean.no') ) .',
 
-                labelDepth				: '. json_encode( $this->_translate('label_depth') ) .',
+                labelDepth				: '. json_encode( $this->_translate('label.depth') ) .',
 
-                labelSearchFulltext		: '. json_encode( $this->_translate('label_search_fulltext') ) .',
-                emptySearchFulltext		: '. json_encode( $this->_translate('empty_search_fulltext') ) .',
+                labelSearchFulltext		: '. json_encode( $this->_translate('label.search.fulltext') ) .',
+                emptySearchFulltext		: '. json_encode( $this->_translate('empty.search.fulltext') ) .',
 
-                page_uid				: '. json_encode( $this->_translate('header_sitemap_page_uid') ) .',
-                page_title				: '. json_encode( $this->_translate('header_sitemap_page_title') ) .',
-                page_keywords			: '. json_encode( $this->_translate('header_sitemap_page_keywords') ) .',
-                page_description		: '. json_encode( $this->_translate('header_sitemap_page_description') ) .',
-                page_abstract			: '. json_encode( $this->_translate('header_sitemap_page_abstract') ) .',
-                page_author				: '. json_encode( $this->_translate('header_sitemap_page_author') ) .',
-                page_author_email		: '. json_encode( $this->_translate('header_sitemap_page_author_email') ) .',
-                page_lastupdated		: '. json_encode( $this->_translate('header_sitemap_page_lastupdated') ) .',
+                labelSearchPageLanguage	: '. json_encode( $this->_translate('label.search.page_language') ) .',
+                emptySearchPageLanguage	: '. json_encode( $this->_translate('empty.search.page_language') ) .',
 
-                page_geo_lat			: '. json_encode( $this->_translate('header_sitemap_page_geo_lat') ) .',
-                page_geo_long			: '. json_encode( $this->_translate('header_sitemap_page_geo_long') ) .',
-                page_geo_place			: '. json_encode( $this->_translate('header_sitemap_page_geo_place') ) .',
-                page_geo_region			: '. json_encode( $this->_translate('header_sitemap_page_geo_region') ) .',
+                page_uid				: '. json_encode( $this->_translate('header.sitemap.page_uid') ) .',
+                page_title				: '. json_encode( $this->_translate('header.sitemap.page_title') ) .',
+                page_keywords			: '. json_encode( $this->_translate('header.sitemap.page_keywords') ) .',
+                page_description		: '. json_encode( $this->_translate('header.sitemap.page_description') ) .',
+                page_abstract			: '. json_encode( $this->_translate('header.sitemap.page_abstract') ) .',
+                page_author				: '. json_encode( $this->_translate('header.sitemap.page_author') ) .',
+                page_author_email		: '. json_encode( $this->_translate('header.sitemap.page_author_email') ) .',
+                page_lastupdated		: '. json_encode( $this->_translate('header.sitemap.page_lastupdated') ) .',
 
-                page_tx_tqseo_pagetitle			: '. json_encode( $this->_translate('header_sitemap_page_tx_tqseo_pagetitle') ) .',
-                page_tx_tqseo_pagetitle_rel		: '. json_encode( $this->_translate('header_sitemap_page_tx_tqseo_pagetitle_rel') ) .',
-                page_tx_tqseo_pagetitle_prefix	: '. json_encode( $this->_translate('header_sitemap_page_tx_tqseo_pagetitle_prefix') ) .',
-                page_tx_tqseo_pagetitle_suffix	: '. json_encode( $this->_translate('header_sitemap_page_tx_tqseo_pagetitle_suffix') ) .',
+                page_geo_lat			: '. json_encode( $this->_translate('header.sitemap.page_geo_lat') ) .',
+                page_geo_long			: '. json_encode( $this->_translate('header.sitemap.page_geo_long') ) .',
+                page_geo_place			: '. json_encode( $this->_translate('header.sitemap.page_geo_place') ) .',
+                page_geo_region			: '. json_encode( $this->_translate('header.sitemap.page_geo_region') ) .',
 
-                page_title_simulated			: '. json_encode( $this->_translate('header_pagetitlesim_title_simulated') ) .',
+                page_tx_tqseo_pagetitle			: '. json_encode( $this->_translate('header.sitemap.page_tx_tqseo_pagetitle') ) .',
+                page_tx_tqseo_pagetitle_rel		: '. json_encode( $this->_translate('header.sitemap.page_tx_tqseo_pagetitle_rel') ) .',
+                page_tx_tqseo_pagetitle_prefix	: '. json_encode( $this->_translate('header.sitemap.page_tx_tqseo_pagetitle_prefix') ) .',
+                page_tx_tqseo_pagetitle_suffix	: '. json_encode( $this->_translate('header.sitemap.page_tx_tqseo_pagetitle_suffix') ) .',
 
-                page_searchengine_canonicalurl	: '. json_encode( $this->_translate('header_searchengine_canonicalurl') ) .',
-                page_searchengine_is_exclude	: '. json_encode( $this->_translate('header_searchengine_is_excluded') ) .',
-                searchengine_is_exclude_disabled	: '. json_encode( $this->_translate('searchengine_is_exclude_disabled') ) .',
-                searchengine_is_exclude_enabled	: '. json_encode( $this->_translate('searchengine_is_exclude_enabled') ) .',
+                page_title_simulated			: '. json_encode( $this->_translate('header.pagetitlesim.title_simulated') ) .',
 
-                page_sitemap_priority			: '. json_encode( $this->_translate('header_sitemap_priority') ) .',
+                page_searchengine_canonicalurl	: '. json_encode( $this->_translate('header.searchengine_canonicalurl') ) .',
+                page_searchengine_is_exclude	: '. json_encode( $this->_translate('header.searchengine_is_excluded') ) .',
+                searchengine_is_exclude_disabled	: '. json_encode( $this->_translate('searchengine.is_exclude_disabled') ) .',
+                searchengine_is_exclude_enabled	: '. json_encode( $this->_translate('searchengine.is_exclude_enabled') ) .',
 
-                page_url_scheme					: '. json_encode( $this->_translate('header_url_scheme') ) .',
-                page_url_scheme_default			: '. json_encode( $this->_translate('page_url_scheme_default') ) .',
-                page_url_scheme_http			: '. json_encode( $this->_translate('page_url_scheme_http') ) .',
-                page_url_scheme_https			: '. json_encode( $this->_translate('page_url_scheme_https') ) .',
-                page_url_alias					: '. json_encode( $this->_translate('header_url_alias') ) .',
-                page_url_realurl_pathsegment	: '. json_encode( $this->_translate('header_url_realurl_pathsegment') ) .',
-                page_url_realurl_pathoverride	: '. json_encode( $this->_translate('header_url_realurl_pathoverride') ) .',
-                page_url_realurl_exclude		: '. json_encode( $this->_translate('header_url_realurl_exclude') ) .',
+                page_sitemap_priority			: '. json_encode( $this->_translate('header.sitemap.priority') ) .',
 
-                qtip_pagetitle_simulate			: '. json_encode( $this->_translate('qtip_pagetitle_simulate') ) .',
-                qtip_url_simulate				: '. json_encode( $this->_translate('qtip_url_simulate') ) .',
+                page_url_scheme					: '. json_encode( $this->_translate('header.url_scheme') ) .',
+                page_url_scheme_default			: '. json_encode( $this->_translate('page.url_scheme_default') ) .',
+                page_url_scheme_http			: '. json_encode( $this->_translate('page.url_scheme_http') ) .',
+                page_url_scheme_https			: '. json_encode( $this->_translate('page.url_scheme_https') ) .',
+                page_url_alias					: '. json_encode( $this->_translate('header.url_alias') ) .',
+                page_url_realurl_pathsegment	: '. json_encode( $this->_translate('header.url_realurl_pathsegment') ) .',
+                page_url_realurl_pathoverride	: '. json_encode( $this->_translate('header.url_realurl_pathoverride') ) .',
+                page_url_realurl_exclude		: '. json_encode( $this->_translate('header.url_realurl_exclude') ) .',
+
+                qtip_pagetitle_simulate			: '. json_encode( $this->_translate('qtip.pagetitle_simulate') ) .',
+                qtip_url_simulate				: '. json_encode( $this->_translate('qtip.url_simulate') ) .',
 
                 value_default					: '. json_encode( $this->_translate('value_default') ) .'
             };
