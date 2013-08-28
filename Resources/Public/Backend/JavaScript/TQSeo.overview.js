@@ -449,15 +449,18 @@ TQSeo.overview.grid = {
         var me = this;
 
         var fieldRenderer = function(value, metaData, record, rowIndex, colIndex, store) {
-            var fieldName = me.grid.getColumnModel().getDataIndex(colIndex);
+            var fieldName     = me.grid.getColumnModel().getDataIndex(colIndex);
+            var overlayStatus = record.get('_overlay')[fieldName];
 
             // check for overlay
             var html = me._fieldRenderer(value);
 
-            if( record.get('_overlay')[fieldName] == 1 ) {
-                html = '<div class="overlay-current">'+html+'</div>';
+            if( overlayStatus == 2 ) {
+                html = '<div class="tqseo-info-only-in-base">'+html+'</div>';
+            } else if( overlayStatus == 1 ) {
+                html = '<div class="tqseo-info-from-overlay">'+html+'</div>';
             } else {
-                html = '<div class="overlay-default">'+html+'</div>';
+                html = '<div class="tqseo-info-from-base">'+html+'</div>';
             }
 
             return html;

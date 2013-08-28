@@ -19,9 +19,16 @@
 	font-style: italic;
 }
 
-.overlay-default {
+.tqseo-info-from-base {
+}
+
+.tqseo-info-from-overlay {
     color: #808080;
     font-style: italic;
+}
+
+.tqseo-info-only-in-base {
+    color: red;
 }
 
 .tqseo-grid-editable .x-grid3-body .x-grid3-cell {

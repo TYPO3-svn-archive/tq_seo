@@ -314,12 +314,20 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
         $rootLineRaw[$rootPid] = null;
 
+        // overlay status "current"
+        $defaultOverlayStatus = 0;
+        if( !empty($sysLanguage) ) {
+            // overlay status "only available from base"
+            $defaultOverlayStatus = 2;
+        }
+
+
         unset($row);
         foreach ($list as &$row) {
 
-
+            // Set field as main fields
             foreach($fieldList as $fieldName) {
-                $row[ '_overlay' ][ $fieldName ] = 1;
+                $row[ '_overlay' ][ $fieldName ] = $defaultOverlayStatus;
             }
 
             $row['_depth'] = $this->_listCalcDepth($row['uid'], $rootLineRaw);
@@ -333,9 +341,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         if( !empty($sysLanguage) && !empty($pageIdList) ) {
 
             // Fetch all overlay rows for current page list
-            $overlayFieldList['uid']   = 'uid';
-            $overlayFieldList['pid']   = 'pid';
-            $overlayFieldList['title'] = 'title';
+            $overlayFieldList = array();
             foreach($fieldList as $fieldName) {
                 if( $this->_isFieldInTcaTable('pages_language_overlay', $fieldName) ) {
                     $overlayFieldList[$fieldName] = $fieldName;
@@ -343,15 +349,15 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             }
 
             $res = $TYPO3_DB->exec_SELECTquery(
-                implode(',',$overlayFieldList),
+                'uid,pid,title,'.implode(',',$overlayFieldList),
                 'pages_language_overlay',
                 'pid IN('.implode(',',$pageIdList).')'
             );
 
-            // update overlay field settings
+            // update all overlay status field to "from base"
             unset($row);
             foreach ($list as &$row) {
-                foreach($fieldList as $fieldName) {
+                foreach($overlayFieldList as $fieldName) {
                     $row[ '_overlay' ][ $fieldName ] = 0;
                 }
             }
@@ -374,12 +380,13 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 foreach($fieldList as $fieldName) {
                     if( !empty($overlayRow[$fieldName]) ) {
                         $list[ $pageOriginalId ][ $fieldName ] = $overlayRow[$fieldName];
+
+                        // update overlay status field to "from overlay"
                         $list[ $pageOriginalId ][ '_overlay' ][ $fieldName ] = 1;
                     }
                 }
             }
         }
-
 
         return $list;
     }
