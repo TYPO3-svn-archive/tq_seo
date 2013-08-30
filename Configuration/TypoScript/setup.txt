@@ -67,6 +67,7 @@ plugin.tq_seo {
 		copyright = {$plugin.tq_seo.metaTags.copyright}
 		email = {$plugin.tq_seo.metaTags.email}
 		author = {$plugin.tq_seo.metaTags.author}
+		publisher = {$plugin.tq_seo.metaTags.publisher}
 		language = {$plugin.tq_seo.metaTags.language}
 		distribution = {$plugin.tq_seo.metaTags.distribution}
 		rating = {$plugin.tq_seo.metaTags.rating}
