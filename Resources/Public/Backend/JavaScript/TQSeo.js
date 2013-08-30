@@ -24,48 +24,48 @@ Ext.ns('TQSeo');
 
 TQSeo = {
 
-	/**
-	 * Highlight text in grid
-	 *
-	 * @copyright	Stefan Gehrig (TEQneers GmbH & Co. KG) <gehrig@teqneers.de>
-	 */
-	highlightText: function(node, search, cls) {
-		search		= search.toUpperCase();
-		var skip	= 0;
-		if (node.nodeType == 3) {
-			var pos = node.data.toUpperCase().indexOf(search);
-			if (pos >= 0) {
-				var spannode		= document.createElement('span');
-				spannode.className	= cls || 'tqseo-search-highlight';
-				var middlebit		= node.splitText(pos);
-				var endbit			= middlebit.splitText(search.length);
-				var middleclone		= middlebit.cloneNode(true);
-				spannode.appendChild(middleclone);
-				middlebit.parentNode.replaceChild(spannode, middlebit);
-				skip = 1;
-			}
-		} else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
-			for (var i = 0; i < node.childNodes.length; ++i) {
-				i += TQSeo.highlightText(node.childNodes[i], search);
-			}
-		}
-		return skip;
-	},
+    /**
+     * Highlight text in grid
+     *
+     * @copyright	Stefan Gehrig (TEQneers GmbH & Co. KG) <gehrig@teqneers.de>
+     */
+    highlightText: function(node, search, cls) {
+        search		= search.toUpperCase();
+        var skip	= 0;
+        if (node.nodeType == 3) {
+            var pos = node.data.toUpperCase().indexOf(search);
+            if (pos >= 0) {
+                var spannode		= document.createElement('span');
+                spannode.className	= cls || 'tqseo-search-highlight';
+                var middlebit		= node.splitText(pos);
+                var endbit			= middlebit.splitText(search.length);
+                var middleclone		= middlebit.cloneNode(true);
+                spannode.appendChild(middleclone);
+                middlebit.parentNode.replaceChild(spannode, middlebit);
+                skip = 1;
+            }
+        } else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+            for (var i = 0; i < node.childNodes.length; ++i) {
+                i += TQSeo.highlightText(node.childNodes[i], search);
+            }
+        }
+        return skip;
+    },
 
-	/**
-	 * Check if highlight text is available
-	 *
-	 * @copyright	Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
-	 */
-	highlightTextExists: function(value, search) {
-		search		= search.toUpperCase();
-		var skip	= 0;
+    /**
+     * Check if highlight text is available
+     *
+     * @copyright	Markus Blaschke (TEQneers GmbH & Co. KG) <blaschke@teqneers.de>
+     */
+    highlightTextExists: function(value, search) {
+        search		= search.toUpperCase();
+        var skip	= 0;
 
-		var pos = value.toUpperCase().indexOf(search);
-		if (pos >= 0) {
-			return true;
-		}
+        var pos = value.toUpperCase().indexOf(search);
+        if (pos >= 0) {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -91,6 +91,13 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             return '<div class="typo3-message message-warning">'.htmlspecialchars($this->_translate('message.no_valid_page')).'</div>';
         }
 
+        // Load PageTS
+        $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($pageId);
+
+
+        // Build langauge list
+        $defaultLanguageText = $this->_translate('default.language');
+
         $languageFullList = array(
             0 => array(
                 'label'	=> $this->_translate('default.language'),
@@ -104,6 +111,8 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
         if( !empty($pageTsConf['mod.']['SHARED.']['defaultLanguageLabel']) ) {
             $languageFullList[0]['label'] = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
+
+            $defaultLanguageText = $pageTsConf['mod.']['SHARED.']['defaultLanguageLabel'];
         }
 
         // Fetch other flags
@@ -205,7 +214,7 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
                 emptySearchFulltext		: '. json_encode( $this->_translate('empty.search.fulltext') ) .',
 
                 labelSearchPageLanguage	: '. json_encode( $this->_translate('label.search.page_language') ) .',
-                emptySearchPageLanguage	: '. json_encode( $this->_translate('empty.search.page_language') ) .',
+                emptySearchPageLanguage	: '. json_encode( $defaultLanguageText ) .',
 
                 page_uid				: '. json_encode( $this->_translate('header.sitemap.page_uid') ) .',
                 page_title				: '. json_encode( $this->_translate('header.sitemap.page_title') ) .',
