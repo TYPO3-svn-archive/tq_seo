@@ -83,12 +83,18 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
     }
 
     protected function _handleSubAction($type) {
-        global $TYPO3_DB;
+        global $TYPO3_DB, $BE_USER;
 
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if( empty($pageId) ) {
-            return '<div class="typo3-message message-warning">'.htmlspecialchars($this->_translate('message.no_valid_page')).'</div>';
+            $message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Messaging\\FlashMessage',
+                $this->_translate('message.warning.no_valid_page.message'),
+                $this->_translate('message.warning.no_valid_page.title'),
+                \TYPO3\CMS\Core\Messaging\FlashMessage::WARNING
+            );
+            \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
+            return;
         }
 
         // Load PageTS
@@ -150,6 +156,12 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             );
         }
 
+        $sysLangaugeDefault = (int)$BE_USER->getSessionData('TQSeo.sysLanguage');
+
+        if( empty($sysLangaugeDefault) ) {
+            $sysLangaugeDefault = 0;
+        }
+
         ###############################
         # HTML
         ###############################
@@ -186,6 +198,8 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
                 depth					: 2,
 
                 dataLanguage			: '. json_encode($languageList) .',
+
+                sysLanguage             : '. json_encode($sysLangaugeDefault) .',
 
                 listType				: '. json_encode($type) .',
 

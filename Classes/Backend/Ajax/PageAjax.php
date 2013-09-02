@@ -67,6 +67,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $sysLanguage  = (int)$this->_postVar['sysLanguage'];
         $listType     = (string)$this->_postVar['listType'];
 
+        // Store last selected language
+        $BE_USER->setAndSaveSessionData('TQSeo.sysLanguage', $sysLanguage);
+
         if (!empty($pid)) {
             $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
 

@@ -178,7 +178,8 @@ TQSeo.overview.grid = {
                     }),
                     valueField: 'id',
                     displayField: 'label',
-                    tpl: '<tpl for="."><div class="x-combo-list-item">{flag}{label}</div></tpl>'
+                    tpl: '<tpl for="."><div class="x-combo-list-item">{flag}{label}</div></tpl>',
+                    value: TQSeo.overview.conf.sysLanguage
                 }
             ],
             bbar: [
@@ -428,7 +429,7 @@ TQSeo.overview.grid = {
                 depth					: Ext.encode( TQSeo.overview.conf.depth ),
                 listType				: Ext.encode( TQSeo.overview.conf.listType ),
                 sessionToken			: Ext.encode( TQSeo.overview.conf.sessionToken ),
-                sysLanguage             : Ext.encode( 0 )
+                sysLanguage             : Ext.encode( TQSeo.overview.conf.sysLanguage )
             },
             listeners: {
                 beforeload: function() {

@@ -6,9 +6,13 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-
 			<label index="mlang_tabs_tab">Sitemap</label>
 			<label index="mlang_labels_tabdescr">SEO Sitemap overview, listing and management</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">Sitemap</label>
+			<label index="mlang_labels_tabdescr">SEO-Sitemap Übersicht und Verwaltung</label>
+		</languageKey>
+
 	</data>
 </T3locallang>

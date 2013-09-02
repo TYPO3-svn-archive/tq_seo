@@ -6,9 +6,13 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-
 			<label index="mlang_tabs_tab">Control Center</label>
 			<label index="mlang_labels_tabdescr">TEQneers SEO Control center, sitemap configuration and rootpage settings</label>
 		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">Kontrollzentrum</label>
+			<label index="mlang_labels_tabdescr">SEO-Kontrollzentrum, Sitemap- und Rootpage-Einstellungen</label>
+		</languageKey>
+
 	</data>
 </T3locallang>

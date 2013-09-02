@@ -6,9 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-
 			<label index="mlang_tabs_tab">SEO</label>
 			<label index="mlang_labels_tabdescr">SEO Page Overview</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="mlang_tabs_tab">SEO</label>
+			<label index="mlang_labels_tabdescr">SEO Seiten-Übersicht</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -402,8 +402,10 @@ $TCA['tx_tqseo_setting_page'] = array(
 ###############################################################################
 
 if (TYPO3_MODE == 'BE') {
-     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule('tqseo', '', '', $extPath.'mod1/');
 
+    #######################################################
+    # Module category "WEB"
+    #######################################################
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TQ.'.$_EXTKEY,                          # Extension - Key
@@ -417,6 +419,23 @@ if (TYPO3_MODE == 'BE') {
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.pageseo.xml',
         )
     );
+
+    #######################################################
+    # Module category "SEO"
+    #######################################################
+
+    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
+        $_EXTKEY,
+        'tqseo',
+        '',
+        '',
+        array(),
+        array(
+            'access' => 'user,group',
+            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang.main.xml',
+        )
+    );
+
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
         'TQ.'.$_EXTKEY,                          # Extension - Key
