@@ -696,13 +696,34 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         switch($tableName) {
             case 'pages_language_overlay':
                 // Update field in pages overlay (also logs update event and clear cache for this page)
-                $this->_tce()->updateDB(
-                    'pages_language_overlay',
-                    (int)$pid,
-                    array(
-                        $fieldName => $fieldValue
-                    )
-                );
+
+                // check uid of pages language overlay
+                $query = 'SELECT uid
+                            FROM pages_language_overlay
+                           WHERE pid = '.(int)$pid.'
+                             AND sys_language_uid = '.(int)$sysLanguage;
+                $res   = $TYPO3_DB->sql_query($query);
+                if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+
+                    ###################
+                    # UPDATE
+                    ###################
+
+                    $overlayId = $row['uid'];
+
+                    $this->_tce()->updateDB(
+                        'pages_language_overlay',
+                        (int)$overlayId,
+                        array(
+                            $fieldName => $fieldValue
+                        )
+                    );
+                } else {
+                    // No access
+                    return array(
+                        'error' => $LANG->getLL('error.no_language_overlay_found'),
+                    );
+                }
                 break;
 
             case 'pages':
