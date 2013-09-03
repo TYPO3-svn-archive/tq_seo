@@ -32,8 +32,19 @@
 			-->
 			<label index="message.warning.noRootPage.title">Missing root pages</label>
 			<label index="message.warning.noRootPage.message">In this TYPO3 installation no page is flagged with "Use as root page".</label>
+
 			<label index="message.delete.title">Delete entries</label>
 			<label index="message.delete.question">Do you really want to delete these entries?</label>
+
+			<label index="message.delete_all.title">Delete all entries</label>
+			<label index="message.delete_all.question">Do you really want to delete ALL entries?</label>
+
+			<label index="message.blacklist.title">Blacklist entries</label>
+			<label index="message.blacklist.question">Do you really want to blacklist these entries?</label>
+
+			<label index="message.whitelist.title">Whitelist entries</label>
+			<label index="message.whitelist.question">Do you really want to whitelist these entries?</label>
+
 			<label index="message.no_selected_items">You must select at least one entry.</label>
 			<label index="message.warning.no_valid_page.title">No page selected</label>
 			<label index="message.warning.no_valid_page.message">Please select a page from the left tree.</label>
@@ -72,6 +83,13 @@
 			<label index="button.delete">Delete</label>
 			<label index="button.delete.hint">Delete all selected entries</label>
 
+			<label index="button.delete_all">Delete all entries</label>
+
+			<label index="button.blacklist">Blacklist</label>
+			<label index="button.blacklist.hint">Blacklist selected entries</label>
+
+			<label index="button.whitelist">Whitelist</label>
+			<label index="button.whitelist.hint">Whitelist selected entries</label>
 
 			<!--
 			   Category: Pager and pager stuff
@@ -221,7 +239,18 @@
 			<label index="message.warning.noRootPage.message">In dieser TYPO3 installation wurden keine Seiten mit  "Als Anfang der Website benutzen" versehen worden.</label>
 			<label index="message.delete.title">Einträge löschen</label>
 			<label index="message.delete.question">Möchten Sie wirklich diese Einträge löschen?</label>
+
+			<label index="message.delete_all.title">Alle Einträge löschen</label>
+			<label index="message.delete_all.question">Möchten Sie wirklich ALLE Einträge löschen?</label>
+
+			<label index="message.blacklist.title">Einträge auf Blacklist setzen</label>
+			<label index="message.blacklist.question">Möchten Sie wirklich diese Einträge auf die Blacklist setzen?</label>
+
+			<label index="message.whitelist.title">Einträge von der Blacklist nehmen</label>
+			<label index="message.whitelist.question">Möchten Sie wirklich diese Einträge von der Blacklist nehmen?</label>
+
 			<label index="message.no_selected_items">Es wurden keine Einträge ausgewählt.</label>
+
 			<label index="message.warning.no_valid_page.title">Keine Seite ausgewählt</label>
 			<label index="message.warning.no_valid_page.message">Bitte wählen Sie eine Seite aus dem Seitenbaum.</label>
 
@@ -259,6 +288,8 @@
 			<label index="button.delete">Löschen</label>
 			<label index="button.delete.hint">Alle Einträge löschen</label>
 
+			<label index="button.blacklist">Blacklist</label>
+			<label index="button.blacklist.hint">Einträge auf Blacklist setzen</label>
 
 			<!--
 			   Category: Pager and pager stuff

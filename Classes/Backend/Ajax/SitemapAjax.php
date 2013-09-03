@@ -142,10 +142,90 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         return $ret;
     }
 
+    /*
+     * Blacklist sitemap entries
+     *
+     * @return    boolean
+     */
+    protected function _executeBlacklist() {
+        global $TYPO3_DB;
+
+        $ret = false;
+
+        $uidList = $this->_postVar['uidList'];
+        $rootPid = (int)$this->_postVar['pid'];
+
+        $uidList = $TYPO3_DB->cleanIntArray($uidList);
+
+        if (empty($uidList) || empty($rootPid)) {
+            return false;
+        }
+
+        $where   = array();
+        $where[] = 'page_rootpid = ' . (int)$rootPid;
+        $where[] = 'uid IN (' . implode(',', $uidList) . ')';
+        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+
+        $res = $TYPO3_DB->exec_UPDATEquery(
+            'tx_tqseo_sitemap',
+            $where,
+            array(
+                'is_blacklisted' => 1
+            )
+        );
+
+        if ($res) {
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
+    /*
+     * Whitelist sitemap entries
+     *
+     * @return    boolean
+     */
+    protected function _executeWhitelist() {
+        global $TYPO3_DB;
+
+        $ret = false;
+
+        $uidList = $this->_postVar['uidList'];
+        $rootPid = (int)$this->_postVar['pid'];
+
+        $uidList = $TYPO3_DB->cleanIntArray($uidList);
+
+        if (empty($uidList) || empty($rootPid)) {
+            return false;
+        }
+
+        $where   = array();
+        $where[] = 'page_rootpid = ' . (int)$rootPid;
+        $where[] = 'uid IN (' . implode(',', $uidList) . ')';
+        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+
+        $res = $TYPO3_DB->exec_UPDATEquery(
+            'tx_tqseo_sitemap',
+            $where,
+            array(
+                'is_blacklisted' => 0
+            )
+        );
+
+        if ($res) {
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
+
+
     /**
      * Delete sitemap entries
      *
-     * @return    array
+     * @return    boolean
      */
     protected function _executeDelete() {
         global $TYPO3_DB;
@@ -164,6 +244,38 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where[] = 'uid IN (' . implode(',', $uidList) . ')';
+        $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
+
+        $res = $TYPO3_DB->exec_DELETEquery(
+            'tx_tqseo_sitemap',
+            $where
+        );
+
+        if ($res) {
+            $ret = true;
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Delete all sitemap entries
+     *
+     * @return    boolean
+     */
+    protected function _executeDeleteAll() {
+        global $TYPO3_DB;
+
+        $ret = false;
+
+        $rootPid = (int)$this->_postVar['pid'];
+
+        if( empty($rootPid) ) {
+            return false;
+        }
+
+        $where   = array();
+        $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
         $res = $TYPO3_DB->exec_DELETEquery(

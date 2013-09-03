@@ -167,12 +167,11 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
     public function sitemapAction() {
         global $TYPO3_DB;
 
-        $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_tqseo_tqseo_tqseositemap');
+        $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_tqseo_tqseotqseo_tqseositemap');
         $rootPid = $params['pageId'];
 
 
         $rootPageList = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
-
         $rootPage	= $rootPageList[$rootPid];
 
         ###############################
@@ -337,8 +336,25 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
                 buttonDelete			: '. json_encode( $this->_translate('button.delete') ) .',
                 buttonDeleteHint		: '. json_encode( $this->_translate('button.delete.hint') ) .',
 
+                buttonBlacklist		    : '. json_encode( $this->_translate('button.blacklist') ) .',
+                buttonBlacklistHint	    : '. json_encode( $this->_translate('button.blacklist.hint') ) .',
+                buttonWhitelist		    : '. json_encode( $this->_translate('button.whitelist') ) .',
+                buttonWhitelistHint	    : '. json_encode( $this->_translate('button.whitelist.hint') ) .',
+
+                buttonDeleteAll         : '. json_encode( $this->_translate('button.delete_all') ) .',
+
                 messageDeleteTitle			: '. json_encode( $this->_translate('message.delete.title') ) .',
                 messageDeleteQuestion		: '. json_encode( $this->_translate('message.delete.question') ) .',
+
+                messageDeleteAllTitle		: '. json_encode( $this->_translate('message.delete_all.title') ) .',
+                messageDeleteAllQuestion	: '. json_encode( $this->_translate('message.delete_all.question') ) .',
+
+                messageBlacklistTitle		: '. json_encode( $this->_translate('message.blacklist.title') ) .',
+                messageBlacklistQuestion	: '. json_encode( $this->_translate('message.blacklist.question') ) .',
+
+                messageWhitelistTitle		: '. json_encode( $this->_translate('message.whitelist.title') ) .',
+                messageWhitelistQuestion	: '. json_encode( $this->_translate('message.whitelist.question') ) .',
+
                 errorDeleteFailedMessage	: '. json_encode( $this->_translate('message.delete.failed_body') ) .',
 
                 errorNoSelectedItemsBody	: '. json_encode( $this->_translate('message.no_selected_items') ) .',

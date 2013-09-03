@@ -105,9 +105,66 @@ TQSeo.sitemap.grid = {
             gridDs.reload();
         };
 
+        var function_blacklist = function(ob) {
+            rowAction(ob, "blacklist", TQSeo.sitemap.conf.lang.messageBlacklistTitle, TQSeo.sitemap.conf.lang.messageBlacklistQuestion )
+        }
+
+        var function_whitelist = function(ob) {
+            rowAction(ob, "whitelist", TQSeo.sitemap.conf.lang.messageWhitelistTitle, TQSeo.sitemap.conf.lang.messageWhitelistQuestion )
+        }
+
         var function_delete = function(ob) {
             rowAction(ob, "delete", TQSeo.sitemap.conf.lang.messageDeleteTitle, TQSeo.sitemap.conf.lang.messageDeleteQuestion )
         }
+
+        var function_delete_all = function(ob) {
+            var cmd = "deleteAll";
+
+            var frmConfirm = new Ext.Window({
+                xtype: 'form',
+                width: 200,
+                height: 'auto',
+                modal: true,
+                title: TQSeo.sitemap.conf.lang.messageDeleteAllTitle,
+                items: [
+                    {
+                        xtype: 'label',
+                        text: TQSeo.sitemap.conf.lang.messageDeleteQuestion
+                    }
+                ],
+                buttons: [
+                    {
+                        text: TQSeo.sitemap.conf.lang.buttonYes,
+                        handler: function(cmp, e) {
+                            Ext.Ajax.request({
+                                url: TQSeo.sitemap.conf.ajaxController + '&cmd=' + cmd,
+                                callback: function(options, success, response) {
+                                    if (response.responseText === 'true') {
+                                        // reload the records and the table selector
+                                        gridDs.reload();
+                                    } else {
+                                        alert('ERROR: ' + response.responseText);
+                                    }
+                                },
+                                params: {
+                                    'pid'			: TQSeo.sitemap.conf.pid,
+                                    sessionToken	: Ext.encode( TQSeo.sitemap.conf.sessionToken )
+                                }
+                            });
+
+                            frmConfirm.destroy();
+                        }
+                    },{
+                        text: TQSeo.sitemap.conf.lang.buttonNo,
+                        handler: function(cmp, e) {
+                            frmConfirm.destroy();
+                        }
+                    }
+                ]
+            });
+            frmConfirm.show();
+        }
+
 
         var rowAction = function(ob, cmd, confirmTitle, confirmText) {
             var recList = grid.getSelectionModel().getSelections();
@@ -447,10 +504,29 @@ TQSeo.sitemap.grid = {
                     emptyMsg: TQSeo.sitemap.conf.lang.pagingEmpty
                 }, '->', {
                     /****************************************************
+                     * Blacklist button
+                     ****************************************************/
+
+                    xtype: 'splitbutton',
+                    width: 80,
+                    id: 'blacklistButton',
+                    text: TQSeo.sitemap.conf.lang.buttonBlacklist,
+                    title: TQSeo.sitemap.conf.lang.buttonBlacklistHint,
+                    cls: 'x-btn-over',
+                    handleMouseEvents: false,
+                    handler: function_blacklist,
+                    menu: new Ext.menu.Menu({
+                        items: [
+                            // these items will render as dropdown menu items when the arrow is clicked:
+                            {text: TQSeo.sitemap.conf.lang.buttonWhitelist, handler: function_whitelist},
+                        ]
+                    })
+                }, {
+                    /****************************************************
                      * Delete button
                      ****************************************************/
 
-                    xtype: 'button',
+                    xtype: 'splitbutton',
                     width: 80,
                     id: 'deleteButton',
                     text: TQSeo.sitemap.conf.lang.buttonDelete,
@@ -458,7 +534,13 @@ TQSeo.sitemap.grid = {
                     iconCls: 'delete',
                     cls: 'x-btn-over',
                     handleMouseEvents: false,
-                    handler: function_delete
+                    handler: function_delete,
+                    menu: new Ext.menu.Menu({
+                        items: [
+                            // these items will render as dropdown menu items when the arrow is clicked:
+                            {text: TQSeo.sitemap.conf.lang.buttonDeleteAll, handler: function_delete_all},
+                        ]
+                    })
                 }
             ]
         });
