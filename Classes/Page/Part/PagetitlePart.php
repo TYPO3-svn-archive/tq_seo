@@ -147,7 +147,7 @@ class PagetitlePart {
             #################
             # Process settings from access point
             #################
-            $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\TqSeo\Utility\ConnectUtility');
+            $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
             $store     = $connector->getStore('pagetitle');
 
             if (!empty($store)) {

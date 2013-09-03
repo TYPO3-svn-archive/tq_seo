@@ -1,8 +1,6 @@
 <?php
 namespace TQ\TqSeo\Hook\Extension;
 
-use \TQ\TqSeo\Utility\ConnectUtility;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -50,37 +48,39 @@ class TtnewsExtension {
 
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
+        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
+
         switch ($theCode) {
             case 'SINGLE':
             case 'SINGLE2':
                 // Title
                 if (!empty($row['title'])) {
-                    ConnectUtility::setMetaTag('title', $row['title']);
+                    $connector->setMetaTag('title', $row['title']);
                 }
 
                 // Description
                 if (!empty($row['short'])) {
-                    ConnectUtility::setMetaTag('description', $row['short']);
+                    $connector->setMetaTag('description', $row['short']);
                 }
 
                 // Keywords
                 if (!empty($row['keywords'])) {
-                    ConnectUtility::setMetaTag('keywords', $row['keywords']);
+                    $connector->setMetaTag('keywords', $row['keywords']);
                 }
 
                 // Short/Description
                 if (!empty($row['short'])) {
-                    ConnectUtility::setMetaTag('description', $row['short']);
+                    $connector->setMetaTag('description', $row['short']);
                 }
 
                 // Author
                 if (!empty($row['author'])) {
-                    ConnectUtility::setMetaTag('author', $row['author']);
+                    $connector->setMetaTag('author', $row['author']);
                 }
 
                 // E-Mail
                 if (!empty($row['author_email'])) {
-                    ConnectUtility::setMetaTag('email', $row['author_email']);
+                    $connector->setMetaTag('email', $row['author_email']);
                 }
                 break;
         }

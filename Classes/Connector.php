@@ -1,5 +1,5 @@
 <?php
-namespace TQ\TqSeo\Utility;
+namespace TQ\TqSeo;
 
 /***************************************************************
  *  Copyright notice
@@ -25,14 +25,14 @@ namespace TQ\TqSeo\Utility;
  ***************************************************************/
 
 /**
- * Connect utility
+ * Connector
  *
  * @author      Blaschke, Markus <blaschke@teqneers.de>
  * @package     tq_seo
  * @subpackage  lib
  * @version     $Id$
  */
-class ConnectUtility {
+class Connector {
 
     ###########################################################################
     # Attributes
