@@ -29,18 +29,20 @@
 
 				<!-- Domain list -->
 				<td>
-					<f:for each="{RootPage.domainList}" as="Domain">
-						<div style="white-space: nowrap">
-							<f:if condition="{Domain.forced}">
-								<f:then>
-									<strong>{Domain.domainName}</strong>
-								</f:then>
-								<f:else>
-									{Domain.domainName}
-								</f:else>
-							</f:if>
-						</div>
-					</f:for>
+					<f:if condition="{RootPage.domainList}">
+						<f:for each="{RootPage.domainList}" as="Domain">
+							<div style="white-space: nowrap">
+								<f:if condition="{Domain.forced}">
+									<f:then>
+										<strong>{Domain.domainName}</strong>
+									</f:then>
+									<f:else>
+										{Domain.domainName}
+									</f:else>
+								</f:if>
+							</div>
+						</f:for>
+					</f:if>
 				</td>
 
 				<!-- Sitemap status -->
