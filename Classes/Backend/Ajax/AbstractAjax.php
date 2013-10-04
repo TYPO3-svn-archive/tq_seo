@@ -202,8 +202,8 @@ abstract class AbstractAjax {
     /**
      * Create session token
      *
-     * @param    string $formName    Form name/Session token name
-     * @return    string
+     * @param   string $formName    Form name/Session token name
+     * @return  string
      */
     protected function _sessionToken($formName) {
         $token = $this->_formProtection->generateToken($formName);

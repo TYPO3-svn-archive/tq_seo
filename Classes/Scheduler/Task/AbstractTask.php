@@ -125,7 +125,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
         $TT = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 
-        $TSFE           = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
             $GLOBALS['TYPO3_CONF_VARS'],
             $rootPageId,

@@ -41,7 +41,7 @@ class GeneralUtility {
     /**
      * Page Select
      *
-     * @var t3lib_pageSelect
+     * @var \TYPO3\CMS\Frontend\Page\PageRepository
      */
     protected static $sysPageObj = null;
 

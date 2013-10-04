@@ -63,9 +63,9 @@ class CacheUtility {
      * Set cache entry
      *
      * @param   integer $pageId     Page UID
-     * @param   string $section    Cache section
-     * @param   string $identifier Cache identifier
-     * @param   string $value      Cache content
+     * @param   string  $section    Cache section
+     * @param   string  $identifier Cache identifier
+     * @param   string  $value      Cache content
      * @return  boolean
      */
     static public function set($pageId, $section, $identifier, $value) {
@@ -113,9 +113,9 @@ class CacheUtility {
     /**
      * Clear cache entry
      *
-     * @param   integer $pageId        Page UID
-     * @param   string $section    Cache section
-     * @param   string $identifier Cache identifier
+     * @param   integer $pageId     Page UID
+     * @param   string  $section    Cache section
+     * @param   string  $identifier Cache identifier
      * @return  boolean
      */
     static public function remove($pageId, $section, $identifier) {

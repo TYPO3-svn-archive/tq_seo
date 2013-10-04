@@ -39,7 +39,7 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
     /**
      * Backend Form Protection object
      *
-     * @var t3lib_formprotection_BackendFormProtection
+     * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      */
     protected $_formProtection = null;
 

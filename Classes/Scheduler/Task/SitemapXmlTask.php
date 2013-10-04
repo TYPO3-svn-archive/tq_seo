@@ -71,10 +71,10 @@ class SitemapXmlTask extends \TQ\TqSeo\Scheduler\Task\AbstractSitemapTask {
         }
 
         // Init builder
-        $generator                    = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $generator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TQ\\TqSeo\\Sitemap\\Generator\\XmlGenerator'
         );
-        $fileName                     = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
+        $fileName = sprintf($rootPageLinkTempalte, $rootPageId, $languageId);
         $generator->indexPathTemplate = $this->_generateSitemapLinkTemplate($fileName);
 
         // Get list of pages
