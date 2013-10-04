@@ -49,6 +49,8 @@
 			<label index="message.warning.no_valid_page.title">No page selected</label>
 			<label index="message.warning.no_valid_page.message">Please select a page from the left tree.</label>
 
+			<label index="message.warning.no_domain_entries_found">No domains found</label>
+
 
 			<!--
 			   Category: Tables
@@ -254,6 +256,7 @@
 			<label index="message.warning.no_valid_page.title">Keine Seite ausgewählt</label>
 			<label index="message.warning.no_valid_page.message">Bitte wählen Sie eine Seite aus dem Seitenbaum.</label>
 
+			<label index="message.warning.no_domain_entries_found">Keine Domains gefunden</label>
 
 			<!--
 			   Category: Tables

@@ -30,18 +30,23 @@
 				<!-- Domain list -->
 				<td>
 					<f:if condition="{RootPage.domainList}">
-						<f:for each="{RootPage.domainList}" as="Domain">
-							<div style="white-space: nowrap">
-								<f:if condition="{Domain.forced}">
-									<f:then>
-										<strong>{Domain.domainName}</strong>
-									</f:then>
-									<f:else>
-										{Domain.domainName}
-									</f:else>
-								</f:if>
-							</div>
-						</f:for>
+						<f:then>
+							<f:for each="{RootPage.domainList}" as="Domain">
+								<div style="white-space: nowrap">
+									<f:if condition="{Domain.forced}">
+										<f:then>
+											<strong>{Domain.domainName}</strong>
+										</f:then>
+										<f:else>
+											{Domain.domainName}
+										</f:else>
+									</f:if>
+								</div>
+							</f:for>
+						</f:then>
+						<f:else>
+							<span class="tqseo-warning"><f:translate key="message.warning.no_domain_entries_found">No domains found</f:translate></span>
+						</f:else>
 					</f:if>
 				</td>
 

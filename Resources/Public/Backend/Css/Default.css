@@ -6,6 +6,10 @@
 	background-color: #FCFF91;
 }
 
+.tqseo-warning {
+    font-style: italic;
+}
+
 .tqseo-url-https {
 	color: green;
 }

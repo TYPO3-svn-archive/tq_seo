@@ -136,6 +136,18 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
         }
 
+        ###############################
+        # Page/JS
+        ###############################
+
+        // FIXME: do we really need a template engine here?
+        $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
+        $pageRenderer = $this->template->getPageRenderer();
+
+        $basePathJs  = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript';
+        $basePathCss = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/Css';
+        $pageRenderer->addCssFile($basePathCss.'/Default.css');
+
         $this->view->assign('RootPageList', $rootPageList);
     }
 
