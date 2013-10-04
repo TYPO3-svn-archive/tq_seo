@@ -76,3 +76,8 @@ th.center {
 .delete { background-image: url('../Icons/Delete.gif') !important; }
 
 .deletedPath { color: #ff0000; font-weight: bold; }
+
+
+.x-window .x-window-body {
+    padding: 10px 15px;
+}
