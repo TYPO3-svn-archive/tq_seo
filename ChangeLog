@@ -1,4 +1,4 @@
-2013-xx-xx Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
+2013-10-04 Markus Blaschke, TEQneers GmbH & Co. KG  <blaschke@teqneers.de>
 	* [!!!] Requires TYPO3 6.0
 	* Refactored tq_seo for TYPO3 6.0 (namespaces and better xclass support)
 	* Added update script
