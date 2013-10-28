@@ -33,16 +33,16 @@ namespace TQ\TqSeo\Sitemap\Generator;
  * @version     $Id$
  */
 abstract class AbstractGenerator {
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Current root pid
      *
      * @var integer
      */
-    public $rootPid = null;
+    public $rootPid = NULL;
 
     /**
      * Sitemap pages
@@ -94,26 +94,24 @@ abstract class AbstractGenerator {
      *
      * @var string|boolean
      */
-    public $indexPathTemplate = false;
+    public $indexPathTemplate = FALSE;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Fetch sitemap information and generate sitemap
      */
     public function __construct() {
-        global $TSFE, $TYPO3_DB, $TYPO3_CONF_VARS;
-
         // INIT
         $this->rootPid = \TQ\TqSeo\Utility\GeneralUtility::getRootPid();
-        $sysLanguageId = null;
+        $sysLanguageId = NULL;
 
-        $this->tsSetup = $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
+        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
         // Language limit via setupTS
-        if (\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false)) {
+        if (\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE)) {
             $sysLanguageId = \TQ\TqSeo\Utility\GeneralUtility::getLanguageId();
         }
 
@@ -133,7 +131,7 @@ abstract class AbstractGenerator {
      * @return integer
      */
     public function pageCount() {
-        $pageLimit = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', null);
+        $pageLimit = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('sitemap_page_limit', NULL);
 
         if (empty($pageLimit)) {
             $pageLimit = 1000;
@@ -145,9 +143,9 @@ abstract class AbstractGenerator {
         return $pageCount;
     }
 
-    ###########################################################################
+    // ########################################################################
     # Abstract methods
-    ###########################################################################
+    // ########################################################################
 
     /**
      * Create sitemap index
@@ -162,6 +160,6 @@ abstract class AbstractGenerator {
      * @param   integer $page   Page
      * @return  string
      */
-    abstract public function sitemap($page = null);
+    abstract public function sitemap($page = NULL);
 
 }

@@ -34,9 +34,9 @@ namespace TQ\TqSeo;
  */
 class Connector {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Data store
@@ -49,9 +49,9 @@ class Connector {
         'pagetitle' => array(),
     );
 
-    ###########################################################################
-    # Page title methods
-    ###########################################################################
+    // ########################################################################
+    // Page title methods
+    // ########################################################################
 
     /**
      * Set page title
@@ -59,14 +59,12 @@ class Connector {
      * @param   string $value      Page title
      * @param   boolean $updateTsfe Update TSFE values
      */
-    public static function setPageTitle($value, $updateTsfe = true) {
-        global $TSFE;
-
+    public static function setPageTitle($value, $updateTsfe = TRUE) {
         $value = (string)$value;
 
-        if ($updateTsfe && !empty($TSFE)) {
-            $TSFE->page['title']   = $value;
-            $TSFE->indexedDocTitle = $value;
+        if ($updateTsfe && !empty($GLOBAL['TSFE'])) {
+            $GLOBAL['TSFE']->page['title']   = $value;
+            $GLOBAL['TSFE']->indexedDocTitle = $value;
         }
 
         self::$_store['pagetitle']['pagetitle.title'] = $value;
@@ -96,12 +94,10 @@ class Connector {
      * @param   string $value        Page title
      * @param   boolean $updateTsfe   Update TSFE values
      */
-    public static function setPageTitleAbsolute($value, $updateTsfe = true) {
-        global $TSFE;
-
-        if ($updateTsfe && !empty($TSFE)) {
-            $TSFE->page['title']   = $value;
-            $TSFE->indexedDocTitle = $value;
+    public static function setPageTitleAbsolute($value, $updateTsfe = TRUE) {
+        if ($updateTsfe && !empty($GLOBALS['TSFE'])) {
+            $GLOBALS['TSFE']->page['title']   = $value;
+            $GLOBALS['TSFE']->indexedDocTitle = $value;
         }
 
         self::$_store['pagetitle']['pagetitle.absolute'] = $value;
@@ -116,9 +112,9 @@ class Connector {
         self::$_store['pagetitle']['pagetitle.sitetitle'] = $value;
     }
 
-    ###########################################################################
-    # MetaTag methods
-    ###########################################################################
+    // ########################################################################
+    // MetaTag methods
+    // ########################################################################
 
     /**
      * Set meta tag
@@ -154,20 +150,20 @@ class Connector {
     public static function disableMeta($key) {
         $key = (string)$key;
 
-        self::$_store['meta'][$key] = null;
+        self::$_store['meta'][$key] = NULL;
     }
 
-    ###########################################################################
-    # Control methods
-    ###########################################################################
+    // ########################################################################
+    // Control methods
+    // ########################################################################
 
 
     // TODO
 
 
-    ###########################################################################
-    # General methods
-    ###########################################################################
+    // ########################################################################
+    // General methods
+    // ########################################################################
 
     /**
      * Get store
@@ -175,10 +171,10 @@ class Connector {
      * @param   string $key    Store key (optional, if empty whole store is returned)
      * @return  array
      */
-    public static function getStore($key = null) {
-        $ret = null;
+    public static function getStore($key = NULL) {
+        $ret = NULL;
 
-        if ($key !== null) {
+        if ($key !== NULL) {
             if (isset(self::$_store[$key])) {
                 $ret = self::$_store[$key];
             }

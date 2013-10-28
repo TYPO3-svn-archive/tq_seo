@@ -32,20 +32,20 @@ namespace TQ\TqSeo\Backend\Module;
  * @subpackage  tq_seo
  */
 abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      */
-    protected $_formProtection = null;
+    protected $_formProtection = NULL;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Initializes the controller before invoking an action method.
@@ -65,14 +65,14 @@ abstract class AbstractModule extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionCo
      * Translate key
      *
      * @param   string      $key        Translation key
-     * @param   null|array  $arguments  Arguments (vsprintf)
+     * @param   NULL|array  $arguments  Arguments (vsprintf)
      * @return  NULL|string
      */
-    protected function _translate($key, $arguments = null) {
+    protected function _translate($key, $arguments = NULL) {
         $ret = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key, $this->extensionName, $arguments);
 
         // Not translated handling
-        if( $ret === null ) {
+        if( $ret === NULL ) {
             $ret = '[-'.$key.'-]';
         }
 

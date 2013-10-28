@@ -44,7 +44,7 @@ class GarbageCollectionTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         // Expire sitemap entries
         \TQ\TqSeo\Utility\SitemapUtility::expire();
 
-        return true;
+        return TRUE;
     }
 
 }

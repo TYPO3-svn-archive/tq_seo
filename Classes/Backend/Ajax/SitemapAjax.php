@@ -39,8 +39,6 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    array
      */
     protected function _executeGetList() {
-        global $TYPO3_DB;
-
         // Init
         $rootPageList = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
 
@@ -55,9 +53,9 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $searchPageDepth     = trim((string)$this->_postVar['criteriaPageDepth']);
         $searchIsBlacklisted = (bool)trim((string)$this->_postVar['criteriaIsBlacklisted']);
 
-        ###############################
-        # Critera
-        ###############################
+        // ############################
+        // Critera
+        // ############################
         $where = array();
 
         // Root pid limit
@@ -65,7 +63,7 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
         // Fulltext
         if (!empty($searchFulltext)) {
-            $where[] = 'page_url LIKE ' . $TYPO3_DB->fullQuoteStr('%' . $searchFulltext . '%', 'tx_tqseo_sitemap');
+            $where[] = 'page_url LIKE ' . $GLOBALS['TYPO3_DB']->fullQuoteStr('%' . $searchFulltext . '%', 'tx_tqseo_sitemap');
         }
 
         // Page id
@@ -90,22 +88,22 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         // Build where
         $where = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        ###############################
-        # Pager
-        ###############################
+        // ############################
+        // Pager
+        // ############################
 
         // Fetch total count of items with this filter settings
-        $res       = $TYPO3_DB->exec_SELECTquery(
+        $res       = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'COUNT(*) as count',
             'tx_tqseo_sitemap',
             $where
         );
-        $row       = $TYPO3_DB->sql_fetch_assoc($res);
+        $row       = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
         $itemCount = $row['count'];
 
-        ###############################
-        # Sort
-        ###############################
+        // ############################
+        // Sort
+        // ############################
         // default sort
         $sort = 'page_depth ASC, page_uid ASC';
 
@@ -114,10 +112,10 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             $sort = $this->_sortField . ' ' . $this->_sortDir;
         }
 
-        ###############################
-        # Fetch sitemap
-        ###############################
-        $list = $TYPO3_DB->exec_SELECTgetRows(
+        // ############################
+        // Fetch sitemap
+        // ############################
+        $list = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
             'uid,
              page_rootpid,
              page_uid,
@@ -148,17 +146,15 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeBlacklist() {
-        global $TYPO3_DB;
-
-        $ret = false;
+        $ret = FALSE;
 
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
-        $uidList = $TYPO3_DB->cleanIntArray($uidList);
+        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return FALSE;
         }
 
         $where   = array();
@@ -166,7 +162,7 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $where[] = 'uid IN (' . implode(',', $uidList) . ')';
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $TYPO3_DB->exec_UPDATEquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
             'tx_tqseo_sitemap',
             $where,
             array(
@@ -175,7 +171,7 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         );
 
         if ($res) {
-            $ret = true;
+            $ret = TRUE;
         }
 
         return $ret;
@@ -187,17 +183,15 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeWhitelist() {
-        global $TYPO3_DB;
-
-        $ret = false;
+        $ret = FALSE;
 
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
-        $uidList = $TYPO3_DB->cleanIntArray($uidList);
+        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return FALSE;
         }
 
         $where   = array();
@@ -205,7 +199,7 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $where[] = 'uid IN (' . implode(',', $uidList) . ')';
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $TYPO3_DB->exec_UPDATEquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
             'tx_tqseo_sitemap',
             $where,
             array(
@@ -214,7 +208,7 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         );
 
         if ($res) {
-            $ret = true;
+            $ret = TRUE;
         }
 
         return $ret;
@@ -228,17 +222,15 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeDelete() {
-        global $TYPO3_DB;
-
-        $ret = false;
+        $ret = FALSE;
 
         $uidList = $this->_postVar['uidList'];
         $rootPid = (int)$this->_postVar['pid'];
 
-        $uidList = $TYPO3_DB->cleanIntArray($uidList);
+        $uidList = $GLOBALS['TYPO3_DB']->cleanIntArray($uidList);
 
         if (empty($uidList) || empty($rootPid)) {
-            return false;
+            return FALSE;
         }
 
         $where   = array();
@@ -246,13 +238,13 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $where[] = 'uid IN (' . implode(',', $uidList) . ')';
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $TYPO3_DB->exec_DELETEquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
             'tx_tqseo_sitemap',
             $where
         );
 
         if ($res) {
-            $ret = true;
+            $ret = TRUE;
         }
 
         return $ret;
@@ -264,27 +256,25 @@ class SitemapAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    boolean
      */
     protected function _executeDeleteAll() {
-        global $TYPO3_DB;
-
-        $ret = false;
+        $ret = FALSE;
 
         $rootPid = (int)$this->_postVar['pid'];
 
         if( empty($rootPid) ) {
-            return false;
+            return FALSE;
         }
 
         $where   = array();
         $where[] = 'page_rootpid = ' . (int)$rootPid;
         $where   = '( ' . implode(' ) AND ( ', $where) . ' )';
 
-        $res = $TYPO3_DB->exec_DELETEquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_DELETEquery(
             'tx_tqseo_sitemap',
             $where
         );
 
         if ($res) {
-            $ret = true;
+            $ret = TRUE;
         }
 
         return $ret;

@@ -44,8 +44,6 @@ class TtnewsExtension {
      * @return    array                        Marker array (not changed)
      */
     public function extraItemMarkerProcessor($markerArray, $row, $lConf, $ttnewsObj) {
-        global $TSFE;
-
         $theCode = (string)strtoupper(trim($ttnewsObj->theCode));
 
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');

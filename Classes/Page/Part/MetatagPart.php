@@ -46,17 +46,15 @@ class MetatagPart {
      * @return    string            XHTML Code with metatags
      */
     public function main() {
-        global $TSFE;
-
         // INIT
         $ret      = array();
-        $tsSetup  = $TSFE->tmpl->setup;
-        $cObj     = $TSFE->cObj;
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
         $pageMeta = array();
-        $tsfePage = $TSFE->page;
+        $tsfePage = $GLOBALS['TSFE']->page;
 
         $customMetaTagList = array();
-        $enableMetaDc      = true;
+        $enableMetaDc      = TRUE;
 
         // Init News extension
         $this->_initExtensionSupport();
@@ -70,16 +68,16 @@ class MetatagPart {
             }
 
             if (empty($tsSetupSeo['enableDC'])) {
-                $enableMetaDc = false;
+                $enableMetaDc = FALSE;
             }
 
-            #####################################
-            # FETCH METADATA FROM PAGE
-            #####################################
+            // #####################################
+            // FETCH METADATA FROM PAGE
+            // #####################################
 
-            #################
-            # Page meta
-            #################
+            // #################
+            // Page meta
+            // #################
 
             // description
             $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['description_page'], $tsSetupSeo['conf.']['description_page.']);
@@ -117,9 +115,9 @@ class MetatagPart {
                 $pageMeta['lastUpdate'] = $tmp;
             }
 
-            #################
-            # Geo
-            #################
+            // #################
+            // Geo
+            // #################
 
             // tx_tqseo_geo_lat
             $tmp = $cObj->stdWrap($tsSetupSeo['conf.']['tx_tqseo_geo_lat'], $tsSetupSeo['conf.']['tx_tqseo_geo_lat.']);
@@ -154,9 +152,9 @@ class MetatagPart {
                 $pageMeta['geoPlacename'] = $tmp;
             }
 
-            #################
-            # Misc
-            #################
+            // #################
+            // Misc
+            // #################
 
             // language
             if (!empty($tsSetupSeo['useDetectLanguage'])
@@ -165,9 +163,9 @@ class MetatagPart {
                 $pageMeta['language'] = $tsSetup['config.']['language'];
             }
 
-            #################
-            # Process meta tags
-            #################
+            // #################
+            // Process meta tags
+            // #################
 
             // process page meta data
             foreach ($pageMeta as $metaKey => $metaValue) {
@@ -178,9 +176,9 @@ class MetatagPart {
                 }
             }
 
-            #################
-            # Process meta tags from access point
-            #################
+            // #################
+            // Process meta tags from access point
+            // #################
 
             /** @var \TQ\\TqSeo\\Connector $connector */
             $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
@@ -190,7 +188,7 @@ class MetatagPart {
             foreach ($storeMeta['meta'] as $metaKey => $metaValue) {
                 $metaValue = trim($metaValue);
 
-                if ($metaValue === null) {
+                if ($metaValue === NULL) {
                     // Remove meta
                     unset($tsSetupSeo[$metaKey]);
                 } elseif (!empty($metaValue)) {
@@ -202,7 +200,7 @@ class MetatagPart {
             foreach ($storeMeta['custom'] as $metaKey => $metaValue) {
                 $metaValue = trim($metaValue);
 
-                if ($metaValue === null) {
+                if ($metaValue === NULL) {
                     // Remove meta
                     unset($customMetaTagList[$metaKey]);
                 } elseif (!empty($metaValue)) {
@@ -210,9 +208,9 @@ class MetatagPart {
                 }
             }
 
-            #####################################
-            # Process StdWrap List
-            #####################################
+            // #####################################
+            // Process StdWrap List
+            // #####################################
             $stdWrapItemList = array(
                 'title',
                 'description',
@@ -233,9 +231,9 @@ class MetatagPart {
             // Call hook
             \TQ\TqSeo\Utility\GeneralUtility::callHook('metatag-setup', $this, $tsSetupSeo);
 
-            #####################################
-            # Generate MetaTags
-            #####################################
+            // #####################################
+            // Generate MetaTags
+            // #####################################
 
             // title
             if (!empty($tsSetupSeo['title']) && $enableMetaDc) {
@@ -361,9 +359,9 @@ class MetatagPart {
                     ) . '" /> ';
             }
 
-            #################
-            # CRAWLER ORDERS
-            #################
+            // #################
+            // CRAWLER ORDERS
+            // #################
 
             // robots
             $crawlerOrder = array();
@@ -404,9 +402,9 @@ class MetatagPart {
                     ) . '" />';
             }
 
-            #################
-            # GEO POSITION
-            #################
+            // #################
+            // GEO POSITION
+            // #################
 
             // Geo-Position
             if (!empty($tsSetupSeo['geoPositionLatitude']) && !empty($tsSetupSeo['geoPositionLongitude'])) {
@@ -432,9 +430,9 @@ class MetatagPart {
                     ) . '" />';
             }
 
-            #################
-            # MISC (Vendor specific)
-            #################
+            // #################
+            // MISC (Vendor specific)
+            // #################
 
             // Google Verification
             if (!empty($tsSetupSeo['googleVerification'])) {
@@ -472,9 +470,9 @@ class MetatagPart {
                     ) . '" />';
             }
 
-            #################
-            # UserAgent
-            #################
+            // #################
+            // UserAgent
+            // #################
 
             // IE compatibility mode
             if (!empty($tsSetupSeo['ieCompatibilityMode'])) {
@@ -487,35 +485,35 @@ class MetatagPart {
                 }
             }
 
-            #################
-            # Link-Tags
-            #################
+            // #################
+            // Link-Tags
+            // #################
             if (!empty($tsSetupSeo['linkGeneration'])) {
-                $rootLine = $TSFE->rootLine;
+                $rootLine = $GLOBALS['TSFE']->rootLine;
                 ksort($rootLine);
 
                 $currentPage = end($rootLine);
 
                 $rootPage    = reset($rootLine);
-                $rootPageUrl = null;
+                $rootPageUrl = NULL;
                 if (!empty($rootPage)) {
                     $rootPageUrl = $this->_generateLink($rootPage['uid']);
                 }
 
                 $upPage    = $currentPage['pid'];
-                $upPageUrl = null;
+                $upPageUrl = NULL;
                 if (!empty($upPage)) {
                     $upPageUrl = $this->_generateLink($upPage);
                 }
 
-                $prevPage    = $TSFE->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
-                $prevPageUrl = null;
+                $prevPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['prev.']);
+                $prevPageUrl = NULL;
                 if (!empty($prevPage)) {
                     $prevPageUrl = $this->_generateLink($prevPage);
                 }
 
-                $nextPage    = $TSFE->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
-                $nextPageUrl = null;
+                $nextPage    = $GLOBALS['TSFE']->cObj->HMENU($tsSetupSeo['sectionLinks.']['next.']);
+                $nextPageUrl = NULL;
                 if (!empty($nextPage)) {
                     $nextPageUrl = $this->_generateLink($nextPage);
                 }
@@ -542,7 +540,7 @@ class MetatagPart {
             }
 
             // Canonical URL
-            $canonicalUrl = null;
+            $canonicalUrl = NULL;
 
             if (!empty($tsfePage['tx_tqseo_canonicalurl'])) {
                 $canonicalUrl = $tsfePage['tx_tqseo_canonicalurl'];
@@ -561,9 +559,9 @@ class MetatagPart {
                 }
             }
 
-            #################
-            # Custom meta tags
-            #################
+            // #################
+            // Custom meta tags
+            // #################
             foreach ($customMetaTagList as $metaKey => $metaValue) {
                 $ret['custom.' . $metaKey] = '<meta name="' . htmlspecialchars(
                         $metaKey
@@ -571,9 +569,9 @@ class MetatagPart {
             }
         }
 
-        #################
-        # SOCIAL
-        #################
+        // #################
+        // SOCIAL
+        // #################
         if (!empty($tsSetup['plugin.']['tq_seo.']['social.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['social.'];
 
@@ -609,37 +607,35 @@ class MetatagPart {
      * Init extension support for "news" extension
      */
     protected function _initExtensionSupportNews() {
-        global $TSFE;
-
-        if( empty($TSFE->register) ) {
+        if( empty($GLOBALS['TSFE']->register) ) {
             return;
         }
 
         /** @var \TQ\\TqSeo\\Connector $connector */
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
 
-        if( isset($TSFE->register['newsTitle']) ) {
-            $connector->setMetaTag('title', $TSFE->register['newsTitle']);
+        if( isset($GLOBALS['TSFE']->register['newsTitle']) ) {
+            $connector->setMetaTag('title', $GLOBALS['TSFE']->register['newsTitle']);
         }
 
-        if( isset($TSFE->register['newsAuthor']) ) {
-            $connector->setMetaTag('author', $TSFE->register['newsAuthor']);
+        if( isset($GLOBALS['TSFE']->register['newsAuthor']) ) {
+            $connector->setMetaTag('author', $GLOBALS['TSFE']->register['newsAuthor']);
         }
 
-        if( isset($TSFE->register['newsAuthoremail']) ) {
-            $connector->setMetaTag('email', $TSFE->register['newsAuthoremail']);
+        if( isset($GLOBALS['TSFE']->register['newsAuthoremail']) ) {
+            $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthoremail']);
         }
 
-        if( isset($TSFE->register['newsAuthorEmail']) ) {
-            $connector->setMetaTag('email', $TSFE->register['newsAuthorEmail']);
+        if( isset($GLOBALS['TSFE']->register['newsAuthorEmail']) ) {
+            $connector->setMetaTag('email', $GLOBALS['TSFE']->register['newsAuthorEmail']);
         }
 
-        if( isset($TSFE->register['newsKeywords']) ) {
-            $connector->setMetaTag('keywords', $TSFE->register['newsKeywords']);
+        if( isset($GLOBALS['TSFE']->register['newsKeywords']) ) {
+            $connector->setMetaTag('keywords', $GLOBALS['TSFE']->register['newsKeywords']);
         }
 
-        if( isset($TSFE->register['newsTeaser']) ) {
-            $connector->setMetaTag('description', $TSFE->register['newsTeaser']);
+        if( isset($GLOBALS['TSFE']->register['newsTeaser']) ) {
+            $connector->setMetaTag('description', $GLOBALS['TSFE']->register['newsTeaser']);
         }
     }
 
@@ -648,19 +644,17 @@ class MetatagPart {
      * Generate a link via TYPO3-Api
      *
      * @param    integer|string $url    URL (id or string)
-     * @param    array|null     $conf   URL configuration
+     * @param    array|NULL     $conf   URL configuration
      * @return   string                 URL
      */
-    protected function _generateLink($url, $conf = null) {
-        global $TSFE;
-
-        if ($conf === null) {
+    protected function _generateLink($url, $conf = NULL) {
+        if ($conf === NULL) {
             $conf = array();
         }
 
         $conf['parameter'] = $url;
 
-        $ret = $TSFE->cObj->typoLink_URL($conf);
+        $ret = $GLOBALS['TSFE']->cObj->typoLink_URL($conf);
         // maybe baseUrlWrap is better? but breaks with realurl currently?
         $ret = \TQ\TqSeo\Utility\GeneralUtility::fullUrl($ret);
 
@@ -671,38 +665,36 @@ class MetatagPart {
      * Detect canonical page
      *
      * @param    boolean $strictMode        Enable strict mode
-     * @return    string                        Page Id or url
+     * @return   string                     Page Id or url
      */
-    protected function _detectCanonicalPage($strictMode = false) {
-        global $TSFE;
-
+    protected function _detectCanonicalPage($strictMode = FALSE) {
         // Skip no_cache-pages
-        if (!empty($TSFE->no_cache)) {
+        if (!empty($GLOBALS['TSFE']->no_cache)) {
             if ($strictMode) {
                 // force canonical-url to page url (without any parameters)
-                return $TSFE->id;
+                return $GLOBALS['TSFE']->id;
             } else {
-                return null;
+                return NULL;
             }
         }
 
         // Fetch chash
-        $pageHash = null;
-        if (!empty($TSFE->cHash)) {
-            $pageHash = $TSFE->cHash;
+        $pageHash = NULL;
+        if (!empty($GLOBALS['TSFE']->cHash)) {
+            $pageHash = $GLOBALS['TSFE']->cHash;
         }
 
         if (!empty($this->cObj->data['content_from_pid'])) {
-            ###############################
-            # Content from pid
-            ###############################
+            // ###############################
+            // Content from pid
+            // ###############################
             $ret = $this->cObj->data['content_from_pid'];
         } else {
             // Fetch pageUrl
-            if ($pageHash !== null) {
-                $ret = $TSFE->anchorPrefix;
+            if ($pageHash !== NULL) {
+                $ret = $GLOBALS['TSFE']->anchorPrefix;
             } else {
-                $ret = $TSFE->id;
+                $ret = $GLOBALS['TSFE']->id;
             }
         }
 

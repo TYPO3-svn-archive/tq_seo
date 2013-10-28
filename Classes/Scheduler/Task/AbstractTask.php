@@ -34,27 +34,27 @@ namespace TQ\TqSeo\Scheduler\Task;
  */
 abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Language lock
      *
      * @var integer
      */
-    protected $_languageLock = false;
+    protected $_languageLock = FALSE;
 
     /**
      * Language list
      *
      * @var array
      */
-    protected $_languageIdList = null;
+    protected $_languageIdList = NULL;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Get list of root pages in current typo3
@@ -62,17 +62,15 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * @return  array
      */
     protected function _getRootPages() {
-        global $TYPO3_DB;
-
         $ret = array();
 
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
                       AND deleted = 0';
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $uid       = $row['uid'];
             $ret[$uid] = $row;
         }
@@ -87,16 +85,14 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * @return  array
      */
     protected function _initLanguages() {
-        global $TYPO3_DB;
-
         $this->_languageIdList[0] = 0;
 
         $query = 'SELECT uid
                     FROM sys_language
                    WHERE hidden = 0';
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $uid                         = $row['uid'];
             $this->_languageIdList[$uid] = $uid;
         }
@@ -106,9 +102,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * Set root page language
      */
     protected function _setRootPageLanguage($languageId) {
-        global $TSFE;
-
-        $TSFE->tmpl->setup['config.']['sys_language_uid'] = $languageId;
+        $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
         $this->_languageLock                              = $languageId;
     }
 
@@ -118,37 +112,35 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      * @param   integer $rootPageId $rootPageId
      */
     protected function _initRootPage($rootPageId) {
-        global $TT, $TSFE;
+        $GLOBALS['TT']   = NULL;
+        $GLOBALS['TSFE'] = NULL;
 
-        $TT   = null;
-        $TSFE = null;
+        $GLOBALS['TT'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
 
-        $TT = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TimeTracker\\NullTimeTracker');
-
-        $TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
             $GLOBALS['TYPO3_CONF_VARS'],
             $rootPageId,
             0
         );
-        $TSFE->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $GLOBALS['TSFE']->sys_page = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
         );
-        $TSFE->sys_page->init(true);
-        $TSFE->initTemplate();
-        $TSFE->rootLine = $TSFE->sys_page->getRootLine($rootPageId, '');
-        $TSFE->getConfigArray();
-        $TSFE->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+        $GLOBALS['TSFE']->sys_page->init(TRUE);
+        $GLOBALS['TSFE']->initTemplate();
+        $GLOBALS['TSFE']->rootLine = $GLOBALS['TSFE']->sys_page->getRootLine($rootPageId, '');
+        $GLOBALS['TSFE']->getConfigArray();
+        $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
             'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
         );
 
         // TSFE Init
-        if (!empty($TSFE->config['config']['baseURL'])) {
-            $TSFE->baseUrl = $TSFE->config['config']['baseURL'];
+        if (!empty($GLOBALS['TSFE']->config['config']['baseURL'])) {
+            $GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
         }
 
-        if (!empty($TSFE->config['config']['absRefPrefix'])) {
-            $TSFE->absRefPrefix = $TSFE->config['config']['absRefPrefix'];
+        if (!empty($GLOBALS['TSFE']->config['config']['absRefPrefix'])) {
+            $GLOBALS['TSFE']->absRefPrefix = $GLOBALS['TSFE']->config['config']['absRefPrefix'];
         }
     }
 

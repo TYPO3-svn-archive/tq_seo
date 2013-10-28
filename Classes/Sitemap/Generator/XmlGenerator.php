@@ -34,9 +34,9 @@ namespace TQ\TqSeo\Sitemap\Generator;
  */
 class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Create sitemap index
@@ -44,8 +44,6 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
      * @return  string
      */
     public function sitemapIndex() {
-        global $TSFE;
-
         $pageLimit = 10000;
 
         if (isset($this->tsSetup['pageLimit']) && $this->tsSetup['pageLimit'] != '') {
@@ -57,7 +55,7 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
         $pageCount = ceil($pageItems / $pageLimit);
 
         $linkConf = array(
-            'parameter'        => \TQ\TqSeo\Utility\GeneralUtility::getCurrentPid() . ',' . $TSFE->type,
+            'parameter'        => \TQ\TqSeo\Utility\GeneralUtility::getCurrentPid() . ',' . $GLOBALS['TSFE']->type,
             'additionalParams' => '',
             'useCacheHash'     => 1,
         );
@@ -69,7 +67,7 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
             } else {
                 $linkConf['additionalParams'] = '&page=' . ($i + 1);
                 $sitemaps[]                   = \TQ\TqSeo\Utility\GeneralUtility::fullUrl(
-                    $TSFE->cObj->typoLink_URL($linkConf)
+                    $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf)
                 );
             }
         }
@@ -97,7 +95,7 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
      * @param   integer $page   Page
      * @return  string
      */
-    public function sitemap($page = null) {
+    public function sitemap($page = NULL) {
         $ret = '';
 
         $pageLimit = 10000;
@@ -157,9 +155,9 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
         }
 
 
-        #####################
-        # SetupTS conf
-        #####################
+        // #####################
+        // SetupTS conf
+        // #####################
 
         foreach ($this->sitemapPages as $sitemapPage) {
             if (empty($this->pages[$sitemapPage['page_uid']])) {
@@ -169,9 +167,9 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
 
             $page = $this->pages[$sitemapPage['page_uid']];
 
-            #####################################
-            # Page priority
-            #####################################
+            // #####################################
+            // Page priority
+            // #####################################
             $pageDepth     = $sitemapPage['page_depth'];
             $pageDepthBase = 1;
 
@@ -200,9 +198,9 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
                 $pagePriority = '0.00';
             }
 
-            #####################################
-            # Page informations
-            #####################################
+            // #####################################
+            // Page informations
+            // #####################################
 
             // page Url
             $pageUrl = \TQ\TqSeo\Utility\GeneralUtility::fullUrl($sitemapPage['page_url']);
@@ -211,7 +209,7 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
             $pageModifictionDate = date('c', $sitemapPage['tstamp']);
 
             // Page change frequency
-            $pageChangeFrequency = null;
+            $pageChangeFrequency = NULL;
             if (!empty($page['tx_tqseo_change_frequency'])) {
                 $pageChangeFrequency = (int)$page['tx_tqseo_change_frequency'];
             } elseif (!empty($sitemapPage['page_change_frequency'])) {
@@ -221,13 +219,13 @@ class XmlGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
             if (!empty($pageChangeFrequency) && !empty($this->pageChangeFrequency[$pageChangeFrequency])) {
                 $pageChangeFrequency = $this->pageChangeFrequency[$pageChangeFrequency];
             } else {
-                $pageChangeFrequency = null;
+                $pageChangeFrequency = NULL;
             }
 
 
-            #####################################
-            # Sitemal page output
-            #####################################
+            // #####################################
+            // Sitemal page output
+            // #####################################
             $ret .= '<url>';
             $ret .= '<loc>' . htmlspecialchars($pageUrl) . '</loc>';
             $ret .= '<lastmod>' . $pageModifictionDate . '</lastmod>';

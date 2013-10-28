@@ -34,9 +34,9 @@ namespace TQ\TqSeo\Utility;
  */
 class SitemapUtility {
 
-    ###########################################################################
+    // ########################################################################
     # Public methods
-    ###########################################################################
+    // ########################################################################
 
     /**
      * Insert into sitemap
@@ -45,7 +45,6 @@ class SitemapUtility {
      * @param   string $type       Parser type (page/link)
      */
     public static function index($pageData, $type) {
-        global $TYPO3_DB;
         static $cache = array();
 
         $pageHash = $pageData['page_hash'];
@@ -53,14 +52,14 @@ class SitemapUtility {
         // Escape/Quote data
         unset($pageDataValue);
         foreach ($pageData as &$pageDataValue) {
-            if ($pageDataValue === null) {
+            if ($pageDataValue === NULL) {
                 $pageDataValue = 'NULL';
             } elseif (is_int($pageDataValue) || is_numeric($pageDataValue)) {
                 // Don't quote numeric/integers
                 $pageDataValue = (int)$pageDataValue;
             } else {
                 // String
-                $pageDataValue = $TYPO3_DB->fullQuoteStr($pageDataValue, 'tx_tqseo_sitemap');
+                $pageDataValue = $GLOBALS['TYPO3_DB']->fullQuoteStr($pageDataValue, 'tx_tqseo_sitemap');
             }
         }
         unset($pageDataValue);
@@ -78,9 +77,9 @@ class SitemapUtility {
                                 page_uid = ' . $pageData['page_uid'] . '
                             AND	page_language = ' . $pageData['page_language'] . '
                             AND page_hash = ' . $pageData['page_hash'];
-            $res   = $TYPO3_DB->sql_query($query);
+            $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-            if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $query = 'UPDATE
                                 tx_tqseo_sitemap
                             SET
@@ -92,12 +91,12 @@ class SitemapUtility {
                                 page_change_frequency	= ' . $pageData['page_change_frequency'] . '
                             WHERE
                                 uid = ' . (int)$row['uid'];
-                $TYPO3_DB->sql_query($query);
+                $GLOBALS['TYPO3_DB']->sql_query($query);
             } else {
-                #####################################
-                # INSERT
-                #####################################
-                $ret = $TYPO3_DB->exec_INSERTquery(
+                // #####################################
+                // INSERT
+                // #####################################
+                $ret = $GLOBALS['TYPO3_DB']->exec_INSERTquery(
                     'tx_tqseo_sitemap',
                     $pageData,
                     array_keys($pageData)
@@ -112,11 +111,9 @@ class SitemapUtility {
      * Clear outdated and invalid pages from sitemap table
      */
     public static function expire() {
-        global $TYPO3_DB, $TSFE, $TYPO3_CONF_VARS;
-
-        #####################
-        # Expired pages
-        #####################
+        // #####################
+        // Expired pages
+        // #####################
         $expireDays = (int)\TQ\TqSeo\Utility\GeneralUtility::getExtConf('sitemap_pageSitemapExpireDays', 60);
 
         $tstamp = time() - $expireDays * 24 * 60 * 60;
@@ -124,12 +121,12 @@ class SitemapUtility {
         $query = 'DELETE FROM tx_tqseo_sitemap
                         WHERE tstamp <= ' . (int)$tstamp . '
                           AND is_blacklisted = 0';
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        #####################
-        # Deleted or
-        # excluded pages
-        #####################
+        // #####################
+        //  Deleted or
+        // excluded pages
+        // #####################
         $deletedSitemapPages = array();
 
         $query = 'SELECT
@@ -143,9 +140,9 @@ class SitemapUtility {
                            AND p.tx_tqseo_is_exclude = 0
                     WHERE
                         p.uid IS NULL';
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $deletedSitemapPages[$row['uid']] = $row['uid'];
         }
 
@@ -154,7 +151,7 @@ class SitemapUtility {
             $query = 'DELETE FROM tx_tqseo_sitemap
                             WHERE uid IN (' . implode(',', $deletedSitemapPages) . ')
                               AND is_blacklisted = 0';
-            $TYPO3_DB->sql_query($query);
+            $GLOBALS['TYPO3_DB']->sql_query($query);
         }
     }
 
@@ -166,9 +163,7 @@ class SitemapUtility {
      * @param   integer $languageId     Limit to language id
      * @return  boolean|array
      */
-    public static function getList($rootPid, $languageId = null) {
-        global $TYPO3_DB;
-
+    public static function getList($rootPid, $languageId = NULL) {
         $sitemapList = array();
         $pageList    = array();
 
@@ -185,7 +180,7 @@ class SitemapUtility {
                    WHERE ts.page_rootpid = ' . (int)$rootPid . '
                      AND ts.is_blacklisted = 0';
 
-        if ($languageId !== null) {
+        if ($languageId !== NULL) {
             $query .= ' AND ts.page_language = ' . (int)$languageId;
         }
         $query .= ' ORDER BY
@@ -193,13 +188,13 @@ class SitemapUtility {
                         p.pid ASC,
                         p.sorting ASC';
 
-        $res = $TYPO3_DB->sql_query($query);
+        $res = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if (!$res) {
-            return false;
+            return FALSE;
         }
 
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $sitemapList[] = $row;
 
             $sitemapPageId             = $row['page_uid'];
@@ -210,13 +205,13 @@ class SitemapUtility {
             $query = 'SELECT *
                         FROM pages
                        WHERE uid IN (' . implode(',', $typo3Pids) . ')';
-            $res   = $TYPO3_DB->sql_query($query);
+            $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
             if (!$res) {
-                return false;
+                return FALSE;
             }
 
-            while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $pageList[$row['uid']] = $row;
             }
         }

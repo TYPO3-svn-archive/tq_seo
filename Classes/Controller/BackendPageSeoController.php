@@ -32,13 +32,13 @@ namespace TQ\TqSeo\Controller;
  * @subpackage  tq_seo
  */
 class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandardModule {
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Main action
@@ -83,8 +83,6 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
     }
 
     protected function _handleSubAction($type) {
-        global $TYPO3_DB, $BE_USER;
-
         $pageId		= (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
 
         if( empty($pageId) ) {
@@ -122,12 +120,12 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         }
 
         // Fetch other flags
-        $res = $TYPO3_DB->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'uid, title, flag',
             'sys_language',
             'hidden = 0'
         );
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $languageFullList[ $row['uid'] ] = array(
                 'label'	=> htmlspecialchars($row['title']),
                 'flag'	=> htmlspecialchars($row['flag']),
@@ -156,15 +154,15 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             );
         }
 
-        $sysLangaugeDefault = (int)$BE_USER->getSessionData('TQSeo.sysLanguage');
+        $sysLangaugeDefault = (int)$GLOBALS['BE_USER']->getSessionData('TQSeo.sysLanguage');
 
         if( empty($sysLangaugeDefault) ) {
             $sysLangaugeDefault = 0;
         }
 
-        ###############################
-        # HTML
-        ###############################
+        // ############################
+        // HTML
+        // ############################
         // FIXME: do we really need a template engine here?
         $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
         $pageRenderer = $this->template->getPageRenderer();

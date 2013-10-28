@@ -41,15 +41,13 @@ abstract class AbstractPage {
      *
      * @param    string $msg            Message
      */
-    protected function showError($msg = null) {
-        global $TSFE;
-
-        if ($msg === null) {
+    protected function showError($msg = NULL) {
+        if ($msg === NULL) {
             $msg = 'Sitemap is not available, please check your configuration';
         }
 
         header('HTTP/1.0 503 Service Unavailable');
-        $TSFE->pageErrorHandler(true, null, $msg);
+        $GLOBALS['TSFE']->pageErrorHandler(TRUE, NULL, $msg);
         exit;
     }
 

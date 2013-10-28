@@ -34,14 +34,14 @@ namespace TQ\TqSeo\Page;
  */
 class SitemapXmlPage extends \TQ\TqSeo\Page\AbstractPage {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Build sitemap xml
@@ -49,13 +49,11 @@ class SitemapXmlPage extends \TQ\TqSeo\Page\AbstractPage {
      * @return  string
      */
     public function main() {
-        global $TSFE, $TYPO3_DB, $TYPO3_CONF_VARS;
-
         // INIT
-        $this->tsSetup = $TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
+        $this->tsSetup = $GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.'];
 
         // check if sitemap is enabled in root
-        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)) {
+        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)) {
             $this->showError('Sitemap is not available, please check your configuration [control-center]');
         }
 

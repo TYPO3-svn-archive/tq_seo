@@ -43,16 +43,15 @@ class CacheUtility {
      * @return  string
      */
     static public function get($pageId, $section, $identifier) {
-        global $TYPO3_DB;
-        $ret = null;
+        $ret = NULL;
 
         $query = 'SELECT cache_content FROM tx_tqseo_cache
                     WHERE page_uid = ' . (int)$pageId . '
-                      AND cache_section = ' . $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache') . '
-                      AND cache_identifier = ' . $TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache');
-        $res   = $TYPO3_DB->sql_query($query);
+                      AND cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache') . '
+                      AND cache_identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, 'tx_tqseo_cache');
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $ret = $row['cache_content'];
         }
 
@@ -69,21 +68,19 @@ class CacheUtility {
      * @return  boolean
      */
     static public function set($pageId, $section, $identifier, $value) {
-        global $TYPO3_DB;
-
         $query = 'INSERT INTO tx_tqseo_cache (page_uid, cache_section, cache_identifier, cache_content)
                     VALUES(
                         ' . (int)$pageId . ',
-                        ' . $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache') . ',
-                        ' . $TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache') . ',
-                        ' . $TYPO3_DB->fullQuoteStr($value, 'tx_tqseo_cache') . '
-                    ) ON DUPLICATE KEY UPDATE cache_content = ' . $TYPO3_DB->fullQuoteStr($value, 'tx_tqseo_cache');
-        $res   = $TYPO3_DB->sql_query($query);
+                        ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache') . ',
+                        ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, 'tx_tqseo_cache') . ',
+                        ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'tx_tqseo_cache') . '
+                    ) ON DUPLICATE KEY UPDATE cache_content = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($value, 'tx_tqseo_cache');
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if ($res) {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -95,15 +92,14 @@ class CacheUtility {
      * @return  array
      */
     static public function getList($section, $identifier) {
-        global $TYPO3_DB;
         $ret = array();
 
         $query = 'SELECT page_uid, cache_content FROM tx_tqseo_cache
-                    WHERE cache_section = ' . $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache') . '
-                      AND cache_identifier = ' . $TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache');
-        $res   = $TYPO3_DB->sql_query($query);
+                    WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache') . '
+                      AND cache_identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, 'tx_tqseo_cache');
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-        while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $ret[$row['page_uid']] = $row['cache_content'];
         }
 
@@ -119,22 +115,20 @@ class CacheUtility {
      * @return  boolean
      */
     static public function remove($pageId, $section, $identifier) {
-        global $TYPO3_DB;
-
         $pageId     = (int)$pageId;
-        $section    = $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache');
-        $identifier = $TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache');
+        $section    = $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache');
+        $identifier = $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, 'tx_tqseo_cache');
 
         $query = 'DELETE FROM tx_tqseo_cache
                     WHERE page_uid = ' . (int)$pageId . '
-                      AND cache_section = ' . $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache') . '
-                      AND cache_identifier = ' . $TYPO3_DB->fullQuoteStr($identifier, 'tx_tqseo_cache');
-        $res   = $TYPO3_DB->sql_query($query);
+                      AND cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache') . '
+                      AND cache_identifier = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($identifier, 'tx_tqseo_cache');
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if ($res) {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -145,16 +139,14 @@ class CacheUtility {
      * @return  boolean
      */
     static public function clearByPage($pageId) {
-        global $TYPO3_DB;
-
         $query = 'DELETE FROM tx_tqseo_cache
                     WHERE page_uid = ' . (int)$pageId;
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if ($res) {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -165,16 +157,14 @@ class CacheUtility {
      * @return  boolean
      */
     static public function clearBySection($section) {
-        global $TYPO3_DB;
-
         $query = 'DELETE FROM tx_tqseo_cache
-                    WHERE cache_section = ' . $TYPO3_DB->fullQuoteStr($section, 'tx_tqseo_cache');
-        $res   = $TYPO3_DB->sql_query($query);
+                    WHERE cache_section = ' . $GLOBALS['TYPO3_DB']->fullQuoteStr($section, 'tx_tqseo_cache');
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if ($res) {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 
@@ -184,15 +174,13 @@ class CacheUtility {
      * @return boolean
      */
     static public function clearAll() {
-        global $TYPO3_DB;
-
         $query = 'TRUNCATE tx_tqseo_cache';
-        $res   = $TYPO3_DB->sql_query($query);
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         if ($res) {
-            return true;
+            return TRUE;
         } else {
-            return false;
+            return FALSE;
         }
     }
 }

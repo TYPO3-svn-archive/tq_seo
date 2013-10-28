@@ -33,9 +33,9 @@ namespace TQ\TqSeo\Backend\Ajax;
  */
 abstract class AbstractAjax {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * POST vars (transformed from json)
@@ -47,38 +47,38 @@ abstract class AbstractAjax {
     /**
      * Sorting field
      */
-    protected $_sortField = null;
+    protected $_sortField = NULL;
 
     /**
      * Sorting dir
      *
      * @var string
      */
-    protected $_sortDir = null;
+    protected $_sortDir = NULL;
 
     /**
      * TCE
      *
      * @var \TYPO3\CMS\Core\DataHandling\DataHandler
      */
-    protected $_tce = null;
+    protected $_tce = NULL;
 
     /**
      * Backend Form Protection object
      *
      * @var \TYPO3\CMS\Core\FormProtection\BackendFormProtection
      */
-    protected $_formProtection = null;
+    protected $_formProtection = NULL;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Execute ajax call
      */
     public function main() {
-        $ret = null;
+        $ret = NULL;
 
 
         // Try to find method
@@ -119,10 +119,8 @@ abstract class AbstractAjax {
      * Init
      */
     protected function _init() {
-        global $LANG;
-
         // Include ajax local lang
-        $LANG->includeLLFile('EXT:tq_seo/locallang_ajax.xml');
+        $GLOBALS['LANG']->includeLLFile('EXT:tq_seo/locallang_ajax.xml');
 
         // Init form protection instance
         $this->_formProtection = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
@@ -175,7 +173,7 @@ abstract class AbstractAjax {
      */
     protected function _tce() {
 
-        if ($this->_tce === null) {
+        if ($this->_tce === NULL) {
             $this->_tce = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Core\\DataHandling\\DataHandler'
             );
@@ -194,8 +192,7 @@ abstract class AbstractAjax {
      * @return  boolean
      */
     protected function _isFieldInTcaTable($table, $field) {
-        global $TCA;
-        return isset($TCA[$table]['columns'][$field]);
+        return isset($GLOBALS['TCA'][$table]['columns'][$field]);
     }
 
 
@@ -219,7 +216,7 @@ abstract class AbstractAjax {
 
         if (empty($this->_postVar['sessionToken'])) {
             // No session token exists
-            return false;
+            return FALSE;
         }
 
         $className = strtolower(str_replace('\\', '_', get_class($this)));
@@ -227,10 +224,10 @@ abstract class AbstractAjax {
         $sessionToken = $this->_sessionToken($className);
 
         if ($this->_postVar['sessionToken'] === $sessionToken) {
-            return true;
+            return TRUE;
         }
 
-        return false;
+        return FALSE;
     }
 
 }

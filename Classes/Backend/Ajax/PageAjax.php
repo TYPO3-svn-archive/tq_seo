@@ -33,9 +33,9 @@ namespace TQ\TqSeo\Backend\Ajax;
  */
 class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * List of page uids which have templates
@@ -44,9 +44,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      */
     protected $_templatePidList = array();
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Return overview entry list for root tree
@@ -54,8 +54,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    array
      */
     protected function _executeGetList() {
-        global $TYPO3_DB, $BE_USER;
-
         // Init
         $list = array();
 
@@ -68,7 +66,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $listType     = (string)$this->_postVar['listType'];
 
         // Store last selected language
-        $BE_USER->setAndSaveSessionData('TQSeo.sysLanguage', $sysLanguage);
+        $GLOBALS['BE_USER']->setAndSaveSessionData('TQSeo.sysLanguage', $sysLanguage);
 
         if (!empty($pid)) {
             $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
@@ -160,7 +158,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                     break;
 
                 case 'pagetitlesim':
-                    $buildTree = false;
+                    $buildTree = FALSE;
                     $list      = $this->_listPageTitleSim($page, $depth, $sysLanguage);
                     break;
 
@@ -185,8 +183,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    string
      */
     protected function _executeGenerateSimulatedTitle() {
-        global $TYPO3_DB, $BE_USER;
-
         // Init
         $ret = '';
 
@@ -197,7 +193,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
             if (!empty($page)) {
                 // Load TYPO3 classes
-                $this->_initTsfe($page, null, $page, null);
+                $this->_initTsfe($page, NULL, $page, NULL);
 
                 $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TQ\\TqSeo\\Page\\Part\\PagetitlePart'
@@ -219,8 +215,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return    string
      */
     protected function _executeGenerateSimulatedUrl() {
-        global $TYPO3_DB, $BE_USER, $TSFE, $TYPO3_CONF_VARS, $LANG;
-
         // Init
         $ret = '';
 
@@ -233,14 +227,14 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
                 if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl')) {
                     // Disable caching for url
-                    $TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
-                    $TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
-                    $TYPO3_CONF_VARS['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlDecodeCache'] = 0;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['enableUrlEncodeCache'] = 0;
+                    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['realurl']['_DEFAULT']['disablePathCache']     = 1;
                 }
 
-                $this->_initTsfe($page, null, $page, null);
+                $this->_initTsfe($page, NULL, $page, NULL);
 
-                $ret = $TSFE->cObj->typolink_URL(array('parameter' => $page['uid']));
+                $ret = $GLOBALS['TSFE']->cObj->typolink_URL(array('parameter' => $page['uid']));
 
                 if (!empty($ret)) {
                     $ret = \TQ\TqSeo\Utility\GeneralUtility::fullUrl($ret);
@@ -254,7 +248,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             );
         } else {
             $ret = array(
-                'error' => $LANG->getLL('error.url_generation_failed'),
+                'error' => $GLOBALS['LANG']->getLL('error.url_generation_failed'),
             );
         }
 
@@ -272,8 +266,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return  array
      */
     protected function _listDefaultTree($page, $depth, $fieldList, $sysLanguage) {
-        global $BE_USER, $TYPO3_DB;
-
         $rootPid = $page['uid'];
 
         $list = array();
@@ -281,17 +273,17 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $fieldList[] = 'pid';
         $pageIdList  = array();
 
-        ###############################
-        # Build tree
-        ###############################
+        // ###########################
+        // Build tree
+        // ############################
 
         // Init tree
         /** @var \TYPO3\CMS\Backend\Tree\View\PageTreeView $tree */
         $tree = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Tree\\View\\PageTreeView');
         foreach ($fieldList as $field) {
-            $tree->addField($field, true);
+            $tree->addField($field, TRUE);
         }
-        $tree->init('AND doktype IN (1,4) AND ' . $BE_USER->getPagePermsClause(1));
+        $tree->init('AND doktype IN (1,4) AND ' . $GLOBALS['BE_USER']->getPagePermsClause(1));
 
         $tree->tree[] = array(
             'row'           => $page,
@@ -315,7 +307,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             $rootLineRaw[$row['uid']] = $row['pid'];
         }
 
-        $rootLineRaw[$rootPid] = null;
+        $rootLineRaw[$rootPid] = NULL;
 
         // overlay status "current"
         $defaultOverlayStatus = 0;
@@ -337,9 +329,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         }
         unset($row);
 
-        ###############################
-        # Language overlay
-        ###############################
+        // ############################
+        // Language overlay
+        // ############################
 
         if( !empty($sysLanguage) && !empty($pageIdList) ) {
 
@@ -351,7 +343,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 }
             }
 
-            $res = $TYPO3_DB->exec_SELECTquery(
+            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
                 'uid,pid,title,'.implode(',',$overlayFieldList),
                 'pages_language_overlay',
                 'pid IN('.implode(',',$pageIdList).')'
@@ -366,7 +358,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             }
             unset($row);
 
-            while($overlayRow = $TYPO3_DB->sql_fetch_assoc($res)) {
+            while($overlayRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $pageOverlayId  = $overlayRow['uid'];
                 $pageOriginalId = $overlayRow['pid'];
 
@@ -402,9 +394,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @param    integer $depth            Current depth
      * @return    integer
      */
-    protected function _listCalcDepth($pageUid, $rootLineRaw, $depth = null) {
+    protected function _listCalcDepth($pageUid, $rootLineRaw, $depth = NULL) {
 
-        if ($depth === null) {
+        if ($depth === NULL) {
             $depth = 1;
         }
 
@@ -437,8 +429,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return  array
      */
     protected function _listPageTitleSim($page, $depth, $sysLanguage) {
-        global $TYPO3_DB, $BE_USER;
-
         // Init
         $list = array();
 
@@ -465,8 +455,8 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                        WHERE pid IN (' . implode(',', $uidList) . ')
                          AND deleted = 0
                          AND hidden = 0';
-            $res   = $TYPO3_DB->sql_query($query);
-            while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
+            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $this->_templatePidList[$row['pid']] = $row['pid'];
             }
 
@@ -487,7 +477,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * @return  string
      */
     protected function _simulateTitle($page, $sysLanguage) {
-        $this->_initTsfe($page, null, $page, null, $sysLanguage);
+        $this->_initTsfe($page, NULL, $page, NULL, $sysLanguage);
 
         $pagetitle = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Page\\Part\\PagetitlePart');
         $ret       = $pagetitle->main($page['title']);
@@ -500,16 +490,14 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * Init TSFE (for simulated pagetitle)
      *
      * @param   array        $page        Page
-     * @param   null|array   $rootLine    Rootline
-     * @param   null|array   $pageData    Page data (recursive generated)
-     * @param   null|integer $sysLanguage System language
+     * @param   NULL|array   $rootLine    Rootline
+     * @param   NULL|array   $pageData    Page data (recursive generated)
+     * @param   NULL|integer $sysLanguage System language
      * @return  void
      */
-    protected function _initTsfe($page, $rootLine = null, $pageData = null, $rootlineFull = null, $sysLanguage = null) {
-        global $TYPO3_CONF_VARS;
-
+    protected function _initTsfe($page, $rootLine = NULL, $pageData = NULL, $rootlineFull = NULL, $sysLanguage = NULL) {
         static $cacheTSFE = array();
-        static $lastTsSetupPid = null;
+        static $lastTsSetupPid = NULL;
 
         $pageUid = (int)$page['uid'];
 
@@ -523,7 +511,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             $GLOBALS['TT']->start();
         }
 
-        if ($rootLine === null) {
+        if ($rootLine === NULL) {
             $sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                 'TYPO3\\CMS\\Frontend\\Page\\PageRepository'
             );
@@ -554,11 +542,11 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
             // Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
             if (empty($cacheTSFE[$pageUid])) {
-                $TSFE       = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $GLOBALS['TSFE']       = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
-                    $TYPO3_CONF_VARS
+                    $GLOBALS['TYPO3_CONF_VARS']
                 );
-                $TSFE->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $GLOBALS['TSFE']->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
                 );
 
@@ -571,16 +559,16 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 $TSObj->generateConfig();
 
                 $_GET['id'] = $page['uid'];
-                $TSFE->initFEuser();
-                $TSFE->determineId();
+                $GLOBALS['TSFE']->initFEuser();
+                $GLOBALS['TSFE']->determineId();
 
-                $TSFE->tmpl->setup = $TSObj->setup;
-                $TSFE->initTemplate();
-                $TSFE->getConfigArray();
+                $GLOBALS['TSFE']->tmpl->setup = $TSObj->setup;
+                $GLOBALS['TSFE']->initTemplate();
+                $GLOBALS['TSFE']->getConfigArray();
 
-                $TSFE->baseUrl = $TSFE->config['config']['baseURL'];
+                $GLOBALS['TSFE']->baseUrl = $GLOBALS['TSFE']->config['config']['baseURL'];
 
-                $cacheTSFE[$pageUid] = $TSFE;
+                $cacheTSFE[$pageUid] = $GLOBALS['TSFE'];
             }
 
             $GLOBALS['TSFE'] = $cacheTSFE[$pageUid];
@@ -597,8 +585,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
      * Update page field
      */
     protected function _executeUpdatePageField() {
-        global $TYPO3_DB, $BE_USER, $LANG, $TCA;
-
         if (empty($this->_postVar['pid'])
             || empty($this->_postVar['field'])
         ) {
@@ -617,34 +603,34 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             return;
         }
 
-        ###############################
-        # Security checks
-        ###############################
+        // ############################
+        // Security checks
+        // ############################
 
 
         // check if user is able to modify pages
-        if (!$BE_USER->check('tables_modify', 'pages')) {
+        if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages')) {
             // No access
             return array(
-                'error' => $LANG->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
             );
         }
 
         // check if user is able to modify the field of pages
-        if (!$BE_USER->check('non_exclude_fields', 'pages:' . $fieldName)) {
+        if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
             // No access
             return array(
-                'error' => $LANG->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
             );
         }
 
         $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
 
         // check if page exists and user can edit this specific record
-        if (empty($page) || !$BE_USER->doesUserHaveAccess($page, 2)) {
+        if (empty($page) || !$GLOBALS['BE_USER']->doesUserHaveAccess($page, 2)) {
             // No access
             return array(
-                'error' => $LANG->getLL('error.access_denied') . ' [0x4FBF3BCF]',
+                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BCF]',
             );
         }
 
@@ -652,25 +638,25 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         // also check for sys langauge
         if( !empty($sysLanguage) ) {
             // check if user is able to modify pages
-            if (!$BE_USER->check('tables_modify', 'pages_language_overlay')) {
+            if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
                 // No access
                 return array(
-                    'error' => $LANG->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
                 );
             }
 
             // check if user is able to modify the field of pages
-            if (!$BE_USER->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
+            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
                 // No access
                 return array(
-                    'error' => $LANG->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
                 );
             }
         }
 
-        ###############################
-        # Transformations
-        ###############################
+        // ############################
+        // Transformations
+        // ############################
 
         switch ($fieldName) {
             case 'lastupdated':
@@ -680,9 +666,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         }
 
 
-        ###############################
-        # Update
-        ###############################
+        // ############################
+        // Update
+        // ############################
         $tableName = 'pages';
 
         if( !empty($sysLanguage) ) {
@@ -702,12 +688,12 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                             FROM pages_language_overlay
                            WHERE pid = '.(int)$pid.'
                              AND sys_language_uid = '.(int)$sysLanguage;
-                $res   = $TYPO3_DB->sql_query($query);
-                if ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+                $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
+                if ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
 
-                    ###################
-                    # UPDATE
-                    ###################
+                    // ################
+                    // UPDATE
+                    // ################
 
                     $overlayId = $row['uid'];
 
@@ -721,7 +707,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 } else {
                     // No access
                     return array(
-                        'error' => $LANG->getLL('error.no_language_overlay_found'),
+                        'error' => $GLOBALS['LANG']->getLL('error.no_language_overlay_found'),
                     );
                 }
                 break;

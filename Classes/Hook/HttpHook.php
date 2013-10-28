@@ -38,14 +38,12 @@ class HttpHook {
      * Add HTTP Headers
      */
     public function main() {
-        global $TSFE;
-
         // INIT
         $ret      = array();
-        $tsSetup  = $TSFE->tmpl->setup;
-        $cObj     = $TSFE->cObj;
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
         $pageMeta = array();
-        $tsfePage = $TSFE->page;
+        $tsfePage = $GLOBALS['TSFE']->page;
         $headers  = array();
 
         // dont send any headers if headers are already sent
@@ -53,19 +51,19 @@ class HttpHook {
             return;
         }
 
-        if (!empty($TSFE->tmpl->loaded)) {
-            #####################################
-            # Non-Cached page
-            #####################################
+        if (!empty($GLOBALS['TSFE']->tmpl->loaded)) {
+            // ##################################
+            // Non-Cached page
+            // ##################################
 
             if (!empty($tsSetup['plugin.']['tq_seo.']['metaTags.'])) {
                 $tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['metaTags.'];
 
-                #####################################
-                # W3C P3P Tags
-                #####################################
-                $p3pCP        = null;
-                $p3pPolicyUrl = null;
+                // ##################################
+                // W3C P3P Tags
+                // ##################################
+                $p3pCP        = NULL;
+                $p3pPolicyUrl = NULL;
 
                 if (!empty($tsSetupSeo['p3pCP'])) {
                     $p3pCP = $tsSetupSeo['p3pCP'];
@@ -89,19 +87,19 @@ class HttpHook {
                     $headers['P3P'] = implode(' ', $p3pHeader);
 
                     // cache informations
-                    $curentTemplate     = end($TSFE->tmpl->hierarchyInfo);
+                    $curentTemplate     = end($GLOBALS['TSFE']->tmpl->hierarchyInfo);
                     $currentTemplatePid = $curentTemplate['pid'];
                     \TQ\TqSeo\Utility\CacheUtility::set($currentTemplatePid, 'http', 'p3p', $headers['P3P']);
                 }
             }
 
         } else {
-            #####################################
-            # Cached page
-            #####################################
+            // #####################################
+            // Cached page
+            // #####################################
             // build root pid list
             $rootPidList = array();
-            foreach ($TSFE->rootLine as $pageRow) {
+            foreach ($GLOBALS['TSFE']->rootLine as $pageRow) {
                 $rootPidList[$pageRow['uid']] = $pageRow['uid'];
             }
 
@@ -118,9 +116,9 @@ class HttpHook {
         // Call hook
         \TQ\TqSeo\Utility\GeneralUtility::callHook('httpheader-output', $this, $headers);
 
-        #####################################
-        # Sender headers
-        #####################################
+        // #####################################
+        // Sender headers
+        // #####################################
         if (!empty($headers['P3P'])) {
             header('P3P: ' . $headers['P3P']);
         }

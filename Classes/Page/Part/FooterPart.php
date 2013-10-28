@@ -41,18 +41,16 @@ class FooterPart {
      * @return    string            Modified page title
      */
     public function main($title) {
-        global $TSFE;
-
         // INIT
         $ret        = array();
-        $tsSetup    = $TSFE->tmpl->setup;
+        $tsSetup    = $GLOBALS['TSFE']->tmpl->setup;
         $tsServices = array();
 
         $beLoggedIn = isset($GLOBALS['BE_USER']->user['username']);
 
-        $disabledHeaderCode = false;
+        $disabledHeaderCode = FALSE;
         if (!empty($tsSetup['config.']['disableAllHeaderCode'])) {
-            $disabledHeaderCode = true;
+            $disabledHeaderCode = TRUE;
         }
 
         if (!empty($tsSetup['plugin.']['tq_seo.']['services.'])) {
@@ -62,17 +60,17 @@ class FooterPart {
         // Call hook
         \TQ\TqSeo\Utility\GeneralUtility::callHook('pagefooter-setup', $this, $tsServices);
 
-        #########################################
-        # GOOGLE ANALYTICS
-        #########################################
+        // #########################################
+        // GOOGLE ANALYTICS
+        // #########################################
 
         if (!empty($tsServices['googleAnalytics'])) {
             $gaConf = $tsServices['googleAnalytics.'];
 
-            $gaEnabled = true;
+            $gaEnabled = TRUE;
 
             if ($disabledHeaderCode && empty($gaConf['enableIfHeaderIsDisabled'])) {
-                $gaEnabled = false;
+                $gaEnabled = FALSE;
             }
 
             if ($gaEnabled && !(empty($gaConf['showIfBeLogin']) && $beLoggedIn)) {
@@ -110,16 +108,16 @@ class FooterPart {
         }
 
 
-        #########################################
-        # PIWIK
-        #########################################
+        // #########################################
+        // PIWIK
+        // #########################################
         if (!empty($tsServices['piwik.']) && !empty($tsServices['piwik.']['url']) && !empty($tsServices['piwik.']['id'])) {
             $piwikConf = $tsServices['piwik.'];
 
-            $piwikEnabled = true;
+            $piwikEnabled = TRUE;
 
             if ($disabledHeaderCode && empty($piwikConf['enableIfHeaderIsDisabled'])) {
-                $piwikEnabled = false;
+                $piwikEnabled = FALSE;
             }
 
             if ($piwikEnabled && !(empty($piwikConf['showIfBeLogin']) && $beLoggedIn)) {

@@ -1,9 +1,9 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-#################################################
-# SEO Settings Root
-#################################################
+// ##############################################
+// SEO Settings Root
+// ##############################################
 $TCA['tx_tqseo_setting_root'] = array(
     'ctrl' => $TCA['tx_tqseo_setting_root']['ctrl'],
     'interface' => array(

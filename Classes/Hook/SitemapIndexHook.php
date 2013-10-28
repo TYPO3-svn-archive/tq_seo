@@ -34,48 +34,46 @@ namespace TQ\TqSeo\Hook;
  */
 class SitemapIndexHook {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Add Page to sitemap table
      */
     public function addPageToSitemapIndex() {
-        global $TYPO3_DB, $TSFE, $TYPO3_CONF_VARS;
-
         // check if sitemap is enabled in root
-        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)
-            || !\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', true)
+        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
+            || !\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_page_indexer', TRUE)
         ) {
-            return true;
+            return TRUE;
         }
 
         // Skip non-seo-pages
         if ($_SERVER['REQUEST_METHOD'] !== 'GET'
-            || !empty($TSFE->fe_user->user['uid'])
+            || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
         ) {
-            return true;
+            return TRUE;
         }
 
         // Skip own sitemap tools
-        if ($TSFE->type == 841131 || $TSFE->type == 841132) {
-            return true;
+        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132) {
+            return TRUE;
         }
 
         // Skip no_cache-pages
-        if (!empty($TSFE->no_cache)) {
-            return true;
+        if (!empty($GLOBALS['TSFE']->no_cache)) {
+            return TRUE;
         }
 
         // Fetch chash
-        $pageHash = null;
-        if (!empty($TSFE->cHash)) {
-            $pageHash = $TSFE->cHash;
+        $pageHash = NULL;
+        if (!empty($GLOBALS['TSFE']->cHash)) {
+            $pageHash = $GLOBALS['TSFE']->cHash;
         }
 
         // Fetch sysLanguage
@@ -83,10 +81,10 @@ class SitemapIndexHook {
 
         // Fetch page changeFrequency
         $pageChangeFrequency = 0;
-        if (!empty($TSFE->page['tx_tqseo_change_frequency'])) {
-            $pageChangeFrequency = (int)$TSFE->page['tx_tqseo_change_frequency'];
-        } elseif (!empty($TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'];
+        if (!empty($GLOBALS['TSFE']->page['tx_tqseo_change_frequency'])) {
+            $pageChangeFrequency = (int)$GLOBALS['TSFE']->page['tx_tqseo_change_frequency'];
+        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
+            $pageChangeFrequency = (int)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'];
         }
 
         if (empty($pageChangeFrequency)) {
@@ -94,14 +92,14 @@ class SitemapIndexHook {
         }
 
         // Fetch pageUrl
-        if ($pageHash !== null) {
-            $pageUrl = $TSFE->anchorPrefix;
+        if ($pageHash !== NULL) {
+            $pageUrl = $GLOBALS['TSFE']->anchorPrefix;
         } else {
             $linkConf = array(
-                'parameter' => $TSFE->id,
+                'parameter' => $GLOBALS['TSFE']->id,
             );
 
-            $pageUrl = $TSFE->cObj->typoLink_URL($linkConf);
+            $pageUrl = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
             $pageUrl = self::_processLinkUrl($pageUrl);
         }
 
@@ -111,22 +109,22 @@ class SitemapIndexHook {
             'tstamp'                => $tstamp,
             'crdate'                => $tstamp,
             'page_rootpid'          => \TQ\TqSeo\Utility\GeneralUtility::getRootPid(),
-            'page_uid'              => $TSFE->id,
+            'page_uid'              => $GLOBALS['TSFE']->id,
             'page_language'         => $pageLanguage,
             'page_url'              => $pageUrl,
             'page_hash'             => md5($pageUrl),
-            'page_depth'            => count($TSFE->rootLine),
+            'page_depth'            => count($GLOBALS['TSFE']->rootLine),
             'page_change_frequency' => $pageChangeFrequency,
         );
 
         // Call hook
-        \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-page', null, $pageData);
+        \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-page', NULL, $pageData);
 
         if (!empty($pageData)) {
             \TQ\TqSeo\Utility\SitemapUtility::index($pageData, 'page');
         }
 
-        return true;
+        return TRUE;
     }
 
     /**
@@ -135,32 +133,31 @@ class SitemapIndexHook {
      * @param    array $pageData    Page informations
      */
     protected static function _processLinkUrl($linkUrl) {
-        global $TSFE;
-        static $absRefPrefix = null;
+        static $absRefPrefix = NULL;
         static $absRefPrefixLength = 0;
         $ret = $linkUrl;
 
         // Fetch abs ref prefix if available/set
-        if ($absRefPrefix === null) {
-            if (!empty($TSFE->tmpl->setup['config.']['absRefPrefix'])) {
-                $absRefPrefix       = $TSFE->tmpl->setup['config.']['absRefPrefix'];
+        if ($absRefPrefix === NULL) {
+            if (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'])) {
+                $absRefPrefix       = $GLOBALS['TSFE']->tmpl->setup['config.']['absRefPrefix'];
                 $absRefPrefixLength = strlen($absRefPrefix);
             } else {
-                $absRefPrefix = false;
+                $absRefPrefix = FALSE;
             }
         }
 
         // remove abs ref prefix
-        if ($absRefPrefix !== false && strpos($ret, $absRefPrefix) === 0) {
+        if ($absRefPrefix !== FALSE && strpos($ret, $absRefPrefix) === 0) {
             $ret = substr($ret, $absRefPrefixLength);
         }
 
         return $ret;
     }
 
-    ###########################################################################
+    // ########################################################################
     # HOOKS
-    ###########################################################################
+    // ########################################################################
 
     /**
      * Hook: Index Page Content
@@ -188,29 +185,27 @@ class SitemapIndexHook {
      * @param    object $pObj    Object
      */
     public static function hook_linkParse(&$pObj) {
-        global $TSFE;
-
         // check if sitemap is enabled in root
-        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', true)
-            || !\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', true)
+        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap', TRUE)
+            || !\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_typolink_indexer', TRUE)
         ) {
-            return true;
+            return TRUE;
         }
 
         // skip POST-calls and feuser login
         if ($_SERVER['REQUEST_METHOD'] !== 'GET'
-            || !empty($TSFE->fe_user->user['uid'])
+            || !empty($GLOBALS['TSFE']->fe_user->user['uid'])
         ) {
             return;
         }
 
         // Skip own sitemap tools
-        if ($TSFE->type == 841131 || $TSFE->type == 841132) {
-            return true;
+        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132) {
+            return TRUE;
         }
 
         // dont parse if page is not cacheable
-        if (!$TSFE->isStaticCacheble()) {
+        if (!$GLOBALS['TSFE']->isStaticCacheble()) {
             return;
         }
 
@@ -233,9 +228,9 @@ class SitemapIndexHook {
             return;
         }
 
-        #####################################
-        # Init
-        #####################################
+        // ####################################
+        //  Init
+        // ####################################
         $uid = $linkConf['parameter'];
 
         $addParameters = array();
@@ -243,14 +238,14 @@ class SitemapIndexHook {
             parse_str($linkConf['additionalParams'], $addParameters);
         }
 
-        #####################################
-        # Check if link is cacheable
-        #####################################
-        $isValid = false;
+        // #####################################
+        // Check if link is cacheable
+        // #####################################
+        $isValid = FALSE;
 
         // check if conf is valid
         if (!empty($linkConf['useCacheHash'])) {
-            $isValid = true;
+            $isValid = TRUE;
         }
 
         // check for typical typo3 params
@@ -259,7 +254,7 @@ class SitemapIndexHook {
         unset($addParamsCache['type']);
 
         if (empty($addParamsCache)) {
-            $isValid = true;
+            $isValid = TRUE;
         }
 
         if (!$isValid) {
@@ -267,9 +262,9 @@ class SitemapIndexHook {
             return;
         }
 
-        #####################################
-        # Rootline
-        #####################################
+        // #####################################
+        // Rootline
+        // #####################################
         $rootline = \TQ\TqSeo\Utility\GeneralUtility::getRootLine($uid);
 
         if (empty($rootline)) {
@@ -278,37 +273,37 @@ class SitemapIndexHook {
 
         $page = reset($rootline);
 
-        #####################################
-        # Build relative url
-        #####################################
+        // #####################################
+        // Build relative url
+        // #####################################
         $linkParts = parse_url($linkUrl);
         $pageUrl   = ltrim($linkParts['path'], '/');
         if (!empty($linkParts['query'])) {
             $pageUrl .= '?' . $linkParts['query'];
         }
 
-        #####################################
-        # Page settings
-        #####################################
+        // #####################################
+        // Page settings
+        // #####################################
         // Fetch page changeFrequency
         $pageChangeFrequency = 0;
         if (!empty($page['tx_tqseo_change_frequency'])) {
             $pageChangeFrequency = (int)$page['tx_tqseo_change_frequency'];
-        } elseif (!empty($TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
-            $pageChangeFrequency = (int)$TSFE->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'];
+        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'])) {
+            $pageChangeFrequency = (int)$GLOBALS['TSFE']->tmpl->setup['plugin.']['tq_seo.']['sitemap.']['changeFrequency'];
         }
 
         // Fetch sysLanguage
         $pageLanguage = 0;
         if (isset($addParameters['L'])) {
             $pageLanguage = (int)$addParameters['L'];
-        } elseif (!empty($TSFE->tmpl->setup['config.']['sys_language_uid'])) {
-            $pageLanguage = (int)$TSFE->tmpl->setup['config.']['sys_language_uid'];
+        } elseif (!empty($GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'])) {
+            $pageLanguage = (int)$GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'];
         }
 
-        #####################################
-        # Indexing
-        #####################################
+        // #####################################
+        // Indexing
+        // #####################################
         $tstamp = $_SERVER['REQUEST_TIME'];
 
         $pageData = array(
@@ -324,13 +319,13 @@ class SitemapIndexHook {
         );
 
         // Call hook
-        \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-link', null, $pageData);
+        \TQ\TqSeo\Utility\GeneralUtility::callHook('sitemap-index-link', NULL, $pageData);
 
         if (!empty($pageData)) {
             \TQ\TqSeo\Utility\SitemapUtility::index($pageData, 'link');
         }
 
-        return true;
+        return TRUE;
     }
 }
 

@@ -34,9 +34,9 @@ namespace TQ\TqSeo\Sitemap\Generator;
  */
 class TxtGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Create sitemap index
@@ -53,7 +53,7 @@ class TxtGenerator extends \TQ\TqSeo\Sitemap\Generator\AbstractGenerator {
      * @param   integer $page   Page
      * @return  string
      */
-    public function sitemap($page = null) {
+    public function sitemap($page = NULL) {
         $ret = array();
 
         foreach ($this->sitemapPages as $sitemapPage) {

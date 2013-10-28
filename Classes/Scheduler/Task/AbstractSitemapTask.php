@@ -34,20 +34,20 @@ namespace TQ\TqSeo\Scheduler\Task;
  */
 abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Sitemap base directory
      *
      * @var string
      */
-    protected $_sitemapDir = null;
+    protected $_sitemapDir = NULL;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Execute task
@@ -66,17 +66,17 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
             $this->_initRootPage($uid);
 
 
-            if (\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false, $uid)) {
+            if (\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE, $uid)) {
                 foreach ($this->_languageIdList as $languageId) {
                     $this->_setRootPageLanguage($languageId);
                     $this->_buildSitemap($uid, $languageId);
                 }
             } else {
-                $this->_buildSitemap($uid, null);
+                $this->_buildSitemap($uid, NULL);
             }
         }
 
-        return true;
+        return TRUE;
     }
 
     /**
@@ -108,29 +108,27 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
      * @return    string
      */
     protected function _generateSitemapLinkTemplate($template) {
-        global $TSFE;
-
-        $ret = null;
+        $ret = NULL;
 
         // Set link template for index file
         $linkConf = array(
             'parameter' => $this->_sitemapDir . '/' . $template,
         );
-        if (strlen($TSFE->baseUrl) > 1) {
-            $ret = $TSFE->baseUrlWrap($TSFE->cObj->typoLink_URL($linkConf));
-        } elseif (strlen($TSFE->absRefPrefix) > 1) {
-            $ret = $TSFE->absRefPrefix . $TSFE->cObj->typoLink_URL($linkConf);
+        if (strlen($GLOBALS['TSFE']->baseUrl) > 1) {
+            $ret = $GLOBALS['TSFE']->baseUrlWrap($GLOBALS['TSFE']->cObj->typoLink_URL($linkConf));
+        } elseif (strlen($GLOBALS['TSFE']->absRefPrefix) > 1) {
+            $ret = $GLOBALS['TSFE']->absRefPrefix . $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
         } else {
-            $ret = $TSFE->cObj->typoLink_URL($linkConf);
+            $ret = $GLOBALS['TSFE']->cObj->typoLink_URL($linkConf);
         }
 
         return $ret;
     }
 
 
-    ###########################################################################
+    // ########################################################################
     # Abstract Methods
-    ###########################################################################
+    // ########################################################################
 
     /**
      * Build sitemap

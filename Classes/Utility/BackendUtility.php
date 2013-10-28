@@ -40,12 +40,10 @@ class BackendUtility {
      * @return  array
      */
     public static function getRootPageList() {
-        global $TYPO3_DB;
+        static $cache = NULL;
 
-        static $cache = null;
-
-        if ($cache === null) {
-            $tmp = $TYPO3_DB->exec_SELECTgetRows(
+        if ($cache === NULL) {
+            $tmp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 'uid, pid, title',
                 'pages',
                 'is_siteroot = 1 AND deleted = 0'
@@ -68,11 +66,9 @@ class BackendUtility {
      * @return  array
      */
     public static function getRootPageSettingList() {
-        global $TYPO3_DB;
+        static $cache = NULL;
 
-        static $cache = null;
-
-        if ($cache === null) {
+        if ($cache === NULL) {
             $cache = array();
 
             $query = 'SELECT seosr.*
@@ -82,9 +78,9 @@ class BackendUtility {
                                 AND p.is_siteroot = 1
                                 AND p.deleted = 0
                         WHERE seosr.deleted = 0';
-            $res   = $TYPO3_DB->sql_query($query);
+            $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
-            while ($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 $cache[$row['pid']] = $row;
             }
         }

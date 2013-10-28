@@ -41,20 +41,18 @@ class PagetitlePart {
      * @return    string            Modified page title
      */
     public function main($title) {
-        global $TSFE;
-
         // INIT
         $ret              = $title;
-        $rawTitel         = !empty($TSFE->altPageTitle) ? $TSFE->altPageTitle : $TSFE->page['title'];
-        $tsSetup          = $TSFE->tmpl->setup;
+        $rawTitel         = !empty($GLOBALS['TSFE']->altPageTitle) ? $GLOBALS['TSFE']->altPageTitle : $GLOBALS['TSFE']->page['title'];
+        $tsSetup          = $GLOBALS['TSFE']->tmpl->setup;
         $tsSeoSetup       = array();
-        $rootLine         = $TSFE->rootLine;
-        $currentPid       = $TSFE->id;
-        $skipPrefixSuffix = false;
-        $applySitetitle   = true;
+        $rootLine         = $GLOBALS['TSFE']->rootLine;
+        $currentPid       = $GLOBALS['TSFE']->id;
+        $skipPrefixSuffix = FALSE;
+        $applySitetitle   = TRUE;
 
-        $pageTitelPrefix = false;
-        $pageTitelSuffix = false;
+        $pageTitelPrefix = FALSE;
+        $pageTitelSuffix = FALSE;
 
         $stdWrapList = array();
 
@@ -66,8 +64,8 @@ class PagetitlePart {
         }
 
         // Use browsertitle if available
-        if (!empty($TSFE->page['tx_tqseo_pagetitle_rel'])) {
-            $rawTitel = $TSFE->page['tx_tqseo_pagetitle_rel'];
+        if (!empty($GLOBALS['TSFE']->page['tx_tqseo_pagetitle_rel'])) {
+            $rawTitel = $GLOBALS['TSFE']->page['tx_tqseo_pagetitle_rel'];
         }
 
         // Call hook
@@ -83,31 +81,31 @@ class PagetitlePart {
             $rawTitel = $this->cObj->stdWrap($rawTitel, $stdWrapList['before.']);
         }
 
-        #######################################################################
-        # RAW PAGE TITEL
-        #######################################################################
-        if (!empty($TSFE->page['tx_tqseo_pagetitle'])) {
-            $ret = $TSFE->page['tx_tqseo_pagetitle'];
+        // #######################################################################
+        // RAW PAGE TITEL
+        // #######################################################################
+        if (!empty($GLOBALS['TSFE']->page['tx_tqseo_pagetitle'])) {
+            $ret = $GLOBALS['TSFE']->page['tx_tqseo_pagetitle'];
 
             // Add template prefix/suffix
             if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                $applySitetitle = false;
+                $applySitetitle = FALSE;
             }
 
-            $skipPrefixSuffix = true;
+            $skipPrefixSuffix = TRUE;
         }
 
 
-        #######################################################################
-        # PAGE TITEL PREFIX/SUFFIX
-        #######################################################################
+        // #######################################################################
+        // PAGE TITEL PREFIX/SUFFIX
+        // #######################################################################
         if (!$skipPrefixSuffix) {
             foreach ($rootLine as $page) {
                 switch ((int)$page['tx_tqseo_inheritance']) {
                     case 0:
-                        ###################################
-                        # Normal
-                        ###################################
+                        // ###################################
+                        // Normal
+                        // ###################################
                         if (!empty($page['tx_tqseo_pagetitle_prefix'])) {
                             $pageTitelPrefix = $page['tx_tqseo_pagetitle_prefix'];
                         }
@@ -116,17 +114,17 @@ class PagetitlePart {
                             $pageTitelSuffix = $page['tx_tqseo_pagetitle_suffix'];
                         }
 
-                        if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
+                        if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
                             // pagetitle found - break foreach
                             break 2;
                         }
                         break;
 
                     case 1:
-                        ###################################
-                        # Skip
-                        # (don't herit from this page)
-                        ###################################
+                        // ###################################
+                        // Skip
+                        // (don't herit from this page)
+                        // ###################################
                         if ((int)$page['uid'] != $currentPid) {
                             continue 2;
                         }
@@ -144,9 +142,9 @@ class PagetitlePart {
                 }
             }
 
-            #################
-            # Process settings from access point
-            #################
+            // #################
+            // Process settings from access point
+            // #################
             $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
             $store     = $connector->getStore('pagetitle');
 
@@ -167,11 +165,11 @@ class PagetitlePart {
                     $ret      = $store['pagetitle.absolute'];
                     $rawTitel = $store['pagetitle.absolute'];
 
-                    $pageTitelPrefix = false;
-                    $pageTitelSuffix = false;
+                    $pageTitelPrefix = FALSE;
+                    $pageTitelSuffix = FALSE;
 
                     if (empty($tsSeoSetup['pageTitle.']['applySitetitleToPagetitle'])) {
-                        $applySitetitle = false;
+                        $applySitetitle = FALSE;
                     }
                 }
 
@@ -181,28 +179,28 @@ class PagetitlePart {
             }
 
             // Apply prefix and suffix
-            if ($pageTitelPrefix !== false || $pageTitelSuffix !== false) {
+            if ($pageTitelPrefix !== FALSE || $pageTitelSuffix !== FALSE) {
                 $ret = $rawTitel;
 
-                if ($pageTitelPrefix !== false) {
+                if ($pageTitelPrefix !== FALSE) {
                     $ret = $pageTitelPrefix . ' ' . $ret;
                 }
 
-                if ($pageTitelSuffix !== false) {
+                if ($pageTitelSuffix !== FALSE) {
                     $ret .= ' ' . $pageTitelSuffix;
                 }
 
                 if (!empty($tsSeoSetup['pageTitle.']['applySitetitleToPrefixSuffix'])) {
-                    $applySitetitle = true;
+                    $applySitetitle = TRUE;
                 }
             } else {
                 $ret = $rawTitel;
             }
         }
 
-        #######################################################################
-        # APPLY SITETITLE (from setup)
-        #######################################################################
+        // #######################################################################
+        // APPLY SITETITLE (from setup)
+        // #######################################################################
         if ($applySitetitle) {
             $pageTitleGlue    = ':';
             $glueSpacerBefore = '';

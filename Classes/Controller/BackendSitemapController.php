@@ -32,29 +32,26 @@ namespace TQ\TqSeo\Controller;
  * @subpackage  tq_seo
  */
 class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandardModule {
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Main action
      */
     public function mainAction() {
-        global $TYPO3_DB;
-
-
         // Init
         $rootPageList		= \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
         $rootSettingList	= \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
-        ###############################
-        # Fetch
-        ###############################
-        $statsList['sum_total'] = $TYPO3_DB->exec_SELECTgetRows(
+        // ############################
+        // Fetch
+        // ############################
+        $statsList['sum_total'] = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
             'page_rootpid, COUNT(*) as count',
             'tx_tqseo_sitemap',
             '',
@@ -65,7 +62,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         );
 
         // Fetch domain name
-        $res = $TYPO3_DB->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'pid, domainName, forced',
             'sys_domain',
             'hidden = 0',
@@ -74,7 +71,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         );
 
         $domainList = array();
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $pid = $row['pid'];
 
             if( !empty($row['forced']) ) {
@@ -84,9 +81,9 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             }
         }
 
-        #####################
-        # Build root page list
-        ####################
+        // #################
+        // Build root page list
+        // #################
 
 
         unset($page);
@@ -98,7 +95,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             );
 
             // Get domain
-            $domain = null;
+            $domain = NULL;
             if( !empty($domainList[$pageId]) ) {
                 $domain = $domainList[$pageId];
             }
@@ -118,7 +115,7 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             }
 
             // Root statistics
-            $tmp = $TYPO3_DB->exec_SELECTgetRows(
+            $tmp = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
                 'DISTINCT page_uid',
                 'tx_tqseo_sitemap',
                 'page_rootpid = '.(int)$pageId
@@ -165,8 +162,6 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
      * Sitemap action
      */
     public function sitemapAction() {
-        global $TYPO3_DB;
-
         $params  = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('tx_tqseo_tqseotqseo_tqseositemap');
         $rootPid = $params['pageId'];
 
@@ -174,9 +169,9 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $rootPageList = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
         $rootPage	= $rootPageList[$rootPid];
 
-        ###############################
-        # Fetch
-        ###############################
+        // ###############################
+        // Fetch
+        // ###############################
         $pageTsConf = \TYPO3\CMS\Backend\Utility\BackendUtility::getPagesTSconfig($rootPid);
 
         $languageFullList = array(
@@ -195,12 +190,12 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         }
 
         // Fetch other flags
-        $res = $TYPO3_DB->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'uid, title, flag',
             'sys_language',
             'hidden = 0'
         );
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $languageFullList[ $row['uid'] ] = array(
                 'label'	=> htmlspecialchars($row['title']),
                 'flag'	=> htmlspecialchars($row['flag']),
@@ -240,12 +235,12 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             $this->_translate('empty.search_page_depth'),
         );
 
-        $res = $TYPO3_DB->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'DISTINCT page_depth',
             'tx_tqseo_sitemap',
             'page_rootpid = '.(int)$rootPid
         );
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $depth = $row['page_depth'];
             $depthList[] = array(
                 $depth,
@@ -253,9 +248,9 @@ class BackendSitemapController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             );
         }
 
-        ###############################
-        # Page/JS
-        ###############################
+        // ###############################
+        // Page/JS
+        // ###############################
 
         // FIXME: do we really need a template engine here?
         $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');

@@ -34,9 +34,9 @@ namespace TQ\TqSeo\Scheduler\Task;
  */
 class SitemapXmlTask extends \TQ\TqSeo\Scheduler\Task\AbstractSitemapTask {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
     /**
      * Sitemap base directory
@@ -45,9 +45,9 @@ class SitemapXmlTask extends \TQ\TqSeo\Scheduler\Task\AbstractSitemapTask {
      */
     protected $_sitemapDir = 'uploads/tx_tqseo/sitemap_xml';
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Build sitemap
@@ -57,9 +57,7 @@ class SitemapXmlTask extends \TQ\TqSeo\Scheduler\Task\AbstractSitemapTask {
      * @return  boolean
      */
     protected function _buildSitemap($rootPageId, $languageId) {
-        global $TSFE;
-
-        if ($languageId !== null) {
+        if ($languageId !== NULL) {
             // Language lock enabled
             $rootPageLinkTempalte = 'sitemap-r%s-l%s-p###PAGE###.xml.gz';
             $sitemapIndexFileName = 'index-r%s-l%s.xml.gz';
@@ -92,7 +90,7 @@ class SitemapXmlTask extends \TQ\TqSeo\Scheduler\Task\AbstractSitemapTask {
             $this->_writeToFile(PATH_site . '/' . $this->_sitemapDir . '/' . $fileName, $content);
         }
 
-        return true;
+        return TRUE;
     }
 
 }

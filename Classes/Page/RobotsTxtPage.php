@@ -34,31 +34,29 @@ namespace TQ\TqSeo\Page;
  */
 class RobotsTxtPage extends \TQ\TqSeo\Page\AbstractPage {
 
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Fetch and build robots.txt
      */
     public function main() {
-        global $TSFE, $TYPO3_DB, $TYPO3_CONF_VARS;
-
         $settings = \TQ\TqSeo\Utility\GeneralUtility::getRootSetting();
 
         // INIT
-        $tsSetup  = $TSFE->tmpl->setup;
-        $cObj     = $TSFE->cObj;
-        $tsfePage = $TSFE->page;
+        $tsSetup  = $GLOBALS['TSFE']->tmpl->setup;
+        $cObj     = $GLOBALS['TSFE']->cObj;
+        $tsfePage = $GLOBALS['TSFE']->page;
         $rootPid  = \TQ\TqSeo\Utility\GeneralUtility::getRootPid();
         $ret      = '';
 
-        $tsSetupSeo = null;
+        $tsSetupSeo = NULL;
         if (!empty($tsSetup['plugin.']['tq_seo.']['robotsTxt.'])) {
             $tsSetupSeo = $tsSetup['plugin.']['tq_seo.']['robotsTxt.'];
         }
@@ -68,22 +66,22 @@ class RobotsTxtPage extends \TQ\TqSeo\Page\AbstractPage {
         }
 
         // check if sitemap is enabled in root
-        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', true)) {
-            return true;
+        if (!\TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_robotstxt', TRUE)) {
+            return TRUE;
         }
 
         $linkToStaticSitemap = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue(
             'is_robotstxt_sitemap_static',
-            false
+            FALSE
         );
 
         // Language lock
-        $sitemapLanguageLock = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', false);
+        $sitemapLanguageLock = \TQ\TqSeo\Utility\GeneralUtility::getRootSettingValue('is_sitemap_language_lock', FALSE);
         $languageId          = \TQ\TqSeo\Utility\GeneralUtility::getLanguageId();
 
-        ###############################
-        # Fetch robots.txt content
-        ###############################
+        // ###############################
+        // Fetch robots.txt content
+        // ###############################
         $settings['robotstxt'] = trim($settings['robotstxt']);
 
         if (!empty($settings['robotstxt'])) {
@@ -95,9 +93,9 @@ class RobotsTxtPage extends \TQ\TqSeo\Page\AbstractPage {
             $ret .= $cObj->cObjGetSingle($tsSetupSeo['default'], $tsSetupSeo['default.']);
         }
 
-        ###############################
-        # Fetch extra robots.txt content
-        ###############################
+        // ###############################
+        // Fetch extra robots.txt content
+        // ###############################
         // User additional
         if (!empty($settings['robotstxt_additional'])) {
             $ret .= "\n\n" . $settings['robotstxt_additional'];
@@ -113,17 +111,17 @@ class RobotsTxtPage extends \TQ\TqSeo\Page\AbstractPage {
             }
         }
 
-        ###############################
-        # Marker
-        ###############################
+        // ###############################
+        // Marker
+        // ###############################
         if (!empty($tsSetupSeo['marker.'])) {
             // Init marker list
             $markerList     = array();
             $markerConfList = array();
 
             foreach ($tsSetupSeo['marker.'] as $name => $data) {
-                if (strpos($name, '.') === false) {
-                    $markerConfList[$name] = null;
+                if (strpos($name, '.') === FALSE) {
+                    $markerConfList[$name] = NULL;
                 }
             }
 

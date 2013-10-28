@@ -33,9 +33,9 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  */
 class ext_update {
 
-    ###########################################################################
-    # Attributs
-    ###########################################################################
+    // ########################################################################
+    // Attributs
+    // ########################################################################
 
     /**
      * Message list
@@ -49,11 +49,11 @@ class ext_update {
      *
      * @var boolean
      */
-    protected $_clearCache = false;
+    protected $_clearCache = FALSE;
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Main update function called by the extension manager.
@@ -94,8 +94,6 @@ class ext_update {
      * Update TYPO3 TypoScript includes
      */
     protected function _processUpdateTypoScriptIncludes() {
-        global $TYPO3_DB;
-
         $msgTitle  = 'Update TypoScript includes';
         $msgStatus = FlashMessage::INFO;
         $msgText   = array();
@@ -105,12 +103,12 @@ class ext_update {
             'include_static_file LIKE \'%EXT:tq_seo/static/default/%\'',
         );
         $condition = implode(' OR ', $condition);
-        $updateCount = $TYPO3_DB->exec_SELECTcountRows('*', 'sys_template', $condition);
+        $updateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'sys_template', $condition);
 
         if( $updateCount > 0 ) {
 
-            $res = $TYPO3_DB->exec_SELECTquery('*', 'sys_template', $condition);
-            while($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            $res = $GLOBALS['TYPO3_DB']\0// \1->exec_SELECTquery('*', 'sys_template', $condition);
+            while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // Update data
                 $updateData = array();
 
@@ -125,7 +123,7 @@ class ext_update {
 
                 if( !empty($updateData) ) {
                     // Update task with update data
-                    $TYPO3_DB->exec_UPDATEquery('sys_template', 'uid='.(int)$row['uid'], $updateData);
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_template', 'uid='.(int)$row['uid'], $updateData);
                     $msgText[] = 'TypoScript template '.$this->_messageTitleFromRow($row).' updated';
                     $msgStatus = FlashMessage::OK;
                 }
@@ -146,8 +144,6 @@ class ext_update {
      * Update TYPO3 scheduler tasks
      */
     protected function _processUpdateScheduler() {
-        global $TYPO3_DB;
-
         $msgTitle  = 'Update scheduler tasks';
         $msgStatus = FlashMessage::INFO;
         $msgText   = array();
@@ -159,12 +155,12 @@ class ext_update {
             'serialized_task_object LIKE \'%tx_tqseo_scheduler_task_sitemap_txt%\'',
         );
         $condition = implode(' OR ', $condition);
-        $updateCount = $TYPO3_DB->exec_SELECTcountRows('*', 'tx_scheduler_task', $condition);
+        $updateCount = $GLOBALS['TYPO3_DB']->exec_SELECTcountRows('*', 'tx_scheduler_task', $condition);
 
         if( $updateCount > 0 ) {
 
-            $res = $TYPO3_DB->exec_SELECTquery('*', 'tx_scheduler_task', $condition);
-            while($row = $TYPO3_DB->sql_fetch_assoc($res)) {
+            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'tx_scheduler_task', $condition);
+            while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // Update data
                 $updateData = array();
 
@@ -197,7 +193,7 @@ class ext_update {
 
                 if( !empty($updateData) ) {
                     // Update task with update data
-                    $TYPO3_DB->exec_UPDATEquery('tx_scheduler_task', 'uid='.(int)$row['uid'], $updateData);
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('tx_scheduler_task', 'uid='.(int)$row['uid'], $updateData);
                     $msgText[] = 'Scheduler Task '.$this->_messageTitleFromRow($row).' updated';
                     $msgStatus = FlashMessage::OK;
                 }

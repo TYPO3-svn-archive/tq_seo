@@ -32,37 +32,35 @@ namespace TQ\TqSeo\Controller;
  * @subpackage  tq_seo
  */
 class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractStandardModule {
-    ###########################################################################
-    # Attributes
-    ###########################################################################
+    // ########################################################################
+    // Attributes
+    // ########################################################################
 
-    ###########################################################################
-    # Methods
-    ###########################################################################
+    // ########################################################################
+    // Methods
+    // ########################################################################
 
     /**
      * Main action
      */
     public function mainAction() {
-        global $TYPO3_DB, $BE_USER;
-
-        #####################
-        # Root page list
-        ####################
+        // #################
+        // Root page list
+        // #################
 
         $rootPageList   = \TQ\TqSeo\Utility\BackendUtility::getRootPageList();
         $rootIdList     = array_keys($rootPageList);
 
-        $rootPidCondition = null;
+        $rootPidCondition = NULL;
         if( !empty($rootIdList) ) {
             $rootPidCondition = 'p.uid IN ('.implode(',', $rootIdList).')';
         } else {
             $rootPidCondition = '1=0';
         }
 
-        #####################
-        # Root setting list (w/ automatic creation)
-        ####################
+        // #################
+        // Root setting list (w/ automatic creation)
+        // #################
 
         // check which root lages have no root settings
         $query = 'SELECT p.uid
@@ -72,25 +70,25 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
                              AND seosr.deleted = 0
                     WHERE '.$rootPidCondition.'
                       AND seosr.uid IS NULL';
-        $res = $TYPO3_DB->sql_query($query);
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        $res = $GLOBALS['TYPO3_DB']->sql_query($query);
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $tmpUid = $row['uid'];
             $query = 'INSERT INTO tx_tqseo_setting_root (pid, tstamp, crdate, cruser_id)
                             VALUES ('.(int)$tmpUid.',
                                     '.(int)time().',
                                     '.(int)time().',
-                                    '.(int)$BE_USER->user['uid'].')';
-            $TYPO3_DB->sql_query($query);
+                                    '.(int)$GLOBALS['BE_USER']->user['uid'].')';
+            $GLOBALS['TYPO3_DB']->sql_query($query);
         }
 
         $rootSettingList  = \TQ\TqSeo\Utility\BackendUtility::getRootPageSettingList();
 
-        #####################
-        # Domain list
-        ####################
+        // #################
+        // Domain list
+        // ##################
 
         // Fetch domain name
-        $res = $TYPO3_DB->exec_SELECTquery(
+        $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery(
             'uid, pid, domainName, forced',
             'sys_domain',
             'hidden = 0',
@@ -99,13 +97,13 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
         );
 
         $domainList = array();
-        while( $row = $TYPO3_DB->sql_fetch_assoc($res) ) {
+        while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
             $domainList[ $row['pid'] ][ $row['uid'] ] = $row;
         }
 
-        #####################
-        # Build root page list
-        ####################
+        // #################
+        // Build root page list
+        // #################
 
         unset($page);
         foreach($rootPageList as $pageId => &$page) {
@@ -136,9 +134,9 @@ class BackendRootSettingsController extends \TQ\TqSeo\Backend\Module\AbstractSta
             \TYPO3\CMS\Core\Messaging\FlashMessageQueue::addMessage($message);
         }
 
-        ###############################
-        # Page/JS
-        ###############################
+        // ############################
+        // Page/JS
+        // ############################
 
         // FIXME: do we really need a template engine here?
         $this->template = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Backend\\Template\\DocumentTemplate');
