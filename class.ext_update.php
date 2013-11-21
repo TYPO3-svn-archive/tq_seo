@@ -107,7 +107,7 @@ class ext_update {
 
         if( $updateCount > 0 ) {
 
-            $res = $GLOBALS['TYPO3_DB']\0// \1->exec_SELECTquery('*', 'sys_template', $condition);
+            $res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'sys_template', $condition);
             while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
                 // Update data
                 $updateData = array();

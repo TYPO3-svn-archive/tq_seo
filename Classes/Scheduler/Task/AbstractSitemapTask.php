@@ -127,7 +127,7 @@ abstract class AbstractSitemapTask extends \TQ\TqSeo\Scheduler\Task\AbstractTask
 
 
     // ########################################################################
-    # Abstract Methods
+    // Abstract Methods
     // ########################################################################
 
     /**

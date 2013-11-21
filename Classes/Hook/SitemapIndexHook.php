@@ -128,9 +128,10 @@ class SitemapIndexHook {
     }
 
     /**
-     * Insert page into sitemap
+     * Process/Clear link url
      *
-     * @param    array $pageData    Page informations
+     * @param   string  $linkUrl    Link url
+     * @return  string
      */
     protected static function _processLinkUrl($linkUrl) {
         static $absRefPrefix = NULL;
@@ -156,7 +157,7 @@ class SitemapIndexHook {
     }
 
     // ########################################################################
-    # HOOKS
+    // HOOKS
     // ########################################################################
 
     /**

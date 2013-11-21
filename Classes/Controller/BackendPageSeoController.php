@@ -126,7 +126,7 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
             'hidden = 0'
         );
         while( $row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res) ) {
-            $languageFullList[ $row['uid'] ] = array(
+            $languageFullList[$row['uid']] = array(
                 'label'	=> htmlspecialchars($row['title']),
                 'flag'	=> htmlspecialchars($row['flag']),
             );

@@ -419,9 +419,9 @@ if (TYPO3_MODE == 'BE') {
     // ####################################################
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'TQ.' . $_EXTKEY, # Extension - Key
-        'web', # Category
-        'pageseo', # Modulname
+        'TQ.' . $_EXTKEY,
+        'web',
+        'pageseo',
         '', # Position
         array('BackendPageSeo' => 'main,metadata,geo,searchengines,url,pagetitle,pagetitlesim'), # Controller array
         array(
@@ -449,11 +449,11 @@ if (TYPO3_MODE == 'BE') {
 
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'TQ.' . $_EXTKEY, # Extension - Key
-        'tqseo', # Category
-        'controlcenter', # Modulname
-        '', # Position
-        array('BackendRootSettings' => 'main'), # Controller array
+        'TQ.' . $_EXTKEY,
+        'tqseo',
+        'controlcenter',
+        '',
+        array('BackendRootSettings' => 'main'),
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleIcon.png',
@@ -462,11 +462,11 @@ if (TYPO3_MODE == 'BE') {
     );
 
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'TQ.' . $_EXTKEY, # Extension - Key
-        'tqseo', # Category
-        'sitemap', # Modulname
-        'after:controlcenter', # Position
-        array('BackendSitemap' => 'main,sitemap'), # Controller array
+        'TQ.' . $_EXTKEY,
+        'tqseo',
+        'sitemap',
+        'after:controlcenter',
+        array('BackendSitemap' => 'main,sitemap'),
         array(
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/Resources/Public/Backend/Icons/ModuleIcon.png',
@@ -481,5 +481,3 @@ if (TYPO3_MODE == 'BE') {
 // ############################################################################
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'TEQneers SEO');
-
-?>

@@ -6,7 +6,7 @@ if (!defined('TYPO3_MODE')) {
 $confArr = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['tq_seo']);
 
 // ##############################################
-## BACKEND
+// BACKEND
 // ##############################################
 if (TYPO3_MODE == 'BE') {
     // AJAX

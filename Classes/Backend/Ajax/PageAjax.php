@@ -298,7 +298,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             $tmp               = $row['row'];
             $list[$tmp['uid']] = $tmp;
 
-            $pageIdList[ $tmp['uid'] ] = $tmp['uid'];
+            $pageIdList[$tmp['uid']] = $tmp['uid'];
         }
 
         // Calc depth
@@ -322,7 +322,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
             // Set field as main fields
             foreach($fieldList as $fieldName) {
-                $row[ '_overlay' ][ $fieldName ] = $defaultOverlayStatus;
+                $row['_overlay'][$fieldName] = $defaultOverlayStatus;
             }
 
             $row['_depth'] = $this->_listCalcDepth($row['uid'], $rootLineRaw);
@@ -353,7 +353,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             unset($row);
             foreach ($list as &$row) {
                 foreach($overlayFieldList as $fieldName) {
-                    $row[ '_overlay' ][ $fieldName ] = 0;
+                    $row['_overlay'][$fieldName] = 0;
                 }
             }
             unset($row);
@@ -368,16 +368,16 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                 // inject title
                 $fieldName = 'title';
                 if( !empty($overlayRow[$fieldName]) ) {
-                    $list[ $pageOriginalId ][ $fieldName ] = $overlayRow[$fieldName];
+                    $list[$pageOriginalId][$fieldName] = $overlayRow[$fieldName];
                 }
 
                 // inject all other fields
                 foreach($fieldList as $fieldName) {
                     if( !empty($overlayRow[$fieldName]) ) {
-                        $list[ $pageOriginalId ][ $fieldName ] = $overlayRow[$fieldName];
+                        $list[$pageOriginalId][$fieldName] = $overlayRow[$fieldName];
 
                         // update overlay status field to "from overlay"
-                        $list[ $pageOriginalId ][ '_overlay' ][ $fieldName ] = 1;
+                        $list[$pageOriginalId]['_overlay'][$fieldName] = 1;
                     }
                 }
             }
