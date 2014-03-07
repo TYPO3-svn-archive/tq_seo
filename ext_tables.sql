@@ -94,5 +94,29 @@ CREATE TABLE tx_tqseo_setting_root (
 	robotstxt_additional text,
 
 	deleted int(1) DEFAULT '0' NOT NULL,
-	PRIMARY KEY (uid)
+	PRIMARY KEY (uid),
+  KEY pid (pid),
+  KEY deleted (deleted)
+) ENGINE=InnoDB;
+
+
+#
+# Table structure for table 'tx_tqseo_tag'
+#
+CREATE TABLE tx_tqseo_metatag (
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  tstamp int(11) DEFAULT '0' NOT NULL,
+  crdate int(11) DEFAULT '0' NOT NULL,
+  cruser_id int(11) DEFAULT '0' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT '0' NOT NULL,
+
+  tag_name varchar(50) DEFAULT '' NOT NULL,
+  tag_value text,
+
+  PRIMARY KEY (uid),
+  UNIQUE metatag (pid,sys_language_uid,tag_name),
+  KEY sys_language_uid (sys_language_uid),
+  KEY pid (pid)
 ) ENGINE=InnoDB;

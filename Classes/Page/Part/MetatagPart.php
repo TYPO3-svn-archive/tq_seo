@@ -53,6 +53,11 @@ class MetatagPart {
         $pageMeta = array();
         $tsfePage = $GLOBALS['TSFE']->page;
 
+        $sysLanguageId = 0;
+        if( !empty($tsSetup['config.']['sys_language_uid']) ) {
+            $sysLanguageId = $tsSetup['config.']['sys_language_uid'];
+        }
+
         $customMetaTagList = array();
         $enableMetaDc      = TRUE;
 
@@ -560,13 +565,9 @@ class MetatagPart {
             }
 
             // #################
-            // Custom meta tags
+            // Advanced meta tags
             // #################
-            foreach ($customMetaTagList as $metaKey => $metaValue) {
-                $ret['custom.' . $metaKey] = '<meta name="' . htmlspecialchars(
-                        $metaKey
-                    ) . '" content="' . htmlspecialchars($metaValue) . '" />';
-            }
+            $this->_advMetaTags($ret, $tsfePage, $sysLanguageId, $customMetaTagList);
         }
 
         // #################
@@ -582,11 +583,51 @@ class MetatagPart {
             }
         }
 
-        $separator = "\n";
-
         $this->_processMetaTags($ret);
 
+        $separator = "\n";
         return $separator . implode($separator, $ret) . $separator;
+    }
+
+
+    /**
+     * Advanced meta tags
+     *
+     * @param array   $metaTags          MetaTags
+     * @param array   $tsfePage          TSFE Page
+     * @param integer $sysLanguageId     Sys Language ID
+     * @param array   $customMetaTagList Custom Meta Tag list
+     */
+    protected function _advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
+        $tsfePageId    = $tsfePage['uid'];
+
+        // #################
+        // Adv meta tags (from editor)
+        // #################
+
+        // Fetch list of meta tags from database
+        $query = 'SELECT tag_name, tag_value
+                    FROM tx_tqseo_metatag
+                   WHERE pid = '.(int)$tsfePageId.'
+                     AND sys_language_uid = '.(int)$sysLanguageId;
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
+        while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $advMetaTagList[ $row['tag_name'] ] = $row['tag_value'];
+        }
+
+        // Add metadata to tag list
+        foreach($advMetaTagList as $tagName => $tagValue) {
+            $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '"'.
+                                    'content="' . htmlspecialchars($tagValue) . '" />';
+        }
+
+        // #################
+        // Custom meta tags (from connector)
+        // #################
+        foreach ($customMetaTagList as $tagName => $tagValue) {
+            $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '"'.
+                'content="' . htmlspecialchars($tagValue) . '" />';
+        }
     }
 
 

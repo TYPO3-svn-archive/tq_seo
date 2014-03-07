@@ -81,6 +81,11 @@ TQSeo.overview.grid = {
                 this._cellEditMode = true;
                 break;
 
+            case 'advanced':
+                this._fullCellHighlight = true;
+                this._cellEditMode = true;
+                break;
+
             case 'pagetitle':
                 this._cellEditMode = true;
                 this._fullCellHighlight = false;
@@ -298,6 +303,7 @@ TQSeo.overview.grid = {
                                             field           : Ext.encode(fieldName),
                                             value           : Ext.encode(fieldValue),
                                             sysLanguage     : Ext.encode( TQSeo.overview.conf.sysLanguage ),
+                                            mode            : Ext.encode( TQSeo.overview.conf.listType ),
                                             sessionToken    : Ext.encode( TQSeo.overview.conf.sessionToken )
                                         },
                                         success: callbackFinish,
@@ -388,6 +394,12 @@ TQSeo.overview.grid = {
                         {name: 'tx_realurl_exclude', type: 'string'}
                     );
                 }
+                break;
+
+            case 'advanced':
+                gridDsColumns.push(
+                    {name: 'metatag', type: 'string'}
+                );
                 break;
 
             case 'pagetitle':
@@ -511,6 +523,12 @@ TQSeo.overview.grid = {
 
         switch( TQSeo.overview.conf.listType ) {
             case 'metadata':
+
+                var fieldRendererAdvEditor = function(value, metaData, record, rowIndex, colIndex, store) {
+                    var qtip = Ext.util.Format.htmlEncode("TODO");
+                    return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.editor+'</div>';
+                }
+
                 columnModel.push({
                     id			: 'keywords',
                     header		: TQSeo.overview.conf.lang.page_keywords,
@@ -572,6 +590,27 @@ TQSeo.overview.grid = {
                     tqSeoEditor	: {
                         xtype: 'datefield',
                         format: 'Y-m-d'
+                    }
+                },{
+                    id       : 'metatag',
+                    header   : 'TODO',
+                    width    : 20,
+                    sortable : false,
+                    dataIndex: 'metatag',
+                    renderer	: fieldRendererAdvEditor,
+                    tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+
+                        // Init editor window
+                        var editWindow = new TQSeo.metaeditor({
+                            pid: record.get('uid'),
+                            onClose: function(reload) {
+                                // TODO: Move to listener/event
+                                if(reload) {
+                                    me.storeReload();
+                                }
+                            }
+                        });
+                        editWindow.show();
                     }
                 });
                 break;
@@ -856,6 +895,39 @@ TQSeo.overview.grid = {
                     });
                 }
 
+                break;
+
+            case 'advanced':
+                var fieldRendererAdvEditor = function(value, metaData, record, rowIndex, colIndex, store) {
+                    var qtip = Ext.util.Format.htmlEncode("TODO");
+
+                    // TODO
+
+                    return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.info+'</div>TODO';
+                }
+
+                columnModel.push({
+                    id       : 'metatag',
+                    header   : 'FOO',
+                    width    : 'auto',
+                    sortable : false,
+                    dataIndex: 'metatag',
+                    renderer	: fieldRendererAdvEditor,
+                    tqSeoOnClick: function(record, fieldName, fieldId, col, data) {
+
+                        // Init editor window
+                        var editWindow = new TQSeo.metaeditor({
+                            pid: record.get('uid'),
+                            onClose: function(reload) {
+                                // TODO: Move to listener/event
+                                if(reload) {
+                                    me.storeReload();
+                                }
+                            }
+                        });
+                        editWindow.show();
+                    }
+                });
                 break;
 
 

@@ -72,6 +72,7 @@
 			<label index="menu.seo.page.geo">Geo informations</label>
 			<label index="menu.seo.page.searchengines">Searchengine information</label>
 			<label index="menu.seo.page.url">URL</label>
+			<label index="menu.seo.page.advanced">Advanced Meta</label>
 			<label index="menu.seo.page.pagetitle">Pagetitle</label>
 			<label index="menu.seo.page.pagetitlesim">Pagetitle Simulator (SLOW!)</label>
 
@@ -278,6 +279,7 @@
 			<label index="menu.seo.page.geo">Geo-Tags</label>
 			<label index="menu.seo.page.searchengines">Suchmaschinen-Infos</label>
 			<label index="menu.seo.page.url">URL</label>
+			<label index="menu.seo.page.advanced">Erweiterte Metatags</label>
 			<label index="menu.seo.page.pagetitle">Seitentitel</label>
 			<label index="menu.seo.page.pagetitlesim">Seitentitel Simulator (LANGSAM!)</label>
 

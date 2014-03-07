@@ -87,7 +87,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                         )
                     );
 
-                    $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
 
                     unset($row);
                     foreach ($list as &$row) {
@@ -111,7 +111,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                         )
                     );
 
-                    $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
 
                 case 'searchengines':
@@ -124,7 +124,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                         )
                     );
 
-                    $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
 
                 case 'url':
@@ -140,7 +140,19 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                         )
                     );
 
-                    $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
+                    break;
+
+
+                case 'advanced':
+                    $fieldList = array_merge(
+                        $fieldList,
+                        array(
+                            // Maybe we need more fields later
+                        )
+                    );
+
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList, true);
                     break;
 
                 case 'pagetitle':
@@ -154,7 +166,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                         )
                     );
 
-                    $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+                    $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
                     break;
 
                 case 'pagetitlesim':
@@ -259,13 +271,14 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
     /**
      * Return default tree
      *
-     * @param   array   $page         Root page
-     * @param   integer $depth        Depth
-     * @param   array   $fieldList    Field list
-     * @param   integer $sysLanguage  System language
+     * @param   array        $page               Root page
+     * @param   integer      $depth              Depth
+     * @param   integer      $sysLanguage        System language
+     * @param   array        $fieldList          Field list
+     * @param   boolean      $enableAdvMetaTags  Enable adv. meta tags
      * @return  array
      */
-    protected function _listDefaultTree($page, $depth, $fieldList, $sysLanguage) {
+    protected function _listDefaultTree($page, $depth, $sysLanguage, $fieldList, $enableAdvMetaTags = false) {
         $rootPid = $page['uid'];
 
         $list = array();
@@ -442,7 +455,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             'tx_tqseo_pagetitle_suffix',
         );
 
-        $list = $this->_listDefaultTree($page, $depth, $fieldList, $sysLanguage);
+        $list = $this->_listDefaultTree($page, $depth, $sysLanguage, $fieldList);
 
         $uidList = array_keys($list);
 
@@ -489,10 +502,11 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
     /**
      * Init TSFE (for simulated pagetitle)
      *
-     * @param   array        $page        Page
-     * @param   NULL|array   $rootLine    Rootline
-     * @param   NULL|array   $pageData    Page data (recursive generated)
-     * @param   NULL|integer $sysLanguage System language
+     * @param   array        $page         Page
+     * @param   NULL|array   $rootLine     Rootline
+     * @param   NULL|array   $pageData     Page data (recursive generated)
+     * @param   NULL|array   $rootlineFull Rootline full
+     * @param   NULL|integer $sysLanguage  System language
      * @return  void
      */
     protected function _initTsfe($page, $rootLine = NULL, $pageData = NULL, $rootlineFull = NULL, $sysLanguage = NULL) {
@@ -542,7 +556,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
             // Cache TSFE if possible to prevent reinit (is still slow but we need the TSFE)
             if (empty($cacheTSFE[$pageUid])) {
-                $GLOBALS['TSFE']       = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $GLOBALS['TSFE'] = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Frontend\\Controller\\TypoScriptFrontendController',
                     $GLOBALS['TYPO3_CONF_VARS']
                 );
@@ -550,7 +564,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                     'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer'
                 );
 
-                $TSObj           = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
                     'TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService'
                 );
                 $TSObj->tt_track = 0;
@@ -595,9 +609,10 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         $fieldName   = strtolower((string)$this->_postVar['field']);
         $fieldValue  = (string)$this->_postVar['value'];
         $sysLanguage = (int)$this->_postVar['sysLanguage'];
+        $mode        = (string)$this->_postVar['mode'];
 
         // validate field name
-        $fieldName = preg_replace('/[^-_a-zA-Z0-9]/i', '', $fieldName);
+        $fieldName = preg_replace('/[^-_a-zA-Z0-9:]/i', '', $fieldName);
 
         if (empty($fieldName)) {
             return;
@@ -616,14 +631,6 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             );
         }
 
-        // check if user is able to modify the field of pages
-        if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
-            // No access
-            return array(
-                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
-            );
-        }
-
         $page = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('pages', $pid);
 
         // check if page exists and user can edit this specific record
@@ -634,25 +641,32 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             );
         }
 
-
-        // also check for sys langauge
-        if( !empty($sysLanguage) ) {
-            // check if user is able to modify pages
-            if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
-                // No access
-                return array(
-                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
-                );
-            }
-
             // check if user is able to modify the field of pages
-            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
+            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
                 // No access
                 return array(
                     'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
                 );
             }
-        }
+
+            // also check for sys langauge
+            if( !empty($sysLanguage) ) {
+                // check if user is able to modify pages
+                if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
+                    // No access
+                    return array(
+                        'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                    );
+                }
+
+                // check if user is able to modify the field of pages
+                if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
+                    // No access
+                    return array(
+                        'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+                    );
+                }
+            }
 
         // ############################
         // Transformations
@@ -669,6 +683,116 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
         // ############################
         // Update
         // ############################
+        $ret = $this->_updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue);
+
+        return $ret;
+    }
+
+
+    /**
+     * Load meta data
+     */
+    protected function _executeLoadAdvMetaTags() {
+        if (empty($this->_postVar['pid']) ) {
+            return;
+        }
+
+        $ret = array();
+
+        $pid         = (int)$this->_postVar['pid'];
+        $sysLanguage = (int)$this->_postVar['sysLanguage'];
+
+
+        // check uid of pages language overlay
+        $query = 'SELECT tag_name, tag_value
+                            FROM tx_tqseo_metatag
+                        WHERE pid = '.(int)$pid.'
+                          AND sys_language_uid = '.(int)$sysLanguage;
+        $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
+        while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+            $ret[ $row['tag_name'] ] = $row['tag_value'];
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Update page field
+     */
+    protected function _executeUpdateAdvMetaTags() {
+        if (empty($this->_postVar['pid'])
+            || empty($this->_postVar['metaTags'])
+        ) {
+            return;
+        }
+
+        $pid         = (int)$this->_postVar['pid'];
+        $metaTagList = (array)$this->_postVar['metaTags'];
+        $sysLanguage = (int)$this->_postVar['sysLanguage'];
+
+
+        $this->_clearMetaTags($pid, $sysLanguage);
+        foreach($metaTagList as $metaTagName => $metaTagValue) {
+            $metaTagValue = trim($metaTagValue);
+
+            if( strlen($metaTagValue) > 0 ) {
+                $this->_updateMetaTag($pid, $sysLanguage, $metaTagName, $metaTagValue);
+            }
+        }
+
+        return 1;
+    }
+
+    /**
+     * Clear all meta tags for one page
+     *
+     * @param integer        $pid           PID
+     * @param integer|NULL   $sysLanguage   System language id
+     */
+    protected function _clearMetaTags($pid, $sysLanguage) {
+        $query = 'DELETE FROM tx_tqseo_metatag
+                        WHERE pid = '.(int)$pid.'
+                          AND sys_language_uid = '.(int)$sysLanguage;
+        $GLOBALS['TYPO3_DB']->sql_query($query);
+    }
+
+    /**
+     * @param integer        $pid           PID
+     * @param integer|NULL   $sysLanguage   System language id
+     * @param string         $metaTag       MetaTag name
+     * @param string         $value         MetaTag value
+     */
+    protected function _updateMetaTag($pid, $sysLanguage, $metaTag, $value) {
+        $tstamp   = time();
+        $crdate   = time();
+        $cruserId = $GLOBALS['BE_USER']->user['uid'];
+
+        $query = 'INSERT INTO tx_tqseo_metatag
+                              (pid, tstamp, crdate, cruser_id, sys_language_uid, tag_name, tag_value)
+                        VALUES (
+                              '.(int)$pid.',
+                              '.(int)$tstamp.',
+                              '.(int)$crdate.',
+                              '.(int)$cruserId.',
+                              '.(int)$sysLanguage.',
+                              '.$GLOBALS['TYPO3_DB']->fullQuoteStr($metaTag).',
+                              '.$GLOBALS['TYPO3_DB']->fullQuoteStr($value).'
+                        ) ON DUPLICATE KEY UPDATE
+                                tstamp    = VALUES(tstamp),
+                                tag_value = VALUES(tag_value)';
+        $GLOBALS['TYPO3_DB']->sql_query($query);
+    }
+
+    /**
+     * Update field in page table
+     *
+     * @param integer        $pid           PID
+     * @param integer|NULL   $sysLanguage   System language id
+     * @param string         $fieldName     Field name
+     * @param string         $fieldValue    Field value
+     * @return array
+     */
+    protected function _updatePageTableField($pid, $sysLanguage, $fieldName, $fieldValue) {
         $tableName = 'pages';
 
         if( !empty($sysLanguage) ) {
@@ -722,10 +846,7 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
                     )
                 );
                 break;
-
         }
-
-
     }
 
 

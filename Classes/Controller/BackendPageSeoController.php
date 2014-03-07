@@ -170,6 +170,7 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/Ext.ux.plugin.FitToParent.js');
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.js');
         $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.overview.js');
+        $pageRenderer->addJsFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/JavaScript/TQSeo.metaeditor.js');
         $pageRenderer->addCssFile(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('tq_seo') . 'Resources/Public/Backend/Css/Default.css');
 
         $realUrlAvailable = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('realurl');
@@ -207,7 +208,8 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
                 sprite : {
                     edit	: '.json_encode( \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-open') ).',
-                    info	: '.json_encode( \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info') ).'
+                    info	: '.json_encode( \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-document-info') ).',
+                    editor	: '.json_encode( \TYPO3\CMS\Backend\Utility\IconUtility::getSpriteIcon('actions-system-options-view') ).'
                 }
             };
 
