@@ -270,14 +270,14 @@ TQSeo.overview.grid = {
                     // Init editor window
                     var editWindow = new Ext.Window({
                         xtype: 'form',
-                        width: 400,
+                        width: 420,
                         height: 'auto',
                         modal: true,
                         title: title+': '+col.header,
                         items: [ field ],
                         buttons: [
                             {
-                                text: 'Save',
+                                text: TQSeo.overview.conf.lang.button_save,
                                 itemId: 'form-button-save',
                                 disabled: true,
                                 handler: function(cmp, e) {
@@ -313,7 +313,7 @@ TQSeo.overview.grid = {
                                     editWindow.destroy();
                                 }
                             },{
-                                text: 'Cancel',
+                                text: TQSeo.overview.conf.lang.button_cancel,
                                 handler: function(cmp, e) {
                                     editWindow.destroy();
                                 }

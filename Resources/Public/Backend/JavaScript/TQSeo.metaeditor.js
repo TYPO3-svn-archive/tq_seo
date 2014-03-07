@@ -31,6 +31,8 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
     initComponent : function() {
         var window = this;
 
+        this.title = TQSeo.overview.conf.lang.metaeditor_title;
+
         this.items = [{
             xtype:'tabpanel',
             activeItem:0,
@@ -45,13 +47,13 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
         }];
 
         this.buttons = [{
-            text: 'Cancel',
+            text: TQSeo.overview.conf.lang.button_cancel,
             handler: function(cmp, e) {
                 window.onClose(false);
                 window.destroy();
             }
         },{
-            text: 'Save',
+            text: TQSeo.overview.conf.lang.button_save,
             handler: function(cmp, e) {
                 window.saveMeta(function() {
                     window.onClose(true);
@@ -155,11 +157,10 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
     },
 
     initTabOpenGraph: function() {
-
         return {
             xtype: "panel",
             name: "form-opengraph",
-            title: 'OpenGraph',
+            title: TQSeo.overview.conf.lang.metaeditor_tab_opengraph,
             layout: {
                 type: 'form'
             },
@@ -167,7 +168,8 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
             items: [{
                 xtype: "textfield",
                 fieldLabel: 'og:title',
-                name: 'og:title'
+                name: 'og:title',
+                width: 375
             },{
                 xtype: 'combo',
                 fieldLabel: 'og:type',
@@ -207,15 +209,18 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                     ]
                 }),
                 valueField: 'id',
-                displayField: 'label'
+                displayField: 'label',
+                width: 375
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:image',
-                name: 'og:image'
+                name: 'og:image',
+                width: 375
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:description',
-                name: 'og:description'
+                name: 'og:description',
+                width: 375
             }]
         };
     }

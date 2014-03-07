@@ -222,6 +222,9 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
                 boolean_yes				: '. json_encode( $this->_translate('boolean.yes') ) .',
                 boolean_no				: '. json_encode( $this->_translate('boolean.no') ) .',
 
+                button_save             : '. json_encode( $this->_translate('button.save') ) .',
+                button_cancel           : '. json_encode( $this->_translate('button.cancel') ) .',
+
                 labelDepth				: '. json_encode( $this->_translate('label.depth') ) .',
 
                 labelSearchFulltext		: '. json_encode( $this->_translate('label.search.fulltext') ) .',
@@ -269,6 +272,9 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
                 qtip_pagetitle_simulate			: '. json_encode( $this->_translate('qtip.pagetitle_simulate') ) .',
                 qtip_url_simulate				: '. json_encode( $this->_translate('qtip.url_simulate') ) .',
+
+                metaeditor_title				: '. json_encode( $this->_translate('metaeditor.title') ) .',
+                metaeditor_tab_opengraph		: '. json_encode( $this->_translate('metaeditor.tab.opengraph') ) .',
 
                 value_default					: '. json_encode( $this->_translate('value_default') ) .'
             };

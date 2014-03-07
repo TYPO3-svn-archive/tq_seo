@@ -83,6 +83,9 @@
 			<label index="button.yes">Yes</label>
 			<label index="button.no">No</label>
 
+			<label index="button.save">Save</label>
+			<label index="button.cancel">Cancel</label>
+
 			<label index="button.delete">Delete</label>
 			<label index="button.delete.hint">Delete all selected entries</label>
 
@@ -210,6 +213,12 @@
 			<label index="page.url_scheme_http">HTTP</label>
 			<label index="page.url_scheme_https">HTTPS</label>
 
+			<!--
+			   Category: Metaeditor
+			-->
+			<label index="metaeditor.title">MetaTag Editor</label>
+			<label index="metaeditor.tab.opengraph">OpenGraph</label>
+
 		</languageKey>
 
 
@@ -289,6 +298,9 @@
 			-->
 			<label index="button.yes">Ja</label>
 			<label index="button.no">Nein</label>
+
+			<label index="button.save">Speichern</label>
+			<label index="button.cancel">Abbrechen</label>
 
 			<label index="button.delete">Löschen</label>
 			<label index="button.delete.hint">Alle Einträge löschen</label>
@@ -411,6 +423,12 @@
 			<label index="page.url_scheme_default">Standard</label>
 			<label index="page.url_scheme_http">HTTP</label>
 			<label index="page.url_scheme_https">HTTPS</label>
+
+			<!--
+			   Category: Metaeditor
+			-->
+			<label index="metaeditor.title">MetaTag Editor</label>
+			<label index="metaeditor.tab.opengraph">OpenGraph</label>
 
 		</languageKey>
 
