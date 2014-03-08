@@ -291,8 +291,37 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 name: 'og:music:duration',
                 width: 375,
                 tqSeoFieldCat: 'og:music:song'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:music:album:disc',
+                name: 'og:music:album:disc',
+                width: 375,
+                tqSeoFieldCat: 'og:music:song'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:music:album:track',
+                name: 'og:music:album:track',
+                width: 375,
+                tqSeoFieldCat: 'og:music:song'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:music:musician',
+                name: 'og:music:musician',
+                width: 375,
+                tqSeoFieldCat: 'og:music:song'
             },
 
+            // ########################
+            // OG: Music Album
+            // ########################
+
+            // TODO
+
+            // ########################
+            // OG: Music Playlist
+            // ########################
+
+            // TODO
 
             // ########################
             // OG: Music Radio
@@ -303,7 +332,150 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 name: 'og:music:creator',
                 width: 375,
                 tqSeoFieldCat: 'og:music:radio_station'
-            }
+            },
+
+            // ########################
+            // OG: Video Movie/TvShow/Other
+            // ########################
+            
+            // TODO
+
+            // ########################
+            // OG: Video Episode
+            // ########################
+            
+            // TODO
+
+            // ########################
+            // OG: article
+            // ########################
+            {
+                xtype: "textfield",
+                fieldLabel: 'og:article:author',
+                name: 'og:article:author',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:isbn',
+                name: 'og:article:isbn',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:published_time',
+                name: 'og:article:published_time',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:modified_time',
+                name: 'og:article:modified_time',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:expiration_time',
+                name: 'og:article:expiration_time',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:section',
+                name: 'og:article:section',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:article:tag',
+                name: 'og:article:tag',
+                width: 375,
+                tqSeoFieldCat: 'og:article'
+            },
+
+            // ########################
+            // OG: book
+            // ########################
+            {
+                xtype: "textfield",
+                fieldLabel: 'og:book:author',
+                name: 'og:book:author',
+                width: 375,
+                tqSeoFieldCat: 'og:book'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:book:isbn',
+                name: 'og:book:isbn',
+                width: 375,
+                tqSeoFieldCat: 'og:book'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:book:release_date',
+                name: 'og:book:release_date',
+                width: 375,
+                tqSeoFieldCat: 'og:book'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:book:tag',
+                name: 'og:book:tag',
+                width: 375,
+                tqSeoFieldCat: 'og:book'
+            },
+
+            // ########################
+            // OG: Profile
+            // ########################
+            {
+                xtype: "textfield",
+                fieldLabel: 'og:profile:first_name',
+                name: 'og:profile:first_name',
+                width: 375,
+                tqSeoFieldCat: 'og:profile'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:profile:last_name',
+                name: 'og:profile:last_name',
+                width: 375,
+                tqSeoFieldCat: 'og:profile'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:profile:username',
+                name: 'og:profile:username',
+                width: 375,
+                tqSeoFieldCat: 'og:profile'
+            }, {
+                xtype: 'combo',
+                fieldLabel: 'og:profile:gender',
+                name: 'og:profile:gender',
+                listeners: {
+                    select: function(f,e){
+                        // dynamic field handling
+                        me.onChangeOgType();
+                    }
+                },
+                forceSelection: true,
+                editable: false,
+                mode: 'local',
+                triggerAction: 'all',
+                value : "",
+                store: new Ext.data.ArrayStore({
+                    id: 0,
+                    fields: [
+                        'id',
+                        'label'
+                    ],
+                    data: [
+                        ["", "---"],
+                        ["male", "male"],
+                        ["female", "female"]
+                    ]
+                }),
+                valueField: 'id',
+                displayField: 'label',
+                width: 375,
+                tqSeoFieldCat: 'og:profile'
+            },
+
 
             ]
         };
