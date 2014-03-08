@@ -101,6 +101,9 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 }
             }
 
+            // auto enable fields
+            me.onChangeOgType();
+
             callback();
         }
 
@@ -131,10 +134,12 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
             formOpenGraph = formOpenGraph[0];
 
             formOpenGraph.items.each(function(formField) {
-                var formFieldName  = formField.getName();
-                var formFieldValue = formField.getValue();
+                    if( formField.isVisible() ) {
+                    var formFieldName  = formField.getName();
+                    var formFieldValue = formField.getValue();
 
-                metaTagList[formFieldName] = formFieldValue;
+                    metaTagList[formFieldName] = formFieldValue;
+                }
             });
         }
 
@@ -156,7 +161,46 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
         });
     },
 
+    onChangeOgType: function() {
+        var formOpenGraph = this.find("name", "form-opengraph")[0];
+        var typeField = formOpenGraph.find("name", "og:type")[0];
+
+        // Get current type
+        var ogType           = typeField.getValue();
+
+        // Default types
+        var ogTypeDefault    = "og:general";
+        var ogTypeMain       = "og:general";
+        var ogTypeMainAndSub = "og:general";
+
+        // Lookup current selected type
+        var ogTypeMatch = ogType.match(/^([^:]+):?([^:]+)?/);
+        if( ogTypeMatch ) {
+            ogTypeMain = 'og:'+ogTypeMatch[1];
+
+            if( ogTypeMatch[2] ) {
+                ogTypeMainAndSub  = 'og:'+ogTypeMatch[1]+'-'+ogTypeMatch[2];
+            }
+        }
+
+        // dynamic dis- and enable form elements        
+        formOpenGraph.items.each(function(formField) {
+            if( formField.tqSeoFieldCat ) {
+                if( TQSeo.inList(formField.tqSeoFieldCat, ogTypeDefault)
+                    || TQSeo.inList(formField.tqSeoFieldCat, ogTypeMain)
+                    || TQSeo.inList(formField.tqSeoFieldCat, ogTypeMainAndSub) ) {
+                    formField.show();
+                } else {
+                    formField.hide();
+                }
+            }
+        });
+
+    },
+
     initTabOpenGraph: function() {
+        var me = this;
+
         return {
             xtype: "panel",
             name: "form-opengraph",
@@ -169,14 +213,16 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 xtype: "textfield",
                 fieldLabel: 'og:title',
                 name: 'og:title',
-                width: 375
+                width: 375,
+                tqSeoFieldCat: 'og:general'
             },{
                 xtype: 'combo',
                 fieldLabel: 'og:type',
                 name: 'og:type',
                 listeners: {
                     select: function(f,e){
-                        // TODO: add dynamic field handling
+                        // dynamic field handling
+                        me.onChangeOgType();
                     }
                 },
                 forceSelection: true,
@@ -210,18 +256,56 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 }),
                 valueField: 'id',
                 displayField: 'label',
-                width: 375
+                width: 375,
+                tqSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:image',
                 name: 'og:image',
-                width: 375
+                width: 375,
+                tqSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:description',
                 name: 'og:description',
-                width: 375
-            }]
+                width: 375,
+                tqSeoFieldCat: 'og:general'
+            },
+
+            // ########################
+            // OG: Music General
+            // ########################
+
+            // ########################
+            // OG: Music Song
+            // ########################
+            {
+                xtype: "textfield",
+                fieldLabel: 'og:music:duration',
+                name: 'og:music:duration',
+                width: 375,
+                tqSeoFieldCat: 'og:music:song'
+            }, {
+                xtype: "textfield",
+                fieldLabel: 'og:music:album',
+                name: 'og:music:duration',
+                width: 375,
+                tqSeoFieldCat: 'og:music:song'
+            },
+
+
+            // ########################
+            // OG: Music Radio
+            // ########################
+            {
+                xtype: "textfield",
+                fieldLabel: 'og:music:creator',
+                name: 'og:music:creator',
+                width: 375,
+                tqSeoFieldCat: 'og:music:radio_station'
+            }
+
+            ]
         };
     }
 

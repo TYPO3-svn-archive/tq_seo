@@ -25,6 +25,13 @@ Ext.ns('TQSeo');
 TQSeo = {
 
     /**
+     * Check if entry is in list
+     */
+    inList: function(list, item) {
+        return new RegExp(' ' + item + ' ').test(' ' + list + ' ');
+    },
+
+    /**
      * Highlight text in grid
      *
      * @copyright	Stefan Gehrig (TEQneers GmbH & Co. KG) <gehrig@teqneers.de>

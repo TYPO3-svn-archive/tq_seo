@@ -593,8 +593,8 @@ TQSeo.overview.grid = {
                     }
                 },{
                     id       : 'metatag',
-                    header   : 'TODO',
-                    width    : 20,
+                    header   : '',
+                    width    : 25,
                     sortable : false,
                     dataIndex: 'metatag',
                     renderer	: fieldRendererAdvEditor,
