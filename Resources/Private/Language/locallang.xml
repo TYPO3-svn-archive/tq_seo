@@ -216,6 +216,7 @@
 			<!--
 			   Category: Metaeditor
 			-->
+			<label index="metaeditor.button.hint">MetaTag Editor</label>
 			<label index="metaeditor.title">MetaTag Editor</label>
 			<label index="metaeditor.tab.opengraph">OpenGraph</label>
 
@@ -427,6 +428,7 @@
 			<!--
 			   Category: Metaeditor
 			-->
+			<label index="metaeditor.button.hint">MetaTag Editor</label>
 			<label index="metaeditor.title">MetaTag Editor</label>
 			<label index="metaeditor.tab.opengraph">OpenGraph</label>
 

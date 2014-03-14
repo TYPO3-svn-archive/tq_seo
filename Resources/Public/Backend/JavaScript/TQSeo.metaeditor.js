@@ -23,7 +23,7 @@
 Ext.ns('TQSeo');
 
 TQSeo.metaeditor  = Ext.extend(Ext.Window, {
-    xtype: 'form',
+    layout: 'fit',
     width: '90%',
     height: '90%',
     modal: true,
@@ -201,7 +201,7 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
     initTabOpenGraph: function() {
         var me = this;
 
-        return {
+        var panel = {
             xtype: "panel",
             name: "form-opengraph",
             title: TQSeo.overview.conf.lang.metaeditor_tab_opengraph,
@@ -209,11 +209,23 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 type: 'form'
             },
             padding: 10,
-            items: [{
+            labelWidth: 150,
+            autoScroll: true,
+            overflowY: 'scroll',
+            items: []
+        };
+
+        var fieldWidth = 375;
+
+        // ########################
+        // OG: General fields
+        // ########################
+        panel.items.push(
+            {
                 xtype: "textfield",
                 fieldLabel: 'og:title',
                 name: 'og:title',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:general'
             },{
                 xtype: 'combo',
@@ -256,192 +268,201 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 }),
                 valueField: 'id',
                 displayField: 'label',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:image',
                 name: 'og:image',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:general'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:description',
                 name: 'og:description',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:general'
-            },
+            }
+        );
 
-            // ########################
-            // OG: Music General
-            // ########################
+        // ########################
+        // OG: Music General
+        // ########################
 
-            // ########################
-            // OG: Music Song
-            // ########################
-            {
-                xtype: "textfield",
-                fieldLabel: 'og:music:duration',
-                name: 'og:music:duration',
-                width: 375,
-                tqSeoFieldCat: 'og:music:song'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:music:album',
-                name: 'og:music:duration',
-                width: 375,
-                tqSeoFieldCat: 'og:music:song'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:music:album:disc',
-                name: 'og:music:album:disc',
-                width: 375,
-                tqSeoFieldCat: 'og:music:song'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:music:album:track',
-                name: 'og:music:album:track',
-                width: 375,
-                tqSeoFieldCat: 'og:music:song'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:music:musician',
-                name: 'og:music:musician',
-                width: 375,
-                tqSeoFieldCat: 'og:music:song'
-            },
+        // ########################
+        // OG: Music Song
+        // ########################
+// TODO: add array support
+//        panel.items.push(
+//            {
+//                xtype: "textfield",
+//                fieldLabel: 'og:music:duration',
+//                name: 'og:music:duration',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:music:song'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:music:album',
+//                name: 'og:music:duration',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:music:song'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:music:album:disc',
+//                name: 'og:music:album:disc',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:music:song'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:music:album:track',
+//                name: 'og:music:album:track',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:music:song'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:music:musician',
+//                name: 'og:music:musician',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:music:song'
+//            }
+//        );
 
-            // ########################
-            // OG: Music Album
-            // ########################
 
-            // TODO
+        // ########################
+        // OG: Music Album
+        // ########################
 
-            // ########################
-            // OG: Music Playlist
-            // ########################
+        // TODO
 
-            // TODO
+        // ########################
+        // OG: Music Playlist
+        // ########################
 
-            // ########################
-            // OG: Music Radio
-            // ########################
-            {
-                xtype: "textfield",
-                fieldLabel: 'og:music:creator',
-                name: 'og:music:creator',
-                width: 375,
-                tqSeoFieldCat: 'og:music:radio_station'
-            },
+        // TODO
 
-            // ########################
-            // OG: Video Movie/TvShow/Other
-            // ########################
-            
-            // TODO
+        // ########################
+        // OG: Music Radio
+        // ########################
 
-            // ########################
-            // OG: Video Episode
-            // ########################
-            
-            // TODO
+        // TODO
 
-            // ########################
-            // OG: article
-            // ########################
-            {
-                xtype: "textfield",
-                fieldLabel: 'og:article:author',
-                name: 'og:article:author',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:isbn',
-                name: 'og:article:isbn',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:published_time',
-                name: 'og:article:published_time',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:modified_time',
-                name: 'og:article:modified_time',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:expiration_time',
-                name: 'og:article:expiration_time',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:section',
-                name: 'og:article:section',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:article:tag',
-                name: 'og:article:tag',
-                width: 375,
-                tqSeoFieldCat: 'og:article'
-            },
 
-            // ########################
-            // OG: book
-            // ########################
-            {
-                xtype: "textfield",
-                fieldLabel: 'og:book:author',
-                name: 'og:book:author',
-                width: 375,
-                tqSeoFieldCat: 'og:book'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:book:isbn',
-                name: 'og:book:isbn',
-                width: 375,
-                tqSeoFieldCat: 'og:book'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:book:release_date',
-                name: 'og:book:release_date',
-                width: 375,
-                tqSeoFieldCat: 'og:book'
-            }, {
-                xtype: "textfield",
-                fieldLabel: 'og:book:tag',
-                name: 'og:book:tag',
-                width: 375,
-                tqSeoFieldCat: 'og:book'
-            },
 
-            // ########################
-            // OG: Profile
-            // ########################
+        // ########################
+        // OG: Video Movie/TvShow/Other
+        // ########################
+
+        // TODO
+
+        // ########################
+        // OG: Video Episode
+        // ########################
+
+        // TODO
+
+        // ########################
+        // OG: article
+        // ########################
+// TODO: add array support
+//        panel.items.push(
+//            {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:author',
+//                name: 'og:article:author',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:isbn',
+//                name: 'og:article:isbn',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:published_time',
+//                name: 'og:article:published_time',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:modified_time',
+//                name: 'og:article:modified_time',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:expiration_time',
+//                name: 'og:article:expiration_time',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:section',
+//                name: 'og:article:section',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:article:tag',
+//                name: 'og:article:tag',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:article'
+//            }
+//        );
+
+        // ########################
+        // OG: book
+        // ########################
+// TODO: add array support
+//        panel.items.push(
+//            {
+//                xtype: "textfield",
+//                fieldLabel: 'og:book:author',
+//                name: 'og:book:author',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:book'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:book:isbn',
+//                name: 'og:book:isbn',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:book'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:book:release_date',
+//                name: 'og:book:release_date',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:book'
+//            }, {
+//                xtype: "textfield",
+//                fieldLabel: 'og:book:tag',
+//                name: 'og:book:tag',
+//                width: fieldWidth,
+//                tqSeoFieldCat: 'og:book'
+//            }
+//        );
+
+        // ########################
+        // OG: Profile
+        // ########################
+        panel.items.push(
             {
                 xtype: "textfield",
                 fieldLabel: 'og:profile:first_name',
                 name: 'og:profile:first_name',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:profile'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:profile:last_name',
                 name: 'og:profile:last_name',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:profile'
             }, {
                 xtype: "textfield",
                 fieldLabel: 'og:profile:username',
                 name: 'og:profile:username',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:profile'
             }, {
                 xtype: 'combo',
@@ -472,13 +493,13 @@ TQSeo.metaeditor  = Ext.extend(Ext.Window, {
                 }),
                 valueField: 'id',
                 displayField: 'label',
-                width: 375,
+                width: fieldWidth,
                 tqSeoFieldCat: 'og:profile'
-            },
+            }
+        );
 
 
-            ]
-        };
+        return panel;
     }
 
 });

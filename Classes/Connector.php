@@ -44,7 +44,9 @@ class Connector {
      * @var array
      */
     protected static $_store = array(
+        'flag'      => array(),
         'meta'      => array(),
+        'meta:og'   => array(),
         'custom'    => array(),
         'pagetitle' => array(),
     );
@@ -126,7 +128,25 @@ class Connector {
         $key   = (string)$key;
         $value = (string)$value;
 
+        if( strpos($key, 'og:') === 0 ) {
+            return self::setOpenGraphTag($key, $value);
+        }
+
         self::$_store['meta'][$key] = $value;
+    }
+
+    /**
+     * Set opengraph tag
+     *
+     * @param   string $key    Metatag name
+     * @param   string $value  Metatag value
+     */
+    public static function setOpenGraphTag($key, $value) {
+        $key   = (string)$key;
+        $value = (string)$value;
+
+        self::$_store['flag']['meta:og:external'] = true;
+        self::$_store['meta:og'][$key] = $value;
     }
 
     /**
@@ -145,9 +165,20 @@ class Connector {
     /**
      * Disable meta tag
      *
+     * @deprecated since 6.1, will be removed in the next version. Use \TQ\TqSeo\Connector::disableMetaTag
      * @param   string $key    Metatag name
      */
     public static function disableMeta($key) {
+        \TYPO3\CMS\Core\Utility\GeneralUtility::logDeprecatedFunction();
+        self::disableMetaTag($key);
+    }
+
+    /**
+     * Disable meta tag
+     *
+     * @param   string $key    Metatag name
+     */
+    public static function disableMetaTag($key) {
         $key = (string)$key;
 
         self::$_store['meta'][$key] = NULL;

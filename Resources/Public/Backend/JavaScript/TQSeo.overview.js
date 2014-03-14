@@ -525,7 +525,7 @@ TQSeo.overview.grid = {
             case 'metadata':
 
                 var fieldRendererAdvEditor = function(value, metaData, record, rowIndex, colIndex, store) {
-                    var qtip = Ext.util.Format.htmlEncode("TODO");
+                    var qtip = Ext.util.Format.htmlEncode( TQSeo.overview.conf.lang.metaeditor_button_hin );
                     return '<div class="tqseo-toolbar" ext:qtip="' + qtip +'">'+TQSeo.overview.conf.sprite.editor+'</div>';
                 }
 

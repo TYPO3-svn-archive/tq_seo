@@ -275,10 +275,11 @@ class BackendPageSeoController extends \TQ\TqSeo\Backend\Module\AbstractStandard
 
                 metaeditor_title				: '. json_encode( $this->_translate('metaeditor.title') ) .',
                 metaeditor_tab_opengraph		: '. json_encode( $this->_translate('metaeditor.tab.opengraph') ) .',
+                metaeditor_button_hin			: '. json_encode( $this->_translate('metaeditor.button.hint') ) .',
 
                 value_default					: '. json_encode( $this->_translate('value_default') ) .'
             };
-            ');
+        ');
     }
 
 

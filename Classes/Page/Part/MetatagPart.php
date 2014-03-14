@@ -601,15 +601,38 @@ class MetatagPart {
     protected function _advMetaTags(&$metaTags, $tsfePage, $sysLanguageId, $customMetaTagList) {
         $tsfePageId    = $tsfePage['uid'];
 
+        $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
+        $storeMeta = $connector->getStore();
+
         // #################
         // Adv meta tags (from editor)
         // #################
+        $advMetaTagList      = array();
+        $advMetaTagCondition = array();
+
+        if( !empty($storeMeta['flag']['meta:og:external']) ) {
+            // External OpenGraph support
+            $advMetaTagCondition[] = 'tag_name NOT LIKE \'og:%\'';
+
+            // Add external og-tags to adv meta tag list
+            if( !empty($storeMeta['meta:og']) ) {
+                $advMetaTagList = array_merge($advMetaTagList, $storeMeta['meta:og']);
+            }
+        }
+
+        if( !empty($advMetaTagCondition) ) {
+            $advMetaTagCondition = '( '.implode(') AND (', $advMetaTagCondition).' )';
+
+        } else {
+            $advMetaTagCondition = '1=1';
+        }
 
         // Fetch list of meta tags from database
         $query = 'SELECT tag_name, tag_value
                     FROM tx_tqseo_metatag
                    WHERE pid = '.(int)$tsfePageId.'
-                     AND sys_language_uid = '.(int)$sysLanguageId;
+                     AND sys_language_uid = '.(int)$sysLanguageId.'
+                     AND '.$advMetaTagCondition;
         $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
         while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $advMetaTagList[ $row['tag_name'] ] = $row['tag_value'];
@@ -618,7 +641,7 @@ class MetatagPart {
         // Add metadata to tag list
         foreach($advMetaTagList as $tagName => $tagValue) {
             $metaTags['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '"'.
-                                    'content="' . htmlspecialchars($tagValue) . '" />';
+                                              'content="' . htmlspecialchars($tagValue) . '" />';
         }
 
         // #################
@@ -626,7 +649,7 @@ class MetatagPart {
         // #################
         foreach ($customMetaTagList as $tagName => $tagValue) {
             $ret['adv.' . $tagName] = '<meta name="' . htmlspecialchars($tagName) . '"'.
-                'content="' . htmlspecialchars($tagValue) . '" />';
+                                         'content="' . htmlspecialchars($tagValue) . '" />';
         }
     }
 
