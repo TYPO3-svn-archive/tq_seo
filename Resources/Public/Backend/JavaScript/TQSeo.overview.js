@@ -602,6 +602,7 @@ TQSeo.overview.grid = {
 
                         // Init editor window
                         var editWindow = new TQSeo.metaeditor({
+                            t3PageTitle: record.get('title'),
                             pid: record.get('uid'),
                             onClose: function(reload) {
                                 // TODO: Move to listener/event

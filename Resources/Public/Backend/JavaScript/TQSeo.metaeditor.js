@@ -24,14 +24,25 @@ Ext.ns('TQSeo');
 
 TQSeo.metaeditor  = Ext.extend(Ext.Window, {
     layout: 'fit',
-    width: '90%',
+    width:  '90%',
     height: '90%',
-    modal: true,
+    modal:  true,
+
+    t3PageTitle: '',
+    pid: 0,
 
     initComponent : function() {
         var window = this;
 
         this.title = TQSeo.overview.conf.lang.metaeditor_title;
+
+        if( this.t3PageTitle ) {
+            this.title += ' "'+this.t3PageTitle+'"';
+        }
+
+        if( this.pid ) {
+            this.title += ' [PID:'+this.pid+']';
+        }
 
         this.items = [{
             xtype:'tabpanel',

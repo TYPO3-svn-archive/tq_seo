@@ -183,7 +183,8 @@ class SitemapIndexHook {
     /**
      * Hook: Link Parser
      *
-     * @param    object $pObj    Object
+     * @param   object          $pObj    Object
+     * @return  boolean|null
      */
     public static function hook_linkParse(&$pObj) {
         // check if sitemap is enabled in root
@@ -226,6 +227,11 @@ class SitemapIndexHook {
 
         if (!is_numeric($linkConf['parameter'])) {
             // not valid internal link
+            return;
+        }
+
+        if( empty($linkUrl) ) {
+            // invalid url? should be never empty!
             return;
         }
 
@@ -281,6 +287,11 @@ class SitemapIndexHook {
         $pageUrl   = ltrim($linkParts['path'], '/');
         if (!empty($linkParts['query'])) {
             $pageUrl .= '?' . $linkParts['query'];
+        }
+
+        if( empty($pageUrl) ) {
+            // Invalid url?
+            return;
         }
 
         // #####################################

@@ -641,32 +641,32 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
             );
         }
 
+        // check if user is able to modify the field of pages
+        if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
+            // No access
+            return array(
+                'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
+            );
+        }
+
+        // also check for sys langauge
+        if( !empty($sysLanguage) ) {
+            // check if user is able to modify pages
+            if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
+                // No access
+                return array(
+                    'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
+                );
+            }
+
             // check if user is able to modify the field of pages
-            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages:' . $fieldName)) {
+            if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
                 // No access
                 return array(
                     'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
                 );
             }
-
-            // also check for sys langauge
-            if( !empty($sysLanguage) ) {
-                // check if user is able to modify pages
-                if (!$GLOBALS['BE_USER']->check('tables_modify', 'pages_language_overlay')) {
-                    // No access
-                    return array(
-                        'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BE2]',
-                    );
-                }
-
-                // check if user is able to modify the field of pages
-                if (!$GLOBALS['BE_USER']->check('non_exclude_fields', 'pages_language_overlay:' . $fieldName)) {
-                    // No access
-                    return array(
-                        'error' => $GLOBALS['LANG']->getLL('error.access_denied') . ' [0x4FBF3BD9]',
-                    );
-                }
-            }
+        }
 
         // ############################
         // Transformations

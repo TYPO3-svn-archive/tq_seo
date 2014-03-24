@@ -216,8 +216,8 @@
 			<!--
 			   Category: Metaeditor
 			-->
-			<label index="metaeditor.button.hint">MetaTag Editor</label>
-			<label index="metaeditor.title">MetaTag Editor</label>
+			<label index="metaeditor.button.hint">Advanced MetaTag Editor</label>
+			<label index="metaeditor.title">Advanced MetaTag Editor</label>
 			<label index="metaeditor.tab.opengraph">OpenGraph</label>
 
 		</languageKey>
@@ -428,8 +428,8 @@
 			<!--
 			   Category: Metaeditor
 			-->
-			<label index="metaeditor.button.hint">MetaTag Editor</label>
-			<label index="metaeditor.title">MetaTag Editor</label>
+			<label index="metaeditor.button.hint">Erweiterter MetaTag Editor</label>
+			<label index="metaeditor.title">Erweiterter MetaTag Editor</label>
 			<label index="metaeditor.tab.opengraph">OpenGraph</label>
 
 		</languageKey>
