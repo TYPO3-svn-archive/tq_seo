@@ -93,10 +93,11 @@ class FooterPart {
                 $ret['ga'] = $this->cObj->cObjGetSingle($gaConf['template'], $gaConf['template.']);
 
                 if (!empty($gaConf['trackDownloads']) && !empty($gaConf['trackDownloadsScript'])) {
-                    $jsFile                  = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
+                    $jsFile = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName(
                         $gaConf['trackDownloadsScript']
                     );
-                    $jsfile                  = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
+                    $jsfile = preg_replace('/^' . preg_quote(PATH_site, '/') . '/i', '', $jsFile);
+
                     $ret['ga.trackdownload'] = '<script type="text/javascript" src="' . htmlspecialchars(
                             $jsfile
                         ) . '"></script>';

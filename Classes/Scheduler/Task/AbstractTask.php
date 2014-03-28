@@ -67,7 +67,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
         $query = 'SELECT uid
                     FROM pages
                    WHERE is_siteroot = 1
-                      AND deleted = 0';
+                     AND deleted = 0';
         $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
 
         while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
@@ -103,7 +103,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      */
     protected function _setRootPageLanguage($languageId) {
         $GLOBALS['TSFE']->tmpl->setup['config.']['sys_language_uid'] = $languageId;
-        $this->_languageLock                              = $languageId;
+        $this->_languageLock = $languageId;
     }
 
     /**
@@ -149,6 +149,7 @@ abstract class AbstractTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
      *
      * @param   string $file       Filename/path
      * @param   string $content    Content
+     * @throws  \Exception
      */
     protected function _writeToFile($file, $content) {
         if (!function_exists('gzopen')) {

@@ -62,6 +62,11 @@ class SitemapXmlPage extends \TQ\TqSeo\Page\AbstractPage {
         return $ret;
     }
 
+    /**
+     * Build sitemap index or specific page
+     *
+     * @return mixed
+     */
     protected function _build() {
         $page = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('page');
 

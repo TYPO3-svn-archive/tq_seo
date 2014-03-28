@@ -61,7 +61,7 @@ class SitemapIndexHook {
         }
 
         // Skip own sitemap tools
-        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132) {
+        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132 || $GLOBALS['TSFE']->type == 841133) {
             return TRUE;
         }
 
@@ -202,7 +202,7 @@ class SitemapIndexHook {
         }
 
         // Skip own sitemap tools
-        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132) {
+        if ($GLOBALS['TSFE']->type == 841131 || $GLOBALS['TSFE']->type == 841132 || $GLOBALS['TSFE']->type == 841133) {
             return TRUE;
         }
 

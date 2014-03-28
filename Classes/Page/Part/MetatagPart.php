@@ -185,7 +185,7 @@ class MetatagPart {
             // Process meta tags from access point
             // #################
 
-            /** @var \TQ\\TqSeo\\Connector $connector */
+            /** @var \TQ\TqSeo\Connector $connector */
             $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
             $storeMeta = $connector->getStore();
 
@@ -675,7 +675,7 @@ class MetatagPart {
             return;
         }
 
-        /** @var \TQ\\TqSeo\\Connector $connector */
+        /** @var \TQ\TqSeo\Connector $connector */
         $connector = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TQ\\TqSeo\\Connector');
 
         if( isset($GLOBALS['TSFE']->register['newsTitle']) ) {

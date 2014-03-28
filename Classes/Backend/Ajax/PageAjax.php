@@ -705,9 +705,9 @@ class PageAjax extends \TQ\TqSeo\Backend\Ajax\AbstractAjax {
 
         // check uid of pages language overlay
         $query = 'SELECT tag_name, tag_value
-                            FROM tx_tqseo_metatag
-                        WHERE pid = '.(int)$pid.'
-                          AND sys_language_uid = '.(int)$sysLanguage;
+                    FROM tx_tqseo_metatag
+                   WHERE pid = '.(int)$pid.'
+                     AND sys_language_uid = '.(int)$sysLanguage;
         $res   = $GLOBALS['TYPO3_DB']->sql_query($query);
         while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
             $ret[ $row['tag_name'] ] = $row['tag_value'];
